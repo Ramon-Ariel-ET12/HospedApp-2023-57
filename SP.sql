@@ -4,10 +4,10 @@ Create procedure altaHotel (idHotel int)
 begin
 	if(exists(select idHotel
 				from Hotel
-				where idHotel > 100))then
-				delete idHotel
+				where idHotel > 1000))then
+				delete
 				from Hotel
-				where idHotel > 100;
+				where idHotel > 1000;
 	end if;
 end //
 #Existen 7 tipos de camas distintas.
@@ -16,10 +16,10 @@ Create procedure AltaCama (idCama int )
 begin
 	if(exists(select idCama
 				from Cama
-                where idCama = 8))then
+                where idCama > 7))then
                 delete 
 				from Cama
-                where idCama = 8;
+                where idCama > 7;
 	end if ;
 end //
 #No existen más de 100 cuartos por hotel.
@@ -29,7 +29,7 @@ Begin
 	if(exists(select Cuarto
 				from Cuarto
                 where Cuarto > 100)) then
-                delete Cuarto
+                delete
 				from Cuarto
                 where Cuarto > 100;
 	end if ;
@@ -41,7 +41,7 @@ Begin
 	if(exists(select idCliente
 				from Cliente
                 where idCliente > 100000))then
-                delete idCliente
+                delete 
 				from Cliente
                 where idCliente > 100000;
 	end if ;
@@ -53,7 +53,7 @@ Begin
 	if(exists(select idReserva
 				from Reserva
                 where idReserva > 10000000))then
-                delete idReserva
+                delete 
 				from Reserva
                 where idReserva > 10000000;
 	end if ;
