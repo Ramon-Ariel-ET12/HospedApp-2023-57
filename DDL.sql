@@ -1,44 +1,45 @@
-DROP Database if exists 5to_HostedApp2022;
-CREATE Database 5to_HostedApp2022;
-USE 5to_HostedApp2022;
+-- Active: 1684371989218@@127.0.0.1@3306
+DROP DATABASE IF EXISTS HostedApp2022;
+CREATE DATABASE HostedApp2022;
+USE HostedApp2022;
 
 CREATE TABLE Hotel(
 idHotel SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-domicilio VARCHAR(20) not null,
-email VARCHAR(20) not null,
-contraseña CHAR(64) not null,
-estrella TINYINT UNSIGNED not null,
+domicilio VARCHAR(20) NOT NULL,
+email VARCHAR(20) NOT NULL,
+contraseña CHAR(64) NOT NULL,
+estrella TINYINT UNSIGNED NOT NULL,
 CONSTRAINT UK_contra UNIQUE(contraseña)
 );  
 
 CREATE TABLE Cliente(
 idCliente MEDIUMINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-email VARCHAR(20) not null,
-nombre VARCHAR(20) not null,
-apellido VARCHAR(20) not null,
-contraseña CHAR(64) not null
+email VARCHAR(20) NOT NULL,
+nombre VARCHAR(20) NOT NULL,
+apellido VARCHAR(20) NOT NULL,
+contraseña CHAR(64) NOT NULL
 );
 
 CREATE TABLE Cama(
 idCama TINYINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-nombre VARCHAR(20) not null,
-pueden_dormir TINYINT not null
+nombre VARCHAR(20) NOT NULL,
+pueden_dormir TINYINT NOT NULL
 );
 
 CREATE TABLE Cuarto(
 cuarto TINYINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-idCama TINYINT UNSIGNED not null,
-cochera char(2) not null,
-costo_noche SMALLINT UNSIGNED not null,
-descripcion VARCHAR(60) not null,
+idCama TINYINT UNSIGNED NOT NULL,
+cochera char(2) NOT NULL,
+costo_noche SMALLINT UNSIGNED NOT NULL,
+descripcion VARCHAR(60) NOT NULL,
 CONSTRAINT FK_CUARTO_CAMA FOREIGN KEY (idCama)
 REFERENCES Cama(idCama)
 );
 
 CREATE TABLE cuarto_cama(
-cuarto TINYINT UNSIGNED not null,
-idCama TINYINT UNSIGNED not null,
-cant_camas TINYINT UNSIGNED not null,
+cuarto TINYINT UNSIGNED NOT NULL,
+idCama TINYINT UNSIGNED NOT NULL,
+cant_camas TINYINT UNSIGNED NOT NULL,
 PRIMARY KEY (cuarto, idCama), 
 CONSTRAINT FK_HOTEL_CUARTO FOREIGN KEY (cuarto)
 REFERENCES Cuarto(cuarto),
@@ -48,15 +49,15 @@ REFERENCES Cama(idCama)
 
 CREATE TABLE Reserva(
 idReserva INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-idHotel SMALLINT UNSIGNED not null,
-inicio DATE not null,
-fin DATE not null,
-idCliente MEDIUMINT UNSIGNED not null,
-cuarto TINYINT UNSIGNED not null,
-calificacion_C TINYINT UNSIGNED not null,
-calificacion_H TINYINT UNSIGNED not null,
+idHotel SMALLINT UNSIGNED NOT NULL,
+inicio DATE NOT NULL,
+fin DATE NOT NULL,
+idCliente MEDIUMINT UNSIGNED NOT NULL,
+cuarto TINYINT UNSIGNED NOT NULL,
+calificacion_C TINYINT UNSIGNED NOT NULL,
+calificacion_H TINYINT UNSIGNED NOT NULL,
 comentario_C VARCHAR(60),
-habilitado BOOL not null,
+habilitado BOOL NOT NULL,
 CONSTRAINT FK_HOTEL_ID FOREIGN KEY (idHotel)
 REFERENCES Hotel(idHotel),
 CONSTRAINT FK_HOTEL_CLIENTE FOREIGN KEY (idCliente)

@@ -1,60 +1,60 @@
 #El sistema va a admitir un máximo de 1000 hoteles.
 delimiter //
-Create procedure altaHotel (idHotel int)
-begin
-	if(exists(select idHotel
-				from Hotel
-				where idHotel > 1000))then
-				delete
-				from Hotel
-				where idHotel > 1000;
-	end if;
-end //
+CREATE PROCEDURE altaHotel (idHotel INT)
+BEGIN
+	IF(EXISTS(SELECT idHotel
+				FROM Hotel
+				WHERE idHotel > 1000))THEN
+				DELETE
+				FROM Hotel
+				WHERE idHotel > 1000;
+	END IF;
+END //
 #Existen 7 tipos de camas distintas.
 Delimiter //
-Create procedure AltaCama (idCama int )
-begin
-	if(exists(select idCama
-				from Cama
-                where idCama > 7))then
-                delete 
-				from Cama
-                where idCama > 7;
-	end if ;
-end //
+CREATE PROCEDURE AltaCama (idCama INT )
+BEGIN
+	IF(EXISTS(SELECT idCama
+				FROM Cama
+                WHERE idCama > 7))THEN
+                DELETE
+				FROM Cama
+                WHERE idCama > 7;
+	END IF ;
+END //
 #No existen más de 100 cuartos por hotel.
 Delimiter //
-Create Procedure AltaCuarto (Cuarto int)
-Begin
-	if(exists(select Cuarto
-				from Cuarto
-                where Cuarto > 100)) then
-                delete
-				from Cuarto
-                where Cuarto > 100;
-	end if ;
+CREATE PROCEDURE AltaCuarto (Cuarto INT)
+BEGIN
+	IF(EXISTS(SELECT Cuarto
+				FROM Cuarto
+                WHERE Cuarto > 100)) THEN
+                DELETE
+				FROM Cuarto
+                WHERE Cuarto > 100;
+	END IF  ;
 End //
 #El sistema tiene que soportar hasta 100.000 clientes.
 Delimiter // 
-Create Procedure AltaCliente (idCLiente int)
-Begin
-	if(exists(select idCliente
-				from Cliente
-                where idCliente > 100000))then
-                delete 
-				from Cliente
-                where idCliente > 100000;
-	end if ;
+CREATE PROCEDURE AltaCliente (idCLiente INT)
+BEGIN
+	IF(EXISTS(SELECT idCliente
+				FROM Cliente
+                WHERE idCliente > 100000))THEN
+                DELETE 
+				FROM Cliente
+                WHERE idCliente > 100000;
+	END IF ;
 End //
 #El sistema debe soportar 10 millones de reservas y cancelaciones.
 Delimiter //
-Create procedure AltaReserva (idReserva int)
-Begin
-	if(exists(select idReserva
-				from Reserva
-                where idReserva > 10000000))then
-                delete 
-				from Reserva
-                where idReserva > 10000000;
-	end if ;
+CREATE PROCEDURE AltaReserva (idReserva INT)
+BEGIN
+	IF(EXISTS(SELECT idReserva
+				FROM Reserva
+                WHERE idReserva > 10000000))THEN
+                DELETE 
+				FROM Reserva
+                WHERE idReserva > 10000000;
+	END IF ;
 End //
