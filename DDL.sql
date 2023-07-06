@@ -65,6 +65,7 @@ REFERENCES Cliente(idCliente),
 CONSTRAINT FK_HOTEL_RESERVA FOREIGN KEY (cuarto)
 REFERENCES Cuarto(cuarto)
 );
+<<<<<<< HEAD
 #STORED PROCEDURE
 #El sistema va a admitir un máximo de 1000 hoteles.
 delimiter //
@@ -202,3 +203,5 @@ END $$
 
 
 
+=======
+>>>>>>> 160c17351be8c5d01e152191accd266325fa7642
