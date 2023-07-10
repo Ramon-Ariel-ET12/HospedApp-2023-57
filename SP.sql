@@ -15,7 +15,7 @@ CALL AltaCuarto(2, 1900, "Vale por una descripcion") $$
 
 DELIMITER $$
 DROP PROCEDURE IF EXISTS AltaHotel $$
-CREATE PROCEDURE AltaHotel (unDomicilio VARCHAR(20), unMail VARCHAR(20), unaContra CHAR(64), estrellas TINYINT UNSIGNED)
+CREATE PROCEDURE AltaHotel (unDomicilio VARCHAR(20), unMail VARCHAR(50), unaContra CHAR(64), estrellas TINYINT UNSIGNED)
 BEGIN
    INSERT INTO Hotel(domicilio, email, contraseña, estrella)
    VALUES (unDomicilio, unMail, SHA2(unaContra, 256), estrellas);
@@ -44,7 +44,7 @@ BEGIN
 END $$
 DELIMITER $$
 DROP PROCEDURE IF EXISTS RegistrarCliente $$
-CREATE PROCEDURE RegistrarCliente (unMail VARCHAR(20),unNombre VARCHAR(20), unApellido VARCHAR(20), unaContra CHAR(64))
+CREATE PROCEDURE RegistrarCliente (unMail VARCHAR(50),unNombre VARCHAR(20), unApellido VARCHAR(20), unaContra CHAR(64))
 BEGIN
    INSERT INTO Cliente(email, nombre, apellido, contraseña)
    VALUES (unMail, unNombre, unApellido, SHA2(unaContra, 256));
