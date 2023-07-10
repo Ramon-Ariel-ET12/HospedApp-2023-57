@@ -8,7 +8,7 @@ BEGIN
 END $$
 
 
-CALL AltaCuarto(2, 1900, "Vale por una descripcion");
+CALL AltaCuarto(2, 1900, "Vale por una descripcion") $$
 
 
 
@@ -22,9 +22,9 @@ BEGIN
 END $$
 
 
-CALL AltaHotel("Libertador 238", "hostedapp@gmail.com", "root", 5);
-CALL AltaHotel("San Martin 1275", "sheraton@gmail.com", "SuperHotel", 5);
-CALL AltaHotel("Far far away", "telonashe@gmail.com", "contraseña", 2);
+CALL AltaHotel("Libertador 238", "hostedapp@gmail.com", "root", 5)$$
+CALL AltaHotel("San Martin 1275", "sheraton@gmail.com", "SuperHotel", 5)$$
+CALL AltaHotel("Far far away", "telonashe@gmail.com", "contraseña", 2)$$
 DELIMITER $$
 DROP PROCEDURE IF EXISTS AltaCama $$
 CREATE PROCEDURE AltaCama (unNombre VARCHAR(20), cantidad TINYINT UNSIGNED)
@@ -32,9 +32,9 @@ BEGIN
    INSERT INTO Cama(nombre, pueden_dormir)
    VALUES (unNombre, cantidad);
 END $$
-CALL AltaCama ("Matrimonial", 2);
-CALL AltaCama ("Simple", 1);
-CALL AltaCama ("Cucheta", 2);
+CALL AltaCama ("Matrimonial", 2)$$
+CALL AltaCama ("Simple", 1)$$
+CALL AltaCama ("Cucheta", 2)$$
 DELIMITER $$
 DROP PROCEDURE IF EXISTS AltaCamaCuarto $$
 CREATE PROCEDURE AltaCamaCuarto (unCuarto TINYINT UNSIGNED, unaCama TINYINT UNSIGNED, cantidad TINYINT UNSIGNED)
@@ -50,9 +50,9 @@ BEGIN
    VALUES (unMail, unNombre, unApellido, SHA2(unaContra, 256));
 END $$
 
-CALL `RegistrarCliente` ("ramonarielet12d1@gmail.com", "Ramón", "Lugones", 46912644);
-CALL `RegistrarCliente` ("leivajenifer796@gmail.com", "Jenifer", "Leiva", 123456789);
-CALL `RegistrarCliente` ("franco.salinaset12d1@gmail.com", "Franco", "Salinas", 987654321);
+CALL `RegistrarCliente` ("ramonarielet12d1@gmail.com", "Ramón", "Lugones", 46912644)$$
+CALL `RegistrarCliente` ("leivajenifer796@gmail.com", "Jenifer", "Leiva", 123456789)$$
+CALL `RegistrarCliente` ("franco.salinaset12d1@gmail.com", "Franco", "Salinas", 987654321)$$
 
 
 DELIMITER $$
