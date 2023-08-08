@@ -50,7 +50,7 @@ BEGIN
    VALUES (unMail, unNombre, unApellido, SHA2(unaContra, 256));
 END $$
 
-CALL `RegistrarCliente` ("ramonarielet12d1@gmail.com", "Ramón", "Lugones", 46912644)$$
+CALL `RegistrarCliente` ("ramonarielet12d1@gmail.com", "Ramón", "Lugones", 9876545)$$
 CALL `RegistrarCliente` ("leivajenifer796@gmail.com", "Jenifer", "Leiva", 123456789)$$
 CALL `RegistrarCliente` ("franco.salinaset12d1@gmail.com", "Franco", "Salinas", 987654321)$$
 
