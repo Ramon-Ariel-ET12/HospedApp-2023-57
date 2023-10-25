@@ -166,8 +166,17 @@ WHERE cuarto = uncuarto;
 RETURN suma;
 END //
 
-
-
+  -- Se pide desarrollar un trigger para que al momento de ingresar una reserva, si la fecha de inicio se encuentra entre la fecha de inicio y fin de otra reserva para el mismo cuarto con reserva no cancelada, no se debe permitir el INSERT mostrando la leyenda “Fecha Superpuesta”. También se tiene que tener en cuenta que un cliente no puede tener propias sin cancelar de manera superpuestas, es decir, al momento de reservar se tiene que verificar que ese mismo cliente no posea reservas propias no canceladas en otros lados, en ese caso también se tiene que mostrar la leyenda “El cliente ya posee otra reserva para esa fecha”.
+DELIMITER $$
+DROP TRIGGER IF EXISTS BefInsReserva $$
+CREATE TRIGGER BefInsReserva BEFORE INSERT ON Reserva
+FOR EACH ROW
+BEGIN
+IF (EXISTS(SELECT * FROM Reserva WHERE hotel = NEW.hotel AND cuarto = NEW.hotel AND inicio <= NEW.inicio AND fin >= NEW.fin))THEN
+SIGNAL SQLSTATE '45000'
+SET MESSAGE_TEXT = 'Fecha Superpuesta';
+END IF;
+END $$
 
 CALL AltaHotel ("Hoteldeprueba","En el Hotel", "Hotel de prueba@gmail.com", 'Hoteldeprueba', 5);
 CALL AltaCama ("Cama", 2);
@@ -181,27 +190,3 @@ CALL CerrarEstadiaHotel (1,1,10);
 CALL CerrarEstadiaHotel (1,2,10);
 CALL CerrarEstadiaCliente (1, 10, "Bueno muchachos nos vemos en miami");
 CALL CerrarEstadiaCliente (2, 10, "Me arrepiento asi que se cancela :v");
-
-
-
-
--- Se pide desarrollar un trigger para que al momento de ingresar una reserva, si la fecha de inicio se encuentra entre la fecha de inicio y fin de otra reserva para el mismo cuarto con reserva no cancelada, no se debe permitir el INSERT mostrando la leyenda “Fecha Superpuesta”. También se tiene que tener en cuenta que un cliente no puede tener propias sin cancelar de manera superpuestas, es decir, al momento de reservar se tiene que verificar que ese mismo cliente no posea reservas propias no canceladas en otros lados, en ese caso también se tiene que mostrar la leyenda “El cliente ya posee otra reserva para esa fecha”.
-
-
-
-
-DELIMITER $$
-DROP TRIGGER IF EXISTS BefInsReserva $$
-CREATE TRIGGER BefInsReserva BEFORE INSERT ON Reserva
-FOR EACH ROW
-BEGIN
-IF (EXISTS(SELECT * FROM Reserva WHERE hotel = NEW.hotel AND cuarto = NEW.hotel AND inicio <= NEW.inicio AND fin >= NEW.fin))THEN
-
-
-SIGNAL SQLSTATE '45000'
-SET MESSAGE_TEXT = 'Fecha Superpuesta';
-END IF;
-END $$
-
-
-
