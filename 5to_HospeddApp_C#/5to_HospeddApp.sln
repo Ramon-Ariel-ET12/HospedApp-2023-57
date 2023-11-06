@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consola", "Consola\Consola.csproj", "{2C34862D-22F8-480F-8974-D0E3F03DAB4E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hotel.Core", "Hotel.Core\Hotel.Core.csproj", "{AC1BD563-443B-4480-899D-CFE395384855}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hotel.Dapper", "Hotel.Dapper\Hotel.Dapper.csproj", "{72D47B7C-3813-4AB2-BA7F-52819D2364F0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hotel.TestAdo", "Hotel.TestAdo\Hotel.TestAdo.csproj", "{542EE6F8-0970-43E4-868E-C57AF3C0C261}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,10 +18,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{2C34862D-22F8-480F-8974-D0E3F03DAB4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2C34862D-22F8-480F-8974-D0E3F03DAB4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2C34862D-22F8-480F-8974-D0E3F03DAB4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2C34862D-22F8-480F-8974-D0E3F03DAB4E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AC1BD563-443B-4480-899D-CFE395384855}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AC1BD563-443B-4480-899D-CFE395384855}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC1BD563-443B-4480-899D-CFE395384855}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -30,5 +26,9 @@ Global
 		{72D47B7C-3813-4AB2-BA7F-52819D2364F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72D47B7C-3813-4AB2-BA7F-52819D2364F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{72D47B7C-3813-4AB2-BA7F-52819D2364F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{542EE6F8-0970-43E4-868E-C57AF3C0C261}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{542EE6F8-0970-43E4-868E-C57AF3C0C261}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{542EE6F8-0970-43E4-868E-C57AF3C0C261}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{542EE6F8-0970-43E4-868E-C57AF3C0C261}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

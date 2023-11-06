@@ -2,20 +2,19 @@
 
 public class Hotel
 {
-    public 
-        int hotel;
-        string nombre;
-        string domicilio;
-        string email;
-        string contraseña;
-        int estrella;
+    public int IdHotel;
+    public string Nombre;
+    public string Domicilio;
+    public string Email;
+    public string Contraseña;
+    public int Estrella;
 
-    public Hotel (int hotel, string nombre, string domicilio, string email, string contraseña, int estrella){
-        this.hotel = hotel;
-        this.nombre = nombre;
-        this.domicilio = domicilio;
-        this.email = email;
-        this.contraseña = contraseña;
-        this.estrella = estrella;
+    public Hotel (int IdHotel, string Nombre, string Domicilio, string Email, string Contraseña, int Estrella){
+        this.IdHotel = IdHotel;
+        this.Nombre = Nombre;
+        this.Domicilio = Domicilio;
+        this.Email = Email;
+        this.Contraseña = Contraseña;
+        this.Estrella = Estrella;
     }
 }

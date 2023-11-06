@@ -1,25 +1,24 @@
 namespace HotelApp;
 
 public class Reserva{
-    public
-        int reserva;
-        List<Hotel> hotel;
-        DateOnly inicio;
-        DateOnly fin;
-        List<Cliente> cliente;
-        List<Cuarto> cuarto;
-        int calificacion_del_cliente;
-        int calificacion_del_hotel;
-        int comentario_del_cliente;
-        public Reserva (int reserva, DateOnly inicio, DateOnly fin, int calificacion_del_cliente, int calificacion_del_hotel, int comentario_del_cliente){
-            this.reserva = reserva;
-            hotel = new List<Hotel>();
-            this.inicio = inicio;
-            this.fin = fin;
-            cliente = new List<Cliente>();
-            cuarto = new List<Cuarto>();
-            this.calificacion_del_cliente = calificacion_del_cliente;
-            this.calificacion_del_hotel = calificacion_del_hotel;
-            this.comentario_del_cliente = comentario_del_cliente;
+    public int IdReserva;
+    public List<Hotel> IdHotel;
+    public DateOnly Inicio;
+    public DateOnly Fin;
+    public List<Cliente> IdCliente;
+    public List<Cuarto> IdCuarto;
+    public int Calificacion_del_cliente;
+    public int Calificacion_del_hotel;
+    public int Comentario_del_cliente;
+        public Reserva (int IdReserva, DateOnly Inicio, DateOnly Fin, int Calificacion_del_cliente, int Calificacion_del_hotel, int Comentario_del_cliente){
+            this.IdReserva = IdReserva;
+            IdHotel = new List<Hotel>();
+            this.Inicio = Inicio;
+            this.Fin = Fin;
+            IdCliente = new List<Cliente>();
+            IdCuarto = new List<Cuarto>();
+            this.Calificacion_del_cliente = Calificacion_del_cliente;
+            this.Calificacion_del_hotel = Calificacion_del_hotel;
+            this.Comentario_del_cliente = Comentario_del_cliente;
         }
 }

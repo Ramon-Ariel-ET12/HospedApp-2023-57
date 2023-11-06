@@ -1,17 +1,16 @@
 namespace HotelApp;
 
 public class Cliente{
-    public 
-        int cliente;
-        string nombre;
-        string apellido;
-        string email;
-        string contraseña;
-    public Cliente (int cliente, string nombre, string apellido, string email, string contraseña){
-        this.cliente = cliente;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.email = email;
-        this.contraseña = contraseña;
+    public int IdCliente;
+    public string Nombre;
+    public string Apellido;
+    public string Email;
+    public string Contraseña;
+    public Cliente (int IdCliente, string Nombre, string Apellido, string Email, string Contraseña){
+        this.IdCliente = IdCliente;
+        this.Nombre = Nombre;
+        this.Apellido = Apellido;
+        this.Email = Email;
+        this.Contraseña = Contraseña;
     }
 }

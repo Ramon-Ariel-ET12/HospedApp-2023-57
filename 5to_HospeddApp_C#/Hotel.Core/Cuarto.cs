@@ -2,16 +2,15 @@
 
 public class Cuarto
 {
-    public 
-        int cuarto;
-        bool cochera;
-        double noche;
-        string descripcion;
+    public int IdCuarto;
+    public bool Cochera;
+    public double Noche;
+    public string Descripcion;
 
-    public Cuarto (int cuarto, bool cochera, double noche, string descripcion){
-        this.cuarto = cuarto;
-        this.cochera = cochera;
-        this.noche = noche;
-        this.descripcion = descripcion;
+    public Cuarto (int IdCuarto, bool Cochera, double Noche, string Descripcion){
+        this.IdCuarto = IdCuarto;
+        this.Cochera = Cochera;
+        this.Noche = Noche;
+        this.Descripcion = Descripcion;
     }
 }

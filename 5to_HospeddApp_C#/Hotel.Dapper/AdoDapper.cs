@@ -21,34 +21,42 @@ public class AdoDapper : IAdo
     {
         //Preparo los parametros del Stored Procedure
         var parametros = new DynamicParameters();
-        parametros.Add("@uncliente", direction: ParameterDirection.Output);
-        parametros.Add("@unnombre", categoria.Nombre);
+        parametros.Add("@unIdCliente", direction: ParameterDirection.Output);
+        parametros.Add("@unNombre", cliente.Nombre);
+        parametros.Add("@unApellido", cliente.Apellido);
+        parametros.Add("@unEmail", cliente.Email);
+        parametros.Add("@unContraseña", cliente.Contraseña);
 
         _conexion.Execute("altaCliente", parametros);
 
         //Obtengo el valor de parametro de tipo salida
-        categoria.IdCategoria = parametros.Get<byte>("@unIdRubro");
+        cliente.IdCliente = parametros.Get<byte>("@unIdRubro");
     }
 
     public void AltaHotel(Hotel hotel)
     {
-        throw new NotImplementedException();
+        var parametros = new DynamicParameters();
+        parametros.Add("@unIdHotel", direction: ParameterDirection.Output);
+        parametros.Add("@unNombre", hotel.Nombre);
+        parametros.Add("@unDomicilio", hotel.Domicilio);
+        parametros.Add("@unEmail", hotel.Email);
+        parametros.Add("@unContraseña", hotel.Contraseña);
+        parametros.Add("@unEstrella", hotel.Estrella);
+
+        _conexion.Execute("altaProducto", parametros);
+
+        //Obtengo el valor de parametro de tipo salida
+        hotel.IdHotel = parametros.Get<short>("@unIdProducto");
     }
 
-    public List<Cliente> ObtenerCliente()
-    {
-        throw new NotImplementedException();
-    }
+    public List<Cliente> ObtenerCliente() => _conexion.Query<Cliente>(_queryCliente).ToList();
 
     public Cliente? ObtenerCliente(short id)
     {
         throw new NotImplementedException();
     }
 
-    public List<Hotel> ObtenerHotel()
-    {
-        throw new NotImplementedException();
-    }
+    public List<Hotel> ObtenerHotel() => _conexion.Query<Hotel>(_queryHotel).ToList();
 
     public Hotel? ObtenerHotel(short id)
     {
