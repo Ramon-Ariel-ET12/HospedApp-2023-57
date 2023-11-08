@@ -1,4 +1,4 @@
-namespace HotelApp;
+namespace HotelApp.Core;
 
 public class Reserva{
     public int IdReserva;

@@ -1,4 +1,4 @@
-namespace HotelApp;
+namespace HotelApp.Core;
 
 public class ReservaCancelado{
     public int IdReserva;

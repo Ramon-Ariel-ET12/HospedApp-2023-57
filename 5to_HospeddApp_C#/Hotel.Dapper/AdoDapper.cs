@@ -1,7 +1,7 @@
 ﻿using System.Data;
 using Dapper;
 using MySqlConnector;
-using HotelApp;
+using HotelApp.Core;
 
 namespace HotelApp.Dapper;
 public class AdoDapper : IAdo
