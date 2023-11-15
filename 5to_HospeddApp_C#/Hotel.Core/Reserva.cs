@@ -1,16 +1,16 @@
 namespace HotelApp.Core;
 
 public class Reserva{
-    public int IdReserva;
+    public uint IdReserva;
     public List<Hotel> IdHotel;
     public DateOnly Inicio;
     public DateOnly Fin;
     public List<Cliente> IdCliente;
     public List<Cuarto> IdCuarto;
-    public int Calificacion_del_cliente;
-    public int Calificacion_del_hotel;
-    public int Comentario_del_cliente;
-        public Reserva (int IdReserva, DateOnly Inicio, DateOnly Fin, int Calificacion_del_cliente, int Calificacion_del_hotel, int Comentario_del_cliente){
+    public uint Calificacion_del_cliente;
+    public uint Calificacion_del_hotel;
+    public uint Comentario_del_cliente;
+        public Reserva (uint IdReserva, DateOnly Inicio, DateOnly Fin, uint Calificacion_del_cliente, uint Calificacion_del_hotel, uint Comentario_del_cliente){
             this.IdReserva = IdReserva;
             IdHotel = new List<Hotel>();
             this.Inicio = Inicio;

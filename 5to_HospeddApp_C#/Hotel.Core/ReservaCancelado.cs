@@ -1,13 +1,13 @@
 namespace HotelApp.Core;
 
 public class ReservaCancelado{
-    public int IdReserva;
+    public uint IdReserva;
     public List<Hotel> IdHotel;
     public DateOnly Inicio;
     public DateOnly Fin;
     public List<Cliente> IdCliente;
     public List<Cuarto> IdCuarto;
-        public ReservaCancelado (int IdReserva, DateOnly Inicio, DateOnly Fin){
+        public ReservaCancelado (uint IdReserva, DateOnly Inicio, DateOnly Fin){
             this.IdReserva = IdReserva;
             IdHotel = new List<Hotel>();
             this.Inicio = Inicio;

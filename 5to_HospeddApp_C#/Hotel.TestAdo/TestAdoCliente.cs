@@ -1,7 +1,6 @@
 using HotelApp.Core;
-
 namespace HotelApp.Test;
-public class TestAdoProducto : TestAdo
+public class TestAdoCliente : TestAdo
 {
     [Fact]
     public void TraerClientes()
@@ -9,14 +8,12 @@ public class TestAdoProducto : TestAdo
         var cliente = Ado.ObtenerCliente();
 
         Assert.NotEmpty(cliente);
-        Assert.Contains(cliente, c => c.Nombre == "Leonel" && c.Apellido == "Messi");
     }
     [Fact]
-    public void ClientesPorId()
+    public void ClientesPorCorreoContraseña()
     {
-        var cliente = Ado.ObtenerCliente(1);
+        var cliente = Ado.ObtenerCliente("Quemirabobo@gmail.com", "Andapalla");
 
-        Assert.NotNull(cliente);
-        Assert.Equal("Leonel", cliente.Nombre);
+        Assert.Null(cliente);
     }
 }

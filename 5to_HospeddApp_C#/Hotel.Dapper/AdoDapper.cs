@@ -8,9 +8,9 @@ public class AdoDapper : IAdo
 {
     private readonly IDbConnection _conexion;
     private readonly string _queryHotel
-        = "SELECT hotel AS ID, nombre AS Hotel FROM Hotel";
+        = "SELECT * FROM Hotel";
     private readonly string _queryCliente
-        = @"SELECT  cliente, nombre AS Nombre FROM Cliente";
+        = @"SELECT IdCliente, Nombre, Apellido, Email, SHA2(Contraseña, 256) FROM Cliente";
 
     public AdoDapper(IDbConnection conexion) => this._conexion = conexion;
 
@@ -30,7 +30,7 @@ public class AdoDapper : IAdo
         _conexion.Execute("altaCliente", parametros);
 
         //Obtengo el valor de parametro de tipo salida
-        cliente.IdCliente = parametros.Get<byte>("@unIdRubro");
+        cliente.IdCliente = parametros.Get<UInt32>("@unIdCliente");
     }
 
     public void AltaHotel(Hotel hotel)
@@ -43,23 +43,19 @@ public class AdoDapper : IAdo
         parametros.Add("@unContraseña", hotel.Contraseña);
         parametros.Add("@unEstrella", hotel.Estrella);
 
-        _conexion.Execute("altaProducto", parametros);
+        _conexion.Execute("altaHotel", parametros);
 
         //Obtengo el valor de parametro de tipo salida
-        hotel.IdHotel = parametros.Get<short>("@unIdProducto");
+        hotel.IdHotel = parametros.Get<UInt16>("@unIdHotel");
     }
 
     public List<Cliente> ObtenerCliente() => _conexion.Query<Cliente>(_queryCliente).ToList();
 
-    public Cliente? ObtenerCliente(short id)
-    {
-        throw new NotImplementedException();
-    }
+    public Cliente? ObtenerCliente(string Email, string Contraseña) => 
+    _conexion.QueryFirstOrDefault<Cliente>(_queryCliente, new { unEmail = Email, unContraseña = Contraseña });
 
     public List<Hotel> ObtenerHotel() => _conexion.Query<Hotel>(_queryHotel).ToList();
 
-    public Hotel? ObtenerHotel(short id)
-    {
-        throw new NotImplementedException();
-    }
+    public Hotel? ObtenerHotel(uint IdHotel) => 
+    _conexion.QueryFirstOrDefault<Hotel>(_queryHotel, new { unIdhotel = IdHotel });
 }

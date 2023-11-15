@@ -2,14 +2,14 @@
 
 public class Hotel
 {
-    public int IdHotel;
+    public UInt16 IdHotel;
     public string Nombre;
     public string Domicilio;
     public string Email;
     public string Contraseña;
-    public int Estrella;
+    public byte Estrella;
 
-    public Hotel (int IdHotel, string Nombre, string Domicilio, string Email, string Contraseña, int Estrella){
+    public Hotel (UInt16 IdHotel, string Nombre, string Domicilio, string Email, string Contraseña, byte Estrella){
         this.IdHotel = IdHotel;
         this.Nombre = Nombre;
         this.Domicilio = Domicilio;

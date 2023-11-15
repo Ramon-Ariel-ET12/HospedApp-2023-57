@@ -6,6 +6,6 @@ public interface IAdo
     List<Hotel> ObtenerHotel();
     void AltaCliente(Cliente cliente);
     List<Cliente> ObtenerCliente();
-    Cliente? ObtenerCliente(short id);
-    Hotel? ObtenerHotel(short id);
+    Cliente? ObtenerCliente(string Email, string Contraseña);
+    Hotel? ObtenerHotel(uint id);
 }

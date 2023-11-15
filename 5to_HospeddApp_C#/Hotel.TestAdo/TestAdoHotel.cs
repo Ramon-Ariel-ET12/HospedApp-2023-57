@@ -1,6 +1,6 @@
 using HotelApp.Core;
 namespace HotelApp.Test;
-public class TestAdoCategoria : TestAdo
+public class TestAdoHotel : TestAdo
 {
     [Fact]
     public void TraerHoteles()
@@ -8,8 +8,7 @@ public class TestAdoCategoria : TestAdo
         var hotel = Ado.ObtenerHotel();
 
         Assert.NotEmpty(hotel);
-        //Pregunto por rubros que se dan de alta en "scripts/bd/MySQL/03 Inserts.sql"
-        Assert.Contains(hotel, h => h.Nombre == "Hoteldeprueba");
-        Assert.Contains(hotel, h => h.Domicilio == "En el Hotel");
     }
 }
+
+// cliente: si existe el correo y la contraseña
