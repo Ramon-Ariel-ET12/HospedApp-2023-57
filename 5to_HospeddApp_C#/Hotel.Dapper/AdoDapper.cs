@@ -9,9 +9,11 @@ public class AdoDapper : IAdo
     private readonly IDbConnection _conexion;
     private readonly string _queryHotel
         = "SELECT * FROM Hotel";
+    
     private readonly string _queryCliente
-        = @"SELECT IdCliente, Nombre, Apellido, Email, SHA2(Contraseña, 256) FROM Cliente";
-
+        = "SELECT * FROM Cliente";
+    private readonly string _queryClienteCorreoContraseña
+        = @"SELECT * FROM Cliente WHERE Email = @unEmail AND Contraseña = SHA2(@unContraseña, 256) Limit 1";
     public AdoDapper(IDbConnection conexion) => this._conexion = conexion;
 
     //Este constructor usa por defecto la cadena para un conector MySQL
@@ -51,8 +53,8 @@ public class AdoDapper : IAdo
 
     public List<Cliente> ObtenerCliente() => _conexion.Query<Cliente>(_queryCliente).ToList();
 
-    public Cliente? ObtenerCliente(string Email, string Contraseña) => 
-    _conexion.QueryFirstOrDefault<Cliente>(_queryCliente, new { unEmail = Email, unContraseña = Contraseña });
+    public Cliente? ObtenerClientePorCorreoContrasña(string Email, string Contraseña) => 
+    _conexion.QueryFirstOrDefault<Cliente>(_queryClienteCorreoContraseña, new { unEmail = Email, unContraseña = Contraseña });
 
     public List<Hotel> ObtenerHotel() => _conexion.Query<Hotel>(_queryHotel).ToList();
 

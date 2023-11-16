@@ -177,6 +177,13 @@ SET MESSAGE_TEXT = 'Fecha Superpuesta';
 END IF;
 END $$
 
+DROP TRIGGER IF EXISTS befInsCliente $$
+CREATE TRIGGER befInsCliente BEFORE INSERT ON Cliente
+FOR EACH ROW
+BEGIN
+    SET NEW.Contraseña = SHA2(NEW.Contraseña, 256);
+END $$
+
 CALL AltaHotel ("Hoteldeprueba","En el Hotel", "Hotel de prueba@gmail.com", 'Hoteldeprueba', 5);
 CALL AltaCama ("Cama", 2);
 CALL AltaCuarto (TRUE, 24.99, "Un cuarto con cochera, cuesta 24.99 pesos :v");
