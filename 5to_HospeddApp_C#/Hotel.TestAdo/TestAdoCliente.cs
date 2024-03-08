@@ -10,7 +10,7 @@ public class TestAdoCliente : TestAdo
         Assert.NotEmpty(cliente);
     }
     [Theory]
-    [InlineData("messi@gmail.com", "mbappe")]
+    [InlineData("Quemirabobo@gmail.com", "Andapalla")]
     public void ClientesPorCorreoContraseña(string Email, string Contraseña)
     {
         var cliente = Ado.ObtenerClientePorCorreoContrasña(Email, Contraseña);

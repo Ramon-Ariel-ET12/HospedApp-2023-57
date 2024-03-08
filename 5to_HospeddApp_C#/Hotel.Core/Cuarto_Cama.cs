@@ -2,12 +2,12 @@
 
 public class Cuarto_Cama
 {
-    public List<Cuarto> IdCuarto;
-    public List<Cama> Tipo_de_cama;
-    public uint Cantidad_de_cama;
-    public Cuarto_Cama (uint Cantidad_de_cama){
-        IdCuarto = new List<Cuarto>();
-        Tipo_de_cama = new List<Cama>();
+    public byte IdCuarto;
+    public byte Tipo_de_cama;
+    public byte Cantidad_de_cama;
+    public Cuarto_Cama (byte IdCuarto, byte Tipo_de_cama, byte Cantidad_de_cama){
+        this.IdCuarto = IdCuarto;
+        this.Tipo_de_cama = Tipo_de_cama;
         this.Cantidad_de_cama = Cantidad_de_cama;
     }
 }

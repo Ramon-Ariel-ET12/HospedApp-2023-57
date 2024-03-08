@@ -9,6 +9,13 @@ public class TestAdoHotel : TestAdo
 
         Assert.NotEmpty(hotel);
     }
-}
 
-// cliente: si existe el correo y la contraseña
+    [Theory]
+    [InlineData(1)]
+    public void TraerHotelesPorId(ushort IdHotel)
+    {
+        var hotel = Ado.ObtenerHotelPorId(IdHotel);
+
+        Assert.NotNull(hotel);
+    }
+}

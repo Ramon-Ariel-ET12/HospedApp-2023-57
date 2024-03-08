@@ -39,7 +39,7 @@ CONSTRAINT FK_CuartoCama_Cama FOREIGN KEY (Tipo_de_cama) REFERENCES Cama (Tipo_d
 
 
 CREATE TABLE Cliente (
-IdCliente MEDIUMINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+IdCliente SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
 Nombre VARCHAR(64) NOT NULL,
 Apellido VARCHAR(64) NOT NULL,
 Email VARCHAR(64) NOT NULL,
@@ -52,7 +52,7 @@ IdReserva BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
 IdHotel SMALLINT UNSIGNED NOT NULL,
 Inicio DATE NOT NULL,
 Fin DATE NOT NULL,
-IdCliente MEDIUMINT UNSIGNED NOT NULL,
+IdCliente SMALLINT UNSIGNED NOT NULL,
 IdCuarto TINYINT UNSIGNED NOT NULL,
 Calificacion_del_cliente TINYINT UNSIGNED,
 Calificacion_del_hotel TINYINT UNSIGNED,
@@ -68,7 +68,7 @@ IdReserva BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
 IdHotel SMALLINT UNSIGNED NOT NULL,
 Inicio DATE NOT NULL,
 Fin DATE NOT NULL,
-IdCliente MEDIUMINT UNSIGNED NOT NULL,
+IdCliente SMALLINT UNSIGNED NOT NULL,
 IdCuarto TINYINT UNSIGNED NOT NULL,
 CONSTRAINT FK_ReservaCancelado_Hotel FOREIGN KEY (IdHotel) REFERENCES Hotel (IdHotel),
 CONSTRAINT FK_ReservaCancelado_Cliente FOREIGN KEY (IdCliente) REFERENCES Cliente (IdCliente),
@@ -126,7 +126,7 @@ END //
 #Se pide hacer el SP ‘altaReserva’ que reciba los datos no opcionales y haga el alta de una estadia. Hacer el SP ‘cerrarEstadiaHotel’ que reciba los parámetros necesarios y una calificación por parte del hotel. Hacer el SP ‘cerrarEstadiaCliente’ que reciba los parámetros necesarios, una calificación por parte del cliente y un comentario.
 DELIMITER //
 DROP PROCEDURE IF EXISTS AltaReserva //
-CREATE PROCEDURE AltaReserva (unIdHotel SMALLINT UNSIGNED,unInicio DATE, unFin DATE, unIdCliente MEDIUMINT UNSIGNED, unIdCuarto TINYINT UNSIGNED)
+CREATE PROCEDURE AltaReserva (unIdHotel SMALLINT UNSIGNED,unInicio DATE, unFin DATE, unIdCliente SMALLINT UNSIGNED, unIdCuarto TINYINT UNSIGNED)
 BEGIN
 INSERT INTO Reserva (IdHotel, Inicio, Fin, IdCliente, IdCuarto)
 VALUES (unIdHotel, unInicio, unFin, unIdCliente, unIdCuarto);
@@ -144,7 +144,7 @@ END //
 
 DELIMITER //
 DROP PROCEDURE IF EXISTS CerrarEstadiaCliente //
-CREATE PROCEDURE CerrarEstadiaCliente (unIdCliente MEDIUMINT UNSIGNED, unCalificacion_del_cliente TINYINT UNSIGNED, unComentario_del_cliente VARCHAR(60))
+CREATE PROCEDURE CerrarEstadiaCliente (unIdCliente SMALLINT UNSIGNED, unCalificacion_del_cliente TINYINT UNSIGNED, unComentario_del_cliente VARCHAR(60))
 BEGIN
 UPDATE Reserva
 SET Calificacion_del_cliente = unCalificacion_del_cliente , Comentario_del_cliente = unComentario_del_cliente
