@@ -37,7 +37,6 @@ CONSTRAINT FK_CuartoCama_Cuarto FOREIGN KEY (IdCuarto) REFERENCES Cuarto (IdCuar
 CONSTRAINT FK_CuartoCama_Cama FOREIGN KEY (Tipo_de_cama) REFERENCES Cama (Tipo_de_cama)
 );
 
-
 CREATE TABLE Cliente (
 IdCliente SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
 Nombre VARCHAR(64) NOT NULL,
@@ -119,11 +118,11 @@ DROP PROCEDURE IF EXISTS RegistrarCliente //
 CREATE PROCEDURE RegistrarCliente (unNombre VARCHAR(64), unApellido VARCHAR(64), unEmail VARCHAR(64), unContraseña CHAR(64))
 BEGIN
 INSERT INTO Cliente (Nombre, Apellido, Email, Contraseña)
-VALUES (unNombre, unApellido, unEmail, SHA2(unContraseña, 256));
+VALUES (unNombre, unApellido, unEmail, unContraseña);
 END //
 
 
-#Se pide hacer el SP ‘altaReserva’ que reciba los datos no opcionales y haga el alta de una estadia. Hacer el SP ‘cerrarEstadiaHotel’ que reciba los parámetros necesarios y una calificación por parte del hotel. Hacer el SP ‘cerrarEstadiaCliente’ que reciba los parámetros necesarios, una calificación por parte del cliente y un comentario.
+#Se pide hacer el SP ‘altaReserva’ que reciba los datos no opcionales y haga el alta de una estadia.
 DELIMITER //
 DROP PROCEDURE IF EXISTS AltaReserva //
 CREATE PROCEDURE AltaReserva (unIdHotel SMALLINT UNSIGNED,unInicio DATE, unFin DATE, unIdCliente SMALLINT UNSIGNED, unIdCuarto TINYINT UNSIGNED)
@@ -131,7 +130,7 @@ BEGIN
 INSERT INTO Reserva (IdHotel, Inicio, Fin, IdCliente, IdCuarto)
 VALUES (unIdHotel, unInicio, unFin, unIdCliente, unIdCuarto);
 END //
-
+ #Hacer el SP ‘cerrarEstadiaHotel’ que reciba los parámetros necesarios y una calificación por parte del hotel. 
 
 DELIMITER //
 DROP PROCEDURE IF EXISTS CerrarEstadiaHotel //
@@ -141,6 +140,8 @@ UPDATE Reserva
 SET Calificacion_del_hotel = unCalificacion_del_hotel
 WHERE IdHotel = unIdHotel AND IdCuarto = unIdCuarto;
 END //
+
+#Hacer el SP ‘cerrarEstadiaCliente’ que reciba los parámetros necesarios, una calificación por parte del cliente y un comentario.
 
 DELIMITER //
 DROP PROCEDURE IF EXISTS CerrarEstadiaCliente //
