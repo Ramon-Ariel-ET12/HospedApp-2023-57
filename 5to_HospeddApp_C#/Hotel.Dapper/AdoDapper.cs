@@ -63,11 +63,21 @@ public class AdoDapper : IAdo
         parametros.Add("@unApellido", cliente.Apellido);
         parametros.Add("@unEmail", cliente.Email);
         parametros.Add("@unContraseña", cliente.Contraseña);
+        try
+        {
+            _conexion.Execute("RegistrarCliente", parametros);
 
-        _conexion.Execute("altaCliente", parametros);
-
-        //Obtengo el valor de parametro de tipo salida
-        cliente.IdCliente = parametros.Get<ushort>("@unIdCliente");
+            //Obtengo el valor de parametro de tipo salida
+            cliente.IdCliente = parametros.Get<ushort>("@unIdCliente");
+        }
+        catch (MySqlException error)
+        {
+            if (error.ErrorCode == MySqlErrorCode.DuplicateKeyEntry)
+            {
+                throw new ConstraintException(cliente.Nombre + " ya se encuentra en uso.");
+            }
+            throw;
+        }
     }
     #endregion
 }

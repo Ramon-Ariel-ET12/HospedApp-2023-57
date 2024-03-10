@@ -2,19 +2,10 @@
 
 public class Hotel
 {
-    public ushort IdHotel;
-    public string Nombre;
-    public string Domicilio;
-    public string Email;
-    public string Contraseña;
-    public byte Estrella;
-
-    public Hotel (ushort IdHotel, string Nombre, string Domicilio, string Email, string Contraseña, byte Estrella){
-        this.IdHotel = IdHotel;
-        this.Nombre = Nombre;
-        this.Domicilio = Domicilio;
-        this.Email = Email;
-        this.Contraseña = Contraseña;
-        this.Estrella = Estrella;
-    }
+    public ushort IdHotel { get; set; }
+    public string Nombre { get; set; }
+    public string Domicilio { get; set; }
+    public string Email { get; set; }
+    public string Contraseña { get; set; }
+    public byte Estrella { get; set; }
 }

@@ -1,18 +1,10 @@
 namespace HotelApp.Core;
 
 public class ReservaCancelado{
-    public ulong IdReserva;
-    public ushort IdHotel;
-    public string Inicio;
-    public string Fin;
-    public ushort IdCliente;
-    public byte IdCuarto;
-    public ReservaCancelado (ulong IdReserva, ushort IdHotel, string Inicio, string Fin, ushort IdCliente, byte IdCuarto){
-        this.IdReserva = IdReserva;
-        this.IdHotel = IdHotel;
-        this.Inicio = Inicio;
-        this.Fin = Fin;
-        this.IdCliente = IdCliente;
-        this.IdCuarto = IdCuarto;
-    }
+    public ulong IdReserva { get; set; }
+    public ushort IdHotel { get; set; }
+    public string Inicio { get; set; }
+    public string Fin { get; set; }
+    public ushort IdCliente { get; set; }
+    public byte IdCuarto { get; set; }
 }
