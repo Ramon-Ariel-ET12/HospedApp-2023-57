@@ -34,7 +34,7 @@ public class AdoDapper : IAdo
         parametros.Add("@unContraseña", hotel.Contraseña);
         parametros.Add("@unEstrella", hotel.Estrella);
 
-        _conexion.Execute("altaHotel", parametros);
+        _conexion.Execute("AltaHotel", parametros);
 
         //Obtengo el valor de parametro de tipo salida
         hotel.IdHotel = parametros.Get<ushort>("@unIdHotel");
@@ -58,7 +58,7 @@ public class AdoDapper : IAdo
     {
         //Preparo los parametros del Stored Procedure
         var parametros = new DynamicParameters();
-        parametros.Add("@unIdCliente", direction: ParameterDirection.Output);
+        parametros.Add("@unDni", direction: ParameterDirection.Output);
         parametros.Add("@unNombre", cliente.Nombre);
         parametros.Add("@unApellido", cliente.Apellido);
         parametros.Add("@unEmail", cliente.Email);
@@ -68,7 +68,7 @@ public class AdoDapper : IAdo
             _conexion.Execute("RegistrarCliente", parametros);
 
             //Obtengo el valor de parametro de tipo salida
-            cliente.IdCliente = parametros.Get<ushort>("@unIdCliente");
+            cliente.Dni = parametros.Get<ushort>("@unDni");
         }
         catch (MySqlException error)
         {

@@ -1,7 +1,7 @@
 namespace HotelApp.Core;
 
 public class Cliente{
-    public ushort IdCliente { get; set; }
+    public ushort Dni { get; set; }
     public string Nombre { get; set; }
     public string Apellido { get; set; }
     public string Email { get; set; }

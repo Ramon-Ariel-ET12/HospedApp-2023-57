@@ -38,7 +38,7 @@ CONSTRAINT FK_CuartoCama_Cama FOREIGN KEY (Tipo_de_cama) REFERENCES Cama (Tipo_d
 );
 
 CREATE TABLE Cliente (
-IdCliente SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+Dni SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
 Nombre VARCHAR(64) NOT NULL,
 Apellido VARCHAR(64) NOT NULL,
 Email VARCHAR(64) NOT NULL UNIQUE,
@@ -51,12 +51,12 @@ IdReserva BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
 IdHotel SMALLINT UNSIGNED NOT NULL,
 Inicio DATE NOT NULL,
 Fin DATE NOT NULL,
-IdCliente SMALLINT UNSIGNED NOT NULL,
+Dni SMALLINT UNSIGNED NOT NULL,
 IdCuarto TINYINT UNSIGNED NOT NULL,
 Calificacion_del_cliente TINYINT UNSIGNED,
 Calificacion_del_hotel TINYINT UNSIGNED,
 Comentario_del_cliente VARCHAR(60),
-CONSTRAINT FK_Reserva_Cliente FOREIGN KEY (IdCliente) REFERENCES Cliente (IdCliente),
+CONSTRAINT FK_Reserva_Cliente FOREIGN KEY (Dni) REFERENCES Cliente (Dni),
 CONSTRAINT FK_Reserva_Cuarto FOREIGN KEY (IdCuarto) REFERENCES Cuarto (IdCuarto),
 CONSTRAINT FK_Reserva_Hotel FOREIGN KEY (IdHotel) REFERENCES Hotel (IdHotel)
 );
@@ -67,10 +67,10 @@ IdReserva BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
 IdHotel SMALLINT UNSIGNED NOT NULL,
 Inicio DATE NOT NULL,
 Fin DATE NOT NULL,
-IdCliente SMALLINT UNSIGNED NOT NULL,
+Dni SMALLINT UNSIGNED NOT NULL,
 IdCuarto TINYINT UNSIGNED NOT NULL,
 CONSTRAINT FK_ReservaCancelado_Hotel FOREIGN KEY (IdHotel) REFERENCES Hotel (IdHotel),
-CONSTRAINT FK_ReservaCancelado_Cliente FOREIGN KEY (IdCliente) REFERENCES Cliente (IdCliente),
+CONSTRAINT FK_ReservaCancelado_Cliente FOREIGN KEY (Dni) REFERENCES Cliente (Dni),
 CONSTRAINT FK_ReservaCancelado_Cuarto FOREIGN KEY (IdCuarto) REFERENCES Cuarto (IdCuarto)
 );
 
@@ -78,10 +78,11 @@ CONSTRAINT FK_ReservaCancelado_Cuarto FOREIGN KEY (IdCuarto) REFERENCES Cuarto (
 #Realizar los SP para dar de alta todas las entidades menos las tablas Cliente y Reserva.
 DELIMITER //
 DROP PROCEDURE IF EXISTS AltaHotel //
-CREATE PROCEDURE AltaHotel (unNombre VARCHAR(64), unDomicilio VARCHAR(64), unEmail VARCHAR(64), unContraseña CHAR(64), unEstrella TINYINT UNSIGNED)
+CREATE PROCEDURE AltaHotel (OUT unIdHotel, unNombre VARCHAR(64), unDomicilio VARCHAR(64), unEmail VARCHAR(64), unContraseña CHAR(64), unEstrella TINYINT UNSIGNED)
 BEGIN
-INSERT INTO Hotel (Nombre, Domicilio, Email, Contraseña, Estrella)
-VALUES (unNombre, unDomicilio, unEmail, SHA2(unContraseña, 256), unEstrella);
+	INSERT INTO Hotel (Nombre, Domicilio, Email, Contraseña, Estrella)
+	VALUES (unNombre, unDomicilio, unEmail, SHA2(unContraseña, 256), unEstrella);
+	SET unIdHotel = LAST_INSERT_ID();
 END //
 
 
@@ -115,21 +116,21 @@ END //
 #Se pide hacer el SP ‘registrarCliente’ que reciba los datos del cliente. Es importante guardar encriptada la contraseña del cliente usando SHA256.
 DELIMITER //
 DROP PROCEDURE IF EXISTS RegistrarCliente //
-CREATE PROCEDURE RegistrarCliente (out unIdCliente SMALLINT UNSIGNED, unNombre VARCHAR(64), unApellido VARCHAR(64), unEmail VARCHAR(64), unContraseña CHAR(64))
+CREATE PROCEDURE RegistrarCliente (out unDni SMALLINT UNSIGNED, unNombre VARCHAR(64), unApellido VARCHAR(64), unEmail VARCHAR(64), unContraseña CHAR(64))
 BEGIN
 	INSERT INTO Cliente (Nombre, Apellido, Email, Contraseña)
 	VALUES (unNombre, unApellido, unEmail, unContraseña);
-	SET unIdCliente = LAST_INSERT_ID();
+	SET unDni = LAST_INSERT_ID();
 END //
 
 
 #Se pide hacer el SP ‘altaReserva’ que reciba los datos no opcionales y haga el alta de una estadia.
 DELIMITER //
 DROP PROCEDURE IF EXISTS AltaReserva //
-CREATE PROCEDURE AltaReserva (unIdHotel SMALLINT UNSIGNED,unInicio DATE, unFin DATE, unIdCliente SMALLINT UNSIGNED, unIdCuarto TINYINT UNSIGNED)
+CREATE PROCEDURE AltaReserva (unIdHotel SMALLINT UNSIGNED,unInicio DATE, unFin DATE, unDni SMALLINT UNSIGNED, unIdCuarto TINYINT UNSIGNED)
 BEGIN
-INSERT INTO Reserva (IdHotel, Inicio, Fin, IdCliente, IdCuarto)
-VALUES (unIdHotel, unInicio, unFin, unIdCliente, unIdCuarto);
+INSERT INTO Reserva (IdHotel, Inicio, Fin, Dni, IdCuarto)
+VALUES (unIdHotel, unInicio, unFin, unDni, unIdCuarto);
 END //
  #Hacer el SP ‘cerrarEstadiaHotel’ que reciba los parámetros necesarios y una calificación por parte del hotel. 
 
@@ -146,18 +147,18 @@ END //
 
 DELIMITER //
 DROP PROCEDURE IF EXISTS CerrarEstadiaCliente //
-CREATE PROCEDURE CerrarEstadiaCliente (unIdCliente SMALLINT UNSIGNED, unCalificacion_del_cliente TINYINT UNSIGNED, unComentario_del_cliente VARCHAR(60))
+CREATE PROCEDURE CerrarEstadiaCliente (unDni SMALLINT UNSIGNED, unCalificacion_del_cliente TINYINT UNSIGNED, unComentario_del_cliente VARCHAR(60))
 BEGIN
 UPDATE Reserva
 SET Calificacion_del_cliente = unCalificacion_del_cliente , Comentario_del_cliente = unComentario_del_cliente
-WHERE IdCliente = unIdCliente;
+WHERE Dni = unDni;
 END //
 #Se pide hacer el SF ‘CantidadPersonas’ que reciba por parámetro un identificador de cuarto, la función tiene que devolver la cantidad de personas que pueden dormir en el cuarto: CANT PERSONAS = SUMATORIA(PERSONAS POR CAMA)
 
 
 DELIMITER //
 DROP FUNCTION IF EXISTS CantidadPersonas //
-CREATE FUNCTION CantidadPersonas (unIdCliente TINYINT UNSIGNED) RETURNS INT READS SQL DATA
+CREATE FUNCTION CantidadPersonas (unDni TINYINT UNSIGNED) RETURNS INT READS SQL DATA
 BEGIN
 DECLARE suma INT;
 SELECT SUM(Pueden_dormir * Cantidad_de_cama) INTO suma

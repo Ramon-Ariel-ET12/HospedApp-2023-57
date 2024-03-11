@@ -5,7 +5,7 @@ public class Reserva{
     public ushort IdHotel { get; set; }
     public string Inicio { get; set; }
     public string Fin { get; set; }
-    public ushort IdCliente { get; set; }
+    public ushort Dni { get; set; }
     public byte IdCuarto { get; set; }
     public uint Calificacion_del_cliente { get; set; }
     public uint Calificacion_del_hotel { get; set; }
