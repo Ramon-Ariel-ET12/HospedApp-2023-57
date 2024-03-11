@@ -41,7 +41,7 @@ CREATE TABLE Cliente (
 IdCliente SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
 Nombre VARCHAR(64) NOT NULL,
 Apellido VARCHAR(64) NOT NULL,
-Email VARCHAR(64) NOT NULL,
+Email VARCHAR(64) NOT NULL UNIQUE,
 Contraseña CHAR(64) NOT NULL
 );
 
@@ -115,10 +115,11 @@ END //
 #Se pide hacer el SP ‘registrarCliente’ que reciba los datos del cliente. Es importante guardar encriptada la contraseña del cliente usando SHA256.
 DELIMITER //
 DROP PROCEDURE IF EXISTS RegistrarCliente //
-CREATE PROCEDURE RegistrarCliente (unNombre VARCHAR(64), unApellido VARCHAR(64), unEmail VARCHAR(64), unContraseña CHAR(64))
+CREATE PROCEDURE RegistrarCliente (out unIdCliente SMALLINT UNSIGNED, unNombre VARCHAR(64), unApellido VARCHAR(64), unEmail VARCHAR(64), unContraseña CHAR(64))
 BEGIN
-INSERT INTO Cliente (Nombre, Apellido, Email, Contraseña)
-VALUES (unNombre, unApellido, unEmail, unContraseña);
+	INSERT INTO Cliente (Nombre, Apellido, Email, Contraseña)
+	VALUES (unNombre, unApellido, unEmail, unContraseña);
+	SET unIdCliente = LAST_INSERT_ID();
 END //
 
 
@@ -189,8 +190,8 @@ CALL AltaHotel ("Hoteldeprueba","En el Hotel", "Hotel de prueba@gmail.com", 'Hot
 CALL AltaCama ("Cama", 2);
 CALL AltaCuarto (TRUE, 24.99, "Un cuarto con cochera, cuesta 24.99 pesos :v");
 CALL AltaCuarto (FALSE, 19.99, "Un cuarto sin cohera pipipi, cuesta 19.99 pesos :v");
-CALL RegistrarCliente ("Leonel", "Messi", "Quemirabobo@gmail.com","Andapalla");
-CALL RegistrarCliente ("Roberto", "Bolaños", "RobertoBolaños777@gmail.com","contraseñadeRobertoBolaños");
+CALL RegistrarCliente (@idMessi, "Leonel", "Messi", "Quemirabobo@gmail.com","Andapalla");
+CALL RegistrarCliente (@roberto, "Roberto", "Bolaños", "RobertoBolaños777@gmail.com","contraseñadeRobertoBolaños");
 CALL AltaReserva (1,'2023-02-01', '2023-04-01', 1, 1);
 CALL AltaReserva (1,'2023-02-06', '2023-03-22', 2, 2);
 CALL CerrarEstadiaHotel (1,1,10);
