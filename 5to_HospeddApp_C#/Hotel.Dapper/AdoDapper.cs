@@ -74,7 +74,7 @@ public class AdoDapper : IAdo
         {
             if (error.ErrorCode == MySqlErrorCode.DuplicateKeyEntry)
             {
-                throw new ConstraintException(cliente.Nombre + " ya se encuentra en uso.");
+                throw new ConstraintException(cliente.Email + " ya se encuentra en uso.");
             }
             throw;
         }
