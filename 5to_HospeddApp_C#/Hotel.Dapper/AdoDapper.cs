@@ -112,15 +112,15 @@ public class AdoDapper : IAdo
         = "SELECT * FROM Cama";
 
     private readonly string _queryCamaPorId
-        = "SELECT * FROM Cama WHERE Tipo_de_cama = @unTipo_de_cama";
+        = "SELECT * FROM Cama WHERE IdCama = @unIdCama";
 
     public List<Cama> ObtenerCama() => _conexion.Query<Cama>(_queryCama).ToList();
-    public Cama? ObtenerCamaPorId(byte Tipo_de_cama) => 
-    _conexion.QueryFirstOrDefault<Cama>(_queryCamaPorId, new { unTipo_de_cama = Tipo_de_cama });
+    public Cama? ObtenerCamaPorId(byte IdCama) => 
+    _conexion.QueryFirstOrDefault<Cama>(_queryCamaPorId, new { unIdCama = IdCama });
     public void AltaCama(Cama cama)
     {
         var parametros = new DynamicParameters();
-        parametros.Add("@unTipo_de_cama", direction: ParameterDirection.Output);
+        parametros.Add("@unIdCama", direction: ParameterDirection.Output);
         parametros.Add("@unNombre", cama.Nombre);
         parametros.Add("@unPueden_dormir", cama.Pueden_dormir);
 
@@ -129,7 +129,7 @@ public class AdoDapper : IAdo
             _conexion.Execute("AltaCama", parametros);
 
             //Obtengo el valor de parametro de tipo salida
-            cama.Tipo_de_cama = parametros.Get<byte>("@unTipo_de_cama");
+            cama.IdCama = parametros.Get<byte>("@unIdCama");
         }
         catch (MySqlException error)
         {

@@ -11,6 +11,6 @@ public interface IAdo
     void AltaCliente(Cliente cliente);
 
     List<Cama> ObtenerCama();
-    Cama? ObtenerCamaPorId(byte Tipo_de_cama);
+    Cama? ObtenerCamaPorId(byte IdCama);
     void AltaCama(Cama cama);
 }

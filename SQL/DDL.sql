@@ -15,27 +15,35 @@ Estrella TINYINT UNSIGNED NOT NULL
 
 
 CREATE TABLE Cama (
-Tipo_de_cama TINYINT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-Nombre VARCHAR(64) NOT NULL,
+IdCama TINYINT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+Nombre VARCHAR(64) NOT NULL UNIQUE,
 Pueden_dormir TINYINT UNSIGNED NOT NULL
 );
 
 
 CREATE TABLE Cuarto (
-IdCuarto TINYINT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+IdCuarto TINYINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
 Cochera BOOL NOT NULL,
 Noche DOUBLE NOT NULL,
 Descripcion VARCHAR(60)
 );
 
+CREATE TABLE Hotel_Cuarto(
+	IdHotel SMALLINT UNSIGNED,
+	IdCuarto TINYINT UNSIGNED,
+	Numero TINYINT UNSIGNED NOT NULL,
+	CONSTRAINT PK_HotelCuarto PRIMARY KEY (IdHotel, IdCuarto),
+	CONSTRAINT FK_HotelCuarto_Hotel Foreign Key (IdHotel) REFERENCES Hotel (IdHotel),
+	CONSTRAINT FK_HotelCuarto_Cuarto Foreign Key (IdCuarto) REFERENCES Cuarto (IdCuarto)
+);
 
 CREATE TABLE Cuarto_Cama(
 IdCuarto TINYINT UNSIGNED NOT NULL,
-Tipo_de_cama TINYINT UNSIGNED NOT NULL,
+IdCama TINYINT UNSIGNED NOT NULL,
 Cantidad_de_cama TINYINT UNSIGNED NOT NULL,
-PRIMARY KEY (IdCuarto, Tipo_de_cama),
+PRIMARY KEY (IdCuarto, IdCama),
 CONSTRAINT FK_CuartoCama_Cuarto FOREIGN KEY (IdCuarto) REFERENCES Cuarto (IdCuarto),
-CONSTRAINT FK_CuartoCama_Cama FOREIGN KEY (Tipo_de_cama) REFERENCES Cama (Tipo_de_cama)
+CONSTRAINT FK_CuartoCama_Cama FOREIGN KEY (IdCama) REFERENCES Cama (IdCama)
 );
 
 CREATE TABLE Cliente (
@@ -89,11 +97,11 @@ END //
 
 DELIMITER //
 DROP PROCEDURE IF EXISTS AltaCama //
-CREATE PROCEDURE AltaCama (OUT unTipo_de_cama TINYINT UNSIGNED, unNombre VARCHAR(64), unPueden_dormir TINYINT UNSIGNED)
+CREATE PROCEDURE AltaCama (OUT unIdCama TINYINT UNSIGNED, unNombre VARCHAR(64), unPueden_dormir TINYINT UNSIGNED)
 BEGIN
 	INSERT INTO Cama (Nombre, Pueden_dormir)
 	VALUES (unNombre, unPueden_dormir);
-	SET unTipo_de_cama = LAST_INSERT_ID();
+	SET unIdCama = LAST_INSERT_ID();
 END //
 
 
@@ -108,10 +116,10 @@ END //
 
 DELIMITER //
 DROP PROCEDURE IF EXISTS AltaCuarto_Cama //
-CREATE PROCEDURE AltaCuarto_Cama (unIdCuarto TINYINT UNSIGNED, unTipo_de_cama TINYINT UNSIGNED, unCantidad_de_cama TINYINT UNSIGNED)
+CREATE PROCEDURE AltaCuarto_Cama (unIdCuarto TINYINT UNSIGNED, unIdCama TINYINT UNSIGNED, unCantidad_de_cama TINYINT UNSIGNED)
 BEGIN
-	INSERT INTO Cuarto_Cama (IdCuarto, Tipo_de_cama, Cantidad_de_cama)
-	VALUES (unIdCuarto, unTipo_de_cama, unCantidad_de_cama);
+	INSERT INTO Cuarto_Cama (IdCuarto, IdCama, Cantidad_de_cama)
+	VALUES (unIdCuarto, unIdCama, unCantidad_de_cama);
 END //
 
 
@@ -164,7 +172,7 @@ BEGIN
 	DECLARE suma INT;
 	SELECT SUM(Pueden_dormir * Cantidad_de_cama) INTO suma
 	FROM Cuarto_Cama
-	JOIN Cama USING (Tipo_de_cama)
+	JOIN Cama USING (IdCama)
 	WHERE IdCuarto = unIdCuarto;
 	RETURN suma;
 END //
