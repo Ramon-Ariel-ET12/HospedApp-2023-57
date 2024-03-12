@@ -23,6 +23,7 @@ public class TestAdoCliente : TestAdo
     {
         var nuevocliente = new Cliente()
         {
+            Dni = 95205995,
             Nombre = "Kakaroto",
             Apellido = "Gohan",
             Email = "Goku12345678@gmail.com",
@@ -32,15 +33,4 @@ public class TestAdoCliente : TestAdo
         Ado.AltaCliente(nuevocliente);
         
     }
-
-    //     public void AltaCategoriaFalla()
-    // {
-    //     var gaseosa = new Categoria()
-    //     {
-    //         Nombre = "Gaseosa"
-    //     };
-
-    //     var excep = Assert.Throws<ConstraintException>(() => Ado.AltaCategoria(gaseosa));
-    //     Assert.Contains("ya se encuentra en uso", excep.Message);
-    // }
 }

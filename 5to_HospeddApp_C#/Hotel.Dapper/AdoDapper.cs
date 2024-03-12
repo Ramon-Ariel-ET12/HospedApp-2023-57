@@ -2,6 +2,7 @@
 using Dapper;
 using MySqlConnector;
 using HotelApp.Core;
+using System.Reflection.Metadata;
 
 namespace HotelApp.Dapper;
 public class AdoDapper : IAdo
@@ -34,14 +35,30 @@ public class AdoDapper : IAdo
         parametros.Add("@unContraseña", hotel.Contraseña);
         parametros.Add("@unEstrella", hotel.Estrella);
 
-        _conexion.Execute("AltaHotel", parametros);
+        try
+        {
+            _conexion.Execute("AltaHotel", parametros);
 
-        //Obtengo el valor de parametro de tipo salida
-        hotel.IdHotel = parametros.Get<ushort>("@unIdHotel");
+            //Obtengo el valor de parametro de tipo salida
+            hotel.IdHotel = parametros.Get<ushort>("@unIdHotel");
+        }
+        catch (MySqlException error)
+        {
+            if (error.ErrorCode == MySqlErrorCode.DuplicateKeyEntry)
+            {
+                // Verificar si el error es por el Email
+                if (error.Message.Contains("Email"))
+                {
+                    throw new ConstraintException("El Email " + hotel.Email + " ya se encuentra en uso.");
+                }
+            }
+            throw;
+        }
     }
     #endregion
 
     #region 'Cliente'
+
     private readonly string _queryCliente
         = "SELECT * FROM Cliente";
     private readonly string _queryClienteCorreoContraseña
@@ -58,7 +75,7 @@ public class AdoDapper : IAdo
     {
         //Preparo los parametros del Stored Procedure
         var parametros = new DynamicParameters();
-        parametros.Add("@unDni", direction: ParameterDirection.Output);
+        parametros.Add("@unDni", cliente.Dni);
         parametros.Add("@unNombre", cliente.Nombre);
         parametros.Add("@unApellido", cliente.Apellido);
         parametros.Add("@unEmail", cliente.Email);
@@ -68,16 +85,67 @@ public class AdoDapper : IAdo
             _conexion.Execute("RegistrarCliente", parametros);
 
             //Obtengo el valor de parametro de tipo salida
-            cliente.Dni = parametros.Get<ushort>("@unDni");
+            cliente.Dni = parametros.Get<uint>("@unDni");
         }
         catch (MySqlException error)
         {
             if (error.ErrorCode == MySqlErrorCode.DuplicateKeyEntry)
             {
-                throw new ConstraintException(cliente.Email + " ya se encuentra en uso.");
+                // Verificar si el error es por el Email o por el Dni
+                if (error.Message.Contains("Email"))
+                {
+                    throw new ConstraintException("El Email " + cliente.Email + " ya se encuentra en uso.");
+                }
+                else if (error.Message.Contains("PRIMARY"))
+                {
+                    throw new ConstraintException("El Dni " + cliente.Dni + " ya se encuentra registrado.");
+                }
             }
             throw;
         }
     }
     #endregion
+
+    #region "Cama"
+
+    private readonly string _queryCama
+        = "SELECT * FROM Cama";
+
+    private readonly string _queryCamaPorId
+        = "SELECT * FROM Cama WHERE Tipo_de_cama = @unTipo_de_cama";
+
+    public List<Cama> ObtenerCama() => _conexion.Query<Cama>(_queryCama).ToList();
+    public Cama? ObtenerCamaPorId(byte Tipo_de_cama) => 
+    _conexion.QueryFirstOrDefault<Cama>(_queryCamaPorId, new { unTipo_de_cama = Tipo_de_cama });
+    public void AltaCama(Cama cama)
+    {
+        var parametros = new DynamicParameters();
+        parametros.Add("@unTipo_de_cama", direction: ParameterDirection.Output);
+        parametros.Add("@unNombre", cama.Nombre);
+        parametros.Add("@unPueden_dormir", cama.Pueden_dormir);
+
+        try
+        {
+            _conexion.Execute("AltaCama", parametros);
+
+            //Obtengo el valor de parametro de tipo salida
+            cama.Tipo_de_cama = parametros.Get<byte>("@unTipo_de_cama");
+        }
+        catch (MySqlException error)
+        {
+            if (error.ErrorCode == MySqlErrorCode.DuplicateKeyEntry)
+            {
+                // Verificar si el error es por el Nombre
+                if (error.Message.Contains("Nombre"))
+                {
+                    throw new ConstraintException("El nombre " + cama.Nombre + " ya se encuentra en uso.");
+                }
+            }
+            throw;
+        }
+    }
+
+    #endregion
+
+
 }

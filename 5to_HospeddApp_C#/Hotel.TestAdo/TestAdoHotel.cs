@@ -18,4 +18,20 @@ public class TestAdoHotel : TestAdo
 
         Assert.NotNull(hotel);
     }
+
+    [Fact]
+        public void AltaHotel()
+    {
+        var nuevohotel = new Hotel()
+        {
+            Nombre = "hotel",
+            Domicilio = "por ahi",
+            Email = "atencionalcliente@hotel.com",
+            Contraseña = "contraseña",
+            Estrella = 5,
+        };
+
+        Ado.AltaHotel(nuevohotel);
+        
+    }
 }
