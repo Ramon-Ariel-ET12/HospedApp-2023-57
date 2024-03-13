@@ -106,7 +106,7 @@ public class AdoDapper : IAdo
     }
     #endregion
 
-    #region "Cama"
+    #region 'Cama'
 
     private readonly string _queryCama
         = "SELECT * FROM Cama";
@@ -147,5 +147,86 @@ public class AdoDapper : IAdo
 
     #endregion
 
+    #region 'Cuarto'
+    private readonly string _queryCuarto
+    = "SELECT * FROM Cuarto";
+    private readonly string _queryCuartoPorId
+    = "SELECT * FROM Cuarto WHERE IdCuarto = @unIdCuarto";
+    
+    public List<Cuarto> ObtenerCuarto() => _conexion.Query<Cuarto>(_queryCuarto).ToList();
 
+    public Cuarto? ObtenerCuartoPorId(byte IdCuarto) => _conexion.QueryFirstOrDefault<Cuarto>(_queryCuartoPorId, new { unIdCuarto = IdCuarto });
+
+    public void AltaCuarto(Cuarto cuarto)
+    {
+        var parametros = new DynamicParameters();
+        parametros.Add("@unIdCuarto", direction: ParameterDirection.Output);
+        parametros.Add("@unCochera", cuarto.Cochera);
+        parametros.Add("@unNoche", cuarto.Noche);
+        parametros.Add("@unDescripcion", cuarto.Descripcion);
+
+        try
+        {
+            _conexion.Execute("AltaCuarto", parametros);
+
+            //Obtengo el valor de parametro de tipo salida
+            cuarto.IdCuarto = parametros.Get<byte>("@unIdCuarto");
+        }
+        catch (MySqlException error)
+        {
+            if (error.ErrorCode == MySqlErrorCode.DuplicateKeyEntry)
+            {
+                if (error.Message.Contains("Descripcion"))
+                {
+                    throw new ConstraintException("La Descripcion " + cuarto.Descripcion + " ya se encuentra en uso.");
+                }
+            }
+            throw;
+        }
+    }
+
+    #endregion
+
+    #region 'Cuarto_Cama'
+
+    private readonly string _queryCuarto_Cama 
+    = "SELECT * FROM Cuarto_Cama";
+    private readonly string _queryCuarto_CamaPorIdCuarto
+    = "SELECT * FROM Cuarto_Cama WHERE IdCuarto = @unIdCuarto";
+
+    public List<Cuarto_Cama> ObtenerCuarto_Cama() => _conexion.Query<Cuarto_Cama>(_queryCuarto_Cama).ToList();
+
+    public Cuarto_Cama? ObtenerCuarto_CamaPorIdCuarto(byte IdCuarto) => _conexion.QueryFirstOrDefault<Cuarto_Cama>(_queryCuarto_CamaPorIdCuarto, new { unIdCuarto = IdCuarto });
+    
+    public void AltaCuarto_Cama(Cuarto_Cama cuarto_Cama) 
+    {
+        var parametros = new DynamicParameters();
+        parametros.Add("@unIdCuarto", cuarto_Cama.IdCuarto);
+        parametros.Add("@unIdCama", cuarto_Cama.IdCama);
+        parametros.Add("@unCantidad_de_cama", cuarto_Cama.Cantidad_de_cama);
+
+        try
+        {
+            _conexion.Execute("AltaCuarto_Cama", parametros);
+
+            //Obtengo el valor de parametro de tipo salida
+            cuarto_Cama.IdCuarto = parametros.Get<byte>("@unIdCuarto");
+            cuarto_Cama.IdCama = parametros.Get<byte>("@unIdCama");
+        }
+        catch (MySqlException error)
+        {
+            if (error.ErrorCode == MySqlErrorCode.DuplicateKeyEntry)
+            {
+                if (error.Message.Contains("PRIMARY"))
+                {
+                    throw new ConstraintException("El IdCuarto " + cuarto_Cama.IdCuarto + " y el IdCama " + cuarto_Cama.IdCama + " ya se encuentra en uso.");
+                }
+            }
+            throw;
+        }
+    }
+
+    #endregion
+
+    //SELECT Cuarto.IdCuarto, IdCama, Noche, Cochera, Cantidad_de_cama, Descripcion FROM Cuarto INNER JOIN Cuarto_Cama ON Cuarto.IdCuarto = Cuarto_Cama.IdCuarto WHERE Cuarto.IdCuarto = @unIdCuarto
 }
