@@ -13,7 +13,7 @@ public class AdoDapper : IAdo
     public AdoDapper(IDbConnection conexion) => this._conexion = conexion;
 
 
-    #region 'Hotel'
+#region 'Hotel'
     private readonly string _queryHotel
         = "SELECT * FROM Hotel";
     
@@ -57,7 +57,7 @@ public class AdoDapper : IAdo
     }
     #endregion
 
-    #region 'Cliente'
+#region 'Cliente'
 
     private readonly string _queryCliente
         = "SELECT * FROM Cliente";
@@ -106,7 +106,7 @@ public class AdoDapper : IAdo
     }
     #endregion
 
-    #region 'Cama'
+#region 'Cama'
 
     private readonly string _queryCama
         = "SELECT * FROM Cama";
@@ -147,11 +147,11 @@ public class AdoDapper : IAdo
 
     #endregion
 
-    #region 'Cuarto'
+#region 'Cuarto'
     private readonly string _queryCuarto
     = "SELECT * FROM Cuarto";
     private readonly string _queryCuartoPorId
-    = "SELECT * FROM Cuarto WHERE IdCuarto = @unIdCuarto";
+    = "SELECT Cuarto.IdCuarto, IdCama, Noche, Cochera, Cantidad_de_cama, Descripcion FROM Cuarto INNER JOIN Cuarto_Cama ON Cuarto.IdCuarto = Cuarto_Cama.IdCuarto WHERE Cuarto.IdCuarto = @unIdCuarto";
     
     public List<Cuarto> ObtenerCuarto() => _conexion.Query<Cuarto>(_queryCuarto).ToList();
 
@@ -187,7 +187,7 @@ public class AdoDapper : IAdo
 
     #endregion
 
-    #region 'Cuarto_Cama'
+#region 'Cuarto_Cama'
 
     private readonly string _queryCuarto_Cama 
     = "SELECT * FROM Cuarto_Cama";
@@ -228,5 +228,40 @@ public class AdoDapper : IAdo
 
     #endregion
 
-    //SELECT Cuarto.IdCuarto, IdCama, Noche, Cochera, Cantidad_de_cama, Descripcion FROM Cuarto INNER JOIN Cuarto_Cama ON Cuarto.IdCuarto = Cuarto_Cama.IdCuarto WHERE Cuarto.IdCuarto = @unIdCuarto
+#region 'Hotel_Cuarto'
+
+    private readonly string _queryHotel_Cuarto
+    = "SELECT * FROM Hotel_Cuarto";
+    private readonly string _queryHotel_CuartoPorId
+    = "SELECT * FROM Hotel_Cuarto WHERE IdHotel = @unIdHotel";
+    public List<Hotel_Cuarto> ObtenerHotel_Cuarto() => _conexion.Query<Hotel_Cuarto>(_queryHotel_Cuarto).ToList();
+    public Hotel_Cuarto? ObtenerHotel_CuartoPorId(ushort IdHotel, byte IdCuarto) => _conexion.QueryFirstOrDefault<Hotel_Cuarto>(_queryHotel_CuartoPorId, new { unIdHotel = IdHotel, unIdCuarto = IdCuarto });
+    public void AltaHotel_Cuarto (Hotel_Cuarto hotel_Cuarto)
+    {
+        var parametros = new DynamicParameters();
+        parametros.Add("@unIdHotel", hotel_Cuarto.IdHotel);
+        parametros.Add("@unIdCuarto", hotel_Cuarto.IdCuarto);
+        parametros.Add("@unPrecio", hotel_Cuarto.Numero);
+
+        try
+        {
+            _conexion.Execute("AltaHotel_Cuarto", parametros);
+        }
+        catch (MySqlException error)
+        {
+            if(error.ErrorCode == MySqlErrorCode.DuplicateKeyEntry)
+            {
+                if(error.Message.Contains("PRIMARY"))
+                {
+                    throw new ConstraintException("El IdHotel " + hotel_Cuarto.IdHotel + " y el IdCuarto " + hotel_Cuarto.IdCuarto + " ya se encuentra en uso.");
+                }
+            }
+        }
+    }
+#endregion
+
+#region 'Reserva'
+    
+#endregion
+
 }

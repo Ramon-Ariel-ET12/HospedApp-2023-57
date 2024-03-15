@@ -21,4 +21,8 @@ public interface IAdo
     List<Cuarto_Cama> ObtenerCuarto_Cama();
     Cuarto_Cama? ObtenerCuarto_CamaPorIdCuarto(byte IdCuarto);
     void AltaCuarto_Cama (Cuarto_Cama cuarto_Cama);
+
+    List<Hotel_Cuarto> ObtenerHotel_Cuarto();
+    Hotel_Cuarto? ObtenerHotel_CuartoPorId(ushort IdHotel, byte IdCuarto);
+    void AltaHotel_Cuarto (Hotel_Cuarto hotel_Cuarto);
 }
