@@ -11,8 +11,15 @@ public class HomeController : Controller
     public IActionResult Index() => View();
 
     [HttpGet]
-    public IActionResult Reservas(Cliente cliente) => View();
+    public IActionResult Reservas() => View();
     [HttpPost]
+    public IActionResult Reservas(IAdo ado) 
+    {
+        List<Cliente> clientes = ado.ObtenerCliente();
+        Console.WriteLine(clientes);
+        return View();
+    }
+    
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error() 
         => View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
