@@ -1,4 +1,4 @@
--- Active: 1688376962977@@127.0.0.1@3306@5to_hospeddapp2023
+-- Active: 1723664382511@@127.0.0.1@3306@5to_hospeddapp2023
 CALL AltaHotel (@Hoteldeprueba, "Hoteldeprueba","En el Hotel", "Hotel de prueba@gmail.com", 'Hoteldeprueba', 5);
 CALL AltaCama (@Cama, "Cama", 2);
 CALL AltaCuarto (@cuarto1, TRUE, 24.99, "Un cuarto con cochera, cuesta 24.99 pesos :v");

@@ -1,0 +1,25 @@
+﻿@model Enumerable<HotelApp.Core.Cliente>
+@{
+    ViewData["Title"] = "Reservas";
+}
+<h1>@ViewData["Title"]</h1>
+
+<p>Use this page to detail your site's Reservas policy.</p>
+
+<table>
+    <thead>
+        <tr><th>Dni</th><th>Nombre</th><th>Apellido</th><th>Email</th><th>Contraseña</th></tr>
+    </thead>
+    <tbody>
+        @foreach (HotelApp.Core.Cliente cliente in Model)
+        {
+            <tr>
+                <td>@cliente.Dni</td>
+                <td>@cliente.Nombre</td>
+                <td>@cliente.Apellido</td>
+                <td>@cliente.Email</td>
+                <td>@cliente.Contraseña</td>
+            </tr>
+        }
+    </tbody>
+</table>

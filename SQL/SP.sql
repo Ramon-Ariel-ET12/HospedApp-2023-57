@@ -1,4 +1,4 @@
--- Active: 1688376962977@@127.0.0.1@3306@5to_hospeddapp2023
+-- Active: 1723664382511@@127.0.0.1@3306@5to_hospeddapp2023
 #Realizar los SP para dar de alta todas las entidades menos las tablas Cliente y Reserva.
 DELIMITER $$
 DROP PROCEDURE IF EXISTS AltaHotel $$
