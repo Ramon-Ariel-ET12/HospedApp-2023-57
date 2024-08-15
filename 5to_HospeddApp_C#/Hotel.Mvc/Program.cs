@@ -8,7 +8,7 @@ builder.Services.AddControllersWithViews();
 
 var connectionString = builder.Configuration.GetConnectionString("5to_HospeddApp2023")!;
 
-builder.Services.AddSingleton<IAdo, AdoDapper>(s=>new(connectionString));
+builder.Services.AddTransient<IAdo, AdoDapper>(s=>new(connectionString));
 
 var app = builder.Build();
 
