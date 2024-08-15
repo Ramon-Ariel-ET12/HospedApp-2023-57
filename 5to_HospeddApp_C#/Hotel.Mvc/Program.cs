@@ -1,7 +1,14 @@
+using HotelApp.Core;
+using HotelApp.Dapper;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+var connectionString = builder.Configuration.GetConnectionString("5to_HospeddApp2023")!;
+
+builder.Services.AddSingleton<IAdo, AdoDapper>(s=>new(connectionString));
 
 var app = builder.Build();
 
