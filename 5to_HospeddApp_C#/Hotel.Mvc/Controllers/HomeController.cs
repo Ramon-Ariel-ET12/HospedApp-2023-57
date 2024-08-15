@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Hotel.Mvc.Models;
 using HotelApp.Dapper;
 using HotelApp.Core;
+using System.Data;
 
 namespace Hotel.Mvc.Controllers;
 
@@ -16,8 +17,7 @@ public class HomeController : Controller
     public IActionResult Reservas(IAdo ado) 
     {
         List<Cliente> clientes = ado.ObtenerCliente();
-        Console.WriteLine(clientes);
-        return View();
+        return View(clientes);
     }
     
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
