@@ -23,6 +23,7 @@ public interface IAdo
     void AltaCama(Cama cama);
     Task AltaCamaAsync(Cama cama);
 
+    List<Cuarto> ObtenerCuarto();
     Task<List<Cuarto>> ObtenerCuartoAsync();
     Cuarto? ObtenerCuartoPorId(byte IdCuarto);
     Task<Cuarto?> ObtenerCuartoPorIdAsync(byte IdCuarto);
@@ -42,4 +43,11 @@ public interface IAdo
     Task<Hotel_Cuarto?> ObtenerHotel_CuartoPorIdAsync(ushort IdHotel, byte IdCuarto);
     void AltaHotel_Cuarto(Hotel_Cuarto hotel_Cuarto);
     Task AltaHotel_CuartoAsync(Hotel_Cuarto hotel_Cuarto);
+
+    List<Reserva> ObtenerReserva();
+    Task<List<Reserva>> ObtenerReservaAsync();
+    Reserva? ObtenerReservaId(ushort IdReserva);
+    Task<Reserva?> ObtenerReservaIdAsync(ushort IdReserva);
+    void AltaReserva(Reserva reserva);
+    Task AltaReservaAsync(Reserva reserva);
 }

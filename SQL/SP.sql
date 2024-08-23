@@ -60,7 +60,7 @@ END $$
 #Se pide hacer el SP ‘altaReserva’ que reciba los datos no opcionales y haga el alta de una estadia.
 DELIMITER $$
 DROP PROCEDURE IF EXISTS AltaReserva $$
-CREATE PROCEDURE AltaReserva (unIdHotel SMALLINT UNSIGNED,unInicio DATE, unFin DATE, unDni INT UNSIGNED, unIdCuarto TINYINT UNSIGNED)
+CREATE PROCEDURE AltaReserva (OUT unIdReserva SMALLINT UNSIGNED, unIdHotel SMALLINT UNSIGNED,unInicio DATE, unFin DATE, unDni INT UNSIGNED, unIdCuarto TINYINT UNSIGNED)
 BEGIN
 	INSERT INTO Reserva (IdHotel, Inicio, Fin, Dni, IdCuarto)
 	VALUES (unIdHotel, unInicio, unFin, unDni, unIdCuarto);
