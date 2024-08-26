@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-var connectionString = builder.Configuration.GetConnectionString("5to_HospeddApp2023")!;
+var connectionString = builder.Configuration.GetConnectionString("5to_HospedApp2023")!;
 
 builder.Services.AddTransient<IAdo, AdoDapper>(s=>new(connectionString));
 

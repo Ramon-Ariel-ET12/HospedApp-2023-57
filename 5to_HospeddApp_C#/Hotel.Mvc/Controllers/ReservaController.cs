@@ -7,6 +7,7 @@ namespace Hotel.Mvc.Controllers
     {
         private readonly IAdo _reserva;
         public ReservaController(IAdo ado) => _reserva = ado;
+        [HttpGet]
         public async Task<IActionResult> Listado()
         {
             var listado = await _reserva.ObtenerReservaAsync();

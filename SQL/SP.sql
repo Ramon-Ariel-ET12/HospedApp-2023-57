@@ -1,4 +1,4 @@
--- Active: 1723664382511@@127.0.0.1@3306@5to_hospeddapp2023
+-- Active: 1700068523370@@127.0.0.1@3306
 #Realizar los SP para dar de alta todas las entidades menos las tablas Cliente y Reserva.
 DELIMITER $$
 DROP PROCEDURE IF EXISTS AltaHotel $$
@@ -64,6 +64,7 @@ CREATE PROCEDURE AltaReserva (OUT unIdReserva SMALLINT UNSIGNED, unIdHotel SMALL
 BEGIN
 	INSERT INTO Reserva (IdHotel, Inicio, Fin, Dni, IdCuarto)
 	VALUES (unIdHotel, unInicio, unFin, unDni, unIdCuarto);
+	SET unIdReserva = LAST_INSERT_ID();
 END $$
  #Hacer el SP ‘cerrarEstadiaHotel’ que reciba los parámetros necesarios y una calificación por parte del hotel. 
 
