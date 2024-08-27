@@ -30,7 +30,6 @@ public class AdoDapper : IAdo
 
     private readonly string _queryHotel
         = "SELECT * FROM Hotel";
-
     private readonly string _queryHotelPorId
         = "SELECT * FROM Hotel WHERE IdHotel = @unIdhotel";
 
@@ -117,6 +116,9 @@ public class AdoDapper : IAdo
 
     private readonly string _queryCliente
         = "SELECT * FROM Cliente";
+
+    private readonly string _searchCliente
+        = "SELECT * FROM Cliente WHERE Dni LIKE '%@Busqueda%' or Nombre LIKE '%@Busqueda%' or Apellido LIKE '%@Busqueda%' or Email LIKE '%@Busqueda%'";
     private readonly string _queryClienteCorreoContraseña
         = @"SELECT * FROM Cliente WHERE Email = @unEmail AND Contraseña = SHA2(@unContraseña, 256)";
 
@@ -128,7 +130,8 @@ public class AdoDapper : IAdo
         var cliente = (await _conexion.QueryAsync<Cliente>(_queryCliente)).ToList();
         return cliente;
     }
-
+    public async Task<IEnumerable<Cliente>> BuscarClienteAsync(string Busqueda)
+        => await _conexion.QueryAsync<Cliente>(_searchCliente, new { Busqueda = Busqueda });
     public Cliente? ObtenerClientePorCorreoContrasña(string Email, string Contraseña) =>
     _conexion.QueryFirstOrDefault<Cliente>(_queryClienteCorreoContraseña, new { unEmail = Email, unContraseña = Contraseña });
 
