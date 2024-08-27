@@ -1,0 +1,38 @@
+﻿@using HotelApp.Core;
+@model IEnumerable<Cliente>;
+@{
+        ViewData["Title"] = "Clientes";
+}
+
+<div class="text-center">
+    <h1>Buscar</h1>
+</div>
+<div class="text-center">
+
+    <form asp-controller="Cliente" asp-action="Buscar" method="get">
+        <input type="text" name="Busqueda" />
+        <input type="submit" value="Buscar" />
+    </form>
+</div>
+<br><br>
+<table class="table table-striped">
+        <thead>
+        <tr>
+                <th scope="col">Dni</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Apellido</th>
+                <th scope="col">Email</th>
+        </tr>
+        </thead>
+        <tbody class="">
+        @foreach (var cliente in Model)
+        {
+                <tr>
+                <th scope="row">@cliente.Dni</th>
+                <td>@cliente.Nombre</td>
+                <td>@cliente.Apellido</td>
+                <td>@cliente.Email</td>
+                </tr>
+        }
+        </tbody>
+</table>

@@ -48,7 +48,7 @@ classDiagram
         IdCuarto: List~Cuarto~ FK
         Calificacion_del_cliente: int
         Calificacion_del_hotel: int
-        Comentario_del_cliente: int
+        Comentario_del_cliente: string
     }
     class ReservaCancelada{
         IdReserva: int PK FK
