@@ -13,18 +13,18 @@ namespace Hotel.Mvc.Controllers
             return View(listado);
         }
 
-        /*[HttpGet]
+        [HttpGet]
         public async Task<IActionResult> Buscar(string? busqueda)
         {
             IEnumerable<Cliente>? cliente = null;
             if (!string.IsNullOrEmpty(busqueda))
             {
-                cliente = await _Cliente.(busqueda);
+                cliente = await _Cliente.BuscarClienteAsync(busqueda);
                 if (cliente.Count() == 0)
                     return View("NoEncontrado");
             }
-            cliente = cliente ?? new List<PersonaJuego>();
-            return View("Busqueda", cliente);
-        }*/
+            cliente = cliente ?? new List<Cliente>();
+            return View("Listado", cliente);
+        }
     }
 }
