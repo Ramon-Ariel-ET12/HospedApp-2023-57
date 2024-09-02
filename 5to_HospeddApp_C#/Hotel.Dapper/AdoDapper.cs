@@ -118,7 +118,7 @@ public class AdoDapper : IAdo
         = "SELECT * FROM Cliente";
 
     private readonly string _searchCliente
-        = "SELECT * FROM Cliente WHERE Dni LIKE '%@Busqueda%' or Nombre LIKE '%@Busqueda%' or Apellido LIKE '%@Busqueda%' or Email LIKE '%@Busqueda%'";
+        = @"CALL BuscarCliente(@Busqueda)";
     private readonly string _queryClienteCorreoContraseña
         = @"SELECT * FROM Cliente WHERE Email = @unEmail AND Contraseña = SHA2(@unContraseña, 256)";
 

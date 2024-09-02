@@ -1,4 +1,4 @@
--- Active: 1700068523370@@127.0.0.1@3306
+-- Active: 1700068523370@@127.0.0.1@3306@5to_HospedApp2023
 #Realizar los SP para dar de alta todas las entidades menos las tablas Cliente y Reserva.
 DELIMITER $$
 DROP PROCEDURE IF EXISTS AltaHotel $$
@@ -100,4 +100,15 @@ BEGIN
 	JOIN Cama USING (IdCama)
 	WHERE IdCuarto = unIdCuarto;
 	RETURN suma;
+END $$
+
+DELIMITER $$
+DROP PROCEDURE IF EXISTS BuscarCliente $$
+CREATE PROCEDURE BuscarCliente (buscar VARCHAR(255))
+BEGIN
+    SELECT * FROM Cliente
+    WHERE Dni LIKE CONCAT('%', buscar, '%')
+    OR Nombre LIKE CONCAT('%', buscar, '%')
+    OR Apellido LIKE CONCAT('%', buscar, '%')
+    OR LEFT(Email, LOCATE('@', Email) - 1) LIKE CONCAT('%', buscar, '%');
 END $$

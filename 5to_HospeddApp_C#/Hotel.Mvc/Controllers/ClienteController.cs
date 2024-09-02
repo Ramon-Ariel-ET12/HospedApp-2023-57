@@ -7,10 +7,10 @@ namespace Hotel.Mvc.Controllers
     {
         private readonly IAdo _Cliente;
         public ClienteController(IAdo ado) => _Cliente = ado;
-        public async Task<IActionResult> Listado()
+        public async Task<IActionResult> Busqueda()
         {
-            var listado = await _Cliente.ObtenerClienteAsync();
-            return View(listado);
+            var busqueda = await _Cliente.ObtenerClienteAsync();
+            return View(busqueda);
         }
 
         [HttpGet]
@@ -24,7 +24,7 @@ namespace Hotel.Mvc.Controllers
                     return View("NoEncontrado");
             }
             cliente = cliente ?? new List<Cliente>();
-            return View("Listado", cliente);
+            return View("Busqueda", cliente);
         }
     }
 }
