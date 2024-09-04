@@ -20,7 +20,7 @@ DROP TRIGGER IF EXISTS befInsCliente $$
 CREATE TRIGGER befInsCliente BEFORE INSERT ON Cliente
 FOR EACH ROW
 BEGIN
-    SET NEW.Contraseña = SHA2(NEW.Contraseña, 256);
+    SET NEW.Contrasena = SHA2(NEW.Contrasena, 256);
 	IF (CHAR_LENGTH(NEW.Dni) != 8)THEN
 		SIGNAL SQLSTATE '45000'
 		SET MESSAGE_TEXT = 'El dni tiene que ser de 8 digitos';

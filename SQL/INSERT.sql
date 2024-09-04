@@ -7,7 +7,7 @@ CALL AltaCuarto_Cama (@cuarto1, @Cama, 2);
 CALL AltaHotel_Cuarto (@Hoteldeprueba, @cuarto1);
 CALL AltaHotel_Cuarto (@Hoteldeprueba, @cuarto2);
 CALL RegistrarCliente (12345678, "Leonel", "Messi", "Quemirabobo@gmail.com","Andapalla");
-CALL RegistrarCliente (87654321, "Roberto", "Bolaños", "RobertoBolaños777@gmail.com","contraseñadeRobertoBolaños");
+CALL RegistrarCliente (87654321, "Roberto", "Bolaños", "RobertoBolaños777@gmail.com","contrasenadeRobertoBolaños");
 CALL AltaReserva (@Reserva1, @Hoteldeprueba,'2023-02-01', '2023-04-01', 12345678, @cuarto1);
 CALL AltaReserva (@Reserva2, @Hoteldeprueba,'2023-02-06', '2023-03-22', 87654321, @cuarto2);
 CALL CerrarEstadiaHotel (1,1,10);

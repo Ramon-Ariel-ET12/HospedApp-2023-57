@@ -12,8 +12,8 @@ public interface IAdo
     List<Cliente> ObtenerCliente();
     Task<List<Cliente>> ObtenerClienteAsync();
     Task<IEnumerable<Cliente>> BuscarClienteAsync(string Busqueda);
-    Cliente? ObtenerClientePorCorreoContrasña(string Email, string Contraseña);
-    Task<Cliente?> ObtenerClientePorCorreoContrasñaAsync(string Email, string Contraseña);
+    Cliente? ObtenerClientePorCorreoContrasña(string Email, string Contrasena);
+    Task<Cliente?> ObtenerClientePorCorreoContrasñaAsync(string Email, string Contrasena);
     void AltaCliente(Cliente cliente);
     Task AltaClienteAsync(Cliente cliente);
 

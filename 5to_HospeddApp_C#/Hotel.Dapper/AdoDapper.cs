@@ -22,7 +22,7 @@ public class AdoDapper : IAdo
         parametros.Add("@unNombre", hotel.Nombre);
         parametros.Add("@unDomicilio", hotel.Domicilio);
         parametros.Add("@unEmail", hotel.Email);
-        parametros.Add("@unContraseña", hotel.Contraseña);
+        parametros.Add("@unContrasena", hotel.Contrasena);
         parametros.Add("@unEstrella", hotel.Estrella);
 
         return parametros;
@@ -109,7 +109,7 @@ public class AdoDapper : IAdo
         parametros.Add("@unNombre", cliente.Nombre);
         parametros.Add("@unApellido", cliente.Apellido);
         parametros.Add("@unEmail", cliente.Email);
-        parametros.Add("@unContraseña", cliente.Contraseña);
+        parametros.Add("@unContrasena", cliente.Contrasena);
 
         return parametros;
     }
@@ -119,8 +119,8 @@ public class AdoDapper : IAdo
 
     private readonly string _searchCliente
         = @"CALL BuscarCliente(@Busqueda)";
-    private readonly string _queryClienteCorreoContraseña
-        = @"SELECT * FROM Cliente WHERE Email = @unEmail AND Contraseña = SHA2(@unContraseña, 256)";
+    private readonly string _queryClienteCorreoContrasena
+        = @"SELECT * FROM Cliente WHERE Email = @unEmail AND Contrasena = SHA2(@unContrasena, 256)";
 
 
     public List<Cliente> ObtenerCliente() => _conexion.Query<Cliente>(_queryCliente).ToList();
@@ -132,12 +132,12 @@ public class AdoDapper : IAdo
     }
     public async Task<IEnumerable<Cliente>> BuscarClienteAsync(string Busqueda)
         => await _conexion.QueryAsync<Cliente>(_searchCliente, new { Busqueda = Busqueda });
-    public Cliente? ObtenerClientePorCorreoContrasña(string Email, string Contraseña) =>
-    _conexion.QueryFirstOrDefault<Cliente>(_queryClienteCorreoContraseña, new { unEmail = Email, unContraseña = Contraseña });
+    public Cliente? ObtenerClientePorCorreoContrasña(string Email, string Contrasena) =>
+    _conexion.QueryFirstOrDefault<Cliente>(_queryClienteCorreoContrasena, new { unEmail = Email, unContrasena = Contrasena });
 
-    public async Task<Cliente?> ObtenerClientePorCorreoContrasñaAsync(string Email, string Contraseña)
+    public async Task<Cliente?> ObtenerClientePorCorreoContrasñaAsync(string Email, string Contrasena)
     {
-        var cliente = await _conexion.QueryFirstOrDefaultAsync<Cliente>(_queryClienteCorreoContraseña, new { unEmail = Email, unContraseña = Contraseña });
+        var cliente = await _conexion.QueryFirstOrDefaultAsync<Cliente>(_queryClienteCorreoContrasena, new { unEmail = Email, unContrasena = Contrasena });
         return cliente;
     }
 

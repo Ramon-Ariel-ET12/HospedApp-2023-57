@@ -18,7 +18,7 @@ classDiagram
         Nombre: string
         Apellido: string 
         Email: string 
-        Contraseña: string 
+        Contrasena: string 
     }
     class  Cuarto_Cama{
         IdCuarto: List~Cuarto~ PK FK
@@ -36,7 +36,7 @@ classDiagram
         Nombre: string 
         Domicilio: string 
         Email: string 
-        Contraseña: string 
+        Contrasena: string 
         Estrella: int 
     }
     class Reserva{
