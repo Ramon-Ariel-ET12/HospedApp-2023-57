@@ -27,7 +27,7 @@ public class TestAdoHotel : TestAdo
             Nombre = "hotel",
             Domicilio = "por ahi",
             Email = "atencionalcliente@hotel.com",
-            Contraseña = "contraseña",
+            Contrasena = "contrasena",
             Estrella = 5,
         };
 

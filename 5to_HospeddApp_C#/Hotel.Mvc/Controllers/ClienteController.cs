@@ -16,6 +16,8 @@ namespace Hotel.Mvc.Controllers
         [HttpGet]
         public async Task<IActionResult> Buscar(string? busqueda)
         {
+            if (busqueda == null)
+                return View("Busqueda", await _Cliente.ObtenerClienteAsync());
             IEnumerable<Cliente>? cliente = null;
             if (!string.IsNullOrEmpty(busqueda))
             {
@@ -25,6 +27,20 @@ namespace Hotel.Mvc.Controllers
             }
             cliente = cliente ?? new List<Cliente>();
             return View("Busqueda", cliente);
+        }
+        [HttpGet]
+        public IActionResult Alta()
+        {
+            return View("Upsert");
+        }
+        [HttpPost]
+        public async Task<IActionResult> Upsert(Cliente cliente)
+        {
+            if (!ModelState.IsValid)
+                return View("Upsert", cliente);
+            await _Cliente.AltaClienteAsync(cliente);
+
+            return RedirectToAction("Busqueda");
         }
     }
 }

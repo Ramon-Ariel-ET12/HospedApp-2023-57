@@ -1,0 +1,62 @@
+@using HotelApp.Core;
+@model Cliente;
+@{
+    var texto = Model is null ? "Alta Cliente" : "Modificar Cliente";
+    ViewData["Title"] = texto;
+}
+
+<form asp-controller="Cliente" asp-action="Upsert" method="post">
+    <div asp-validation-summary="All"></div>
+    <div class="row g-2 align-items-center">
+        <div class="col-auto">
+            <label asp-for="Dni" class="col-form-label">DNI</label>
+        </div>
+        <div class="col-auto">
+            <input asp-for="Dni" class="form-control" />
+        </div>
+    </div>
+    <div class="row g-2 align-items-center">
+        <div class="col-auto">
+            <label asp-for="Nombre" class="col-form-label">Nombre</label>
+        </div>
+        <div class="col-auto">
+            <input asp-for="Nombre" class="form-control" />
+        </div>
+    </div>
+    <div class="row g-2 align-items-center">
+        <div class="col-auto">
+            <label asp-for="Apellido" class="col-form-label">Apellido</label>
+        </div>
+        <div class="col-auto">
+            <input asp-for="Apellido" class="form-control" />
+        </div>
+    </div>
+    <div class="row g-2 align-items-center">
+        <div class="col-auto">
+            <label asp-for="Email" class="col-form-label">Email</label>
+        </div>
+        <div class="col-auto">
+            <input type="email" asp-for="Email" class="form-control" />
+        </div>
+    </div>
+    <div class="row g-2 align-items-center">
+        <div class="col-auto">
+            <label asp-for="Contrasena" class="col-form-label">Contrasena</label>
+        </div>
+        <div class="col-auto">
+            <input asp-for="Contrasena" class="form-control" />
+        </div>
+    </div>
+    <div class="row g-3 align-items-center">
+            <div class="col-auto">
+                @if (Model is null)
+                {
+                    <button type="submit" class="btn btn-primary">@texto</button>
+                }
+                else
+                {
+                    <button type="submit" class="btn btn-warning">@texto</button>
+                }
+            </div>
+        </div>
+</form>
