@@ -12,194 +12,6 @@ public class AdoDapper : IAdo
     public AdoDapper(IDbConnection conexion) => this._conexion = conexion;
 
 
-    #region 'Hotel'
-
-    private DynamicParameters ParametrosAltaHotel(Hotel hotel)
-    {
-        var parametros = new DynamicParameters();
-
-        parametros.Add("@unIdHotel", direction: ParameterDirection.Output);
-        parametros.Add("@unNombre", hotel.Nombre);
-        parametros.Add("@unDomicilio", hotel.Domicilio);
-        parametros.Add("@unEmail", hotel.Email);
-        parametros.Add("@unContrasena", hotel.Contrasena);
-        parametros.Add("@unEstrella", hotel.Estrella);
-
-        return parametros;
-    }
-
-    private readonly string _queryHotel
-        = "SELECT * FROM Hotel";
-    private readonly string _queryHotelPorId
-        = "SELECT * FROM Hotel WHERE IdHotel = @unIdhotel";
-
-    public List<Hotel> ObtenerHotel() => _conexion.Query<Hotel>(_queryHotel).ToList();
-
-    public async Task<List<Hotel>> ObtenerHotelAsync()
-    {
-        var hotel = (await _conexion.QueryAsync<Hotel>(_queryHotel)).ToList();
-        return hotel;
-    }
-
-    public Hotel? ObtenerHotelPorId(ushort IdHotel) =>
-    _conexion.QueryFirstOrDefault<Hotel>(_queryHotelPorId, new { unIdhotel = IdHotel });
-
-    public async Task<Hotel?> ObtenerHotelPorIdAsync(ushort IdHotel)
-    {
-        var hotel = await _conexion.QueryFirstOrDefaultAsync<Hotel>(_queryHotelPorId, new { unIdhotel = IdHotel });
-        return hotel;
-    }
-
-    public void AltaHotel(Hotel hotel)
-    {
-        var parametros = ParametrosAltaHotel(hotel);
-        try
-        {
-            _conexion.Execute("AltaHotel", parametros);
-
-            //Obtengo el valor de parametro de tipo salida
-            hotel.IdHotel = parametros.Get<ushort>("@unIdHotel");
-        }
-        catch (MySqlException error)
-        {
-            if (error.ErrorCode == MySqlErrorCode.DuplicateKeyEntry)
-            {
-                // Verificar si el error es por el Email
-                if (error.Message.Contains("Email"))
-                {
-                    throw new ConstraintException("El Email " + hotel.Email + " ya se encuentra en uso.");
-                }
-            }
-            throw;
-        }
-    }
-
-    public async Task AltaHotelAsync(Hotel hotel)
-    {
-        var parametros = ParametrosAltaHotel(hotel);
-        try
-        {
-            await _conexion.ExecuteAsync("AltaHotel", parametros);
-
-            //Obtengo el valor de parametro de tipo salida
-            hotel.IdHotel = parametros.Get<ushort>("@unIdHotel");
-        }
-        catch (MySqlException error)
-        {
-            if (error.ErrorCode == MySqlErrorCode.DuplicateKeyEntry)
-            {
-                // Verificar si el error es por el Email
-                if (error.Message.Contains("Email"))
-                {
-                    throw new ConstraintException("El Email " + hotel.Email + " ya se encuentra en uso.");
-                }
-            }
-            throw;
-        }
-    }
-    #endregion
-
-    #region 'Cliente'
-
-    private DynamicParameters ParametrosAltaCliente(Cliente cliente)
-    {
-        var parametros = new DynamicParameters();
-
-        parametros.Add("@unDni", cliente.Dni);
-        parametros.Add("@unNombre", cliente.Nombre);
-        parametros.Add("@unApellido", cliente.Apellido);
-        parametros.Add("@unEmail", cliente.Email);
-        parametros.Add("@unContrasena", cliente.Contrasena);
-
-        return parametros;
-    }
-
-    private readonly string _queryCliente
-        = "SELECT * FROM Cliente";
-
-    private readonly string _searchCliente
-        = @"CALL BuscarCliente(@Busqueda)";
-    private readonly string _queryClienteCorreoContrasena
-        = @"SELECT * FROM Cliente WHERE Email = @unEmail AND Contrasena = SHA2(@unContrasena, 256)";
-
-
-    public List<Cliente> ObtenerCliente() => _conexion.Query<Cliente>(_queryCliente).ToList();
-
-    public async Task<List<Cliente>> ObtenerClienteAsync()
-    {
-        var cliente = (await _conexion.QueryAsync<Cliente>(_queryCliente)).ToList();
-        return cliente;
-    }
-    public async Task<IEnumerable<Cliente>> BuscarClienteAsync(string Busqueda)
-        => await _conexion.QueryAsync<Cliente>(_searchCliente, new { Busqueda = Busqueda });
-    public Cliente? ObtenerClientePorCorreoContrasña(string Email, string Contrasena) =>
-    _conexion.QueryFirstOrDefault<Cliente>(_queryClienteCorreoContrasena, new { unEmail = Email, unContrasena = Contrasena });
-
-    public async Task<Cliente?> ObtenerClientePorCorreoContrasñaAsync(string Email, string Contrasena)
-    {
-        var cliente = await _conexion.QueryFirstOrDefaultAsync<Cliente>(_queryClienteCorreoContrasena, new { unEmail = Email, unContrasena = Contrasena });
-        return cliente;
-    }
-
-    public void AltaCliente(Cliente cliente)
-    {
-        //Preparo los parametros del Stored Procedure
-        var parametros = ParametrosAltaCliente(cliente);
-        try
-        {
-            _conexion.Execute("RegistrarCliente", parametros);
-
-            //Obtengo el valor de parametro de tipo salida
-            cliente.Dni = parametros.Get<uint>("@unDni");
-        }
-        catch (MySqlException error)
-        {
-            if (error.ErrorCode == MySqlErrorCode.DuplicateKeyEntry)
-            {
-                // Verificar si el error es por el Email o por el Dni
-                if (error.Message.Contains("Email"))
-                {
-                    throw new ConstraintException("El Email " + cliente.Email + " ya se encuentra en uso.");
-                }
-                else if (error.Message.Contains("PRIMARY"))
-                {
-                    throw new ConstraintException("El Dni " + cliente.Dni + " ya se encuentra registrado.");
-                }
-            }
-            throw;
-        }
-    }
-
-    public async Task AltaClienteAsync(Cliente cliente)
-    {
-        //Preparo los parametros del Stored Procedure
-        var parametros = ParametrosAltaCliente(cliente);
-        try
-        {
-            await _conexion.ExecuteAsync("RegistrarCliente", parametros);
-
-            //Obtengo el valor de parametro de tipo salida
-            cliente.Dni = parametros.Get<uint>("@unDni");
-        }
-        catch (MySqlException error)
-        {
-            if (error.ErrorCode == MySqlErrorCode.DuplicateKeyEntry)
-            {
-                // Verificar si el error es por el Email o por el Dni
-                if (error.Message.Contains("Email"))
-                {
-                    throw new ConstraintException("El Email " + cliente.Email + " ya se encuentra en uso.");
-                }
-                else if (error.Message.Contains("PRIMARY"))
-                {
-                    throw new ConstraintException("El Dni " + cliente.Dni + " ya se encuentra registrado.");
-                }
-            }
-            throw;
-        }
-    }
-    #endregion
-
     #region 'Cama'
 
     private DynamicParameters ParametrosAltaCama(Cama cama)
@@ -287,6 +99,107 @@ public class AdoDapper : IAdo
 
     #endregion
 
+    #region 'Cliente'
+
+    private DynamicParameters ParametrosAltaCliente(Cliente cliente)
+    {
+        var parametros = new DynamicParameters();
+
+        parametros.Add("@unDni", cliente.Dni);
+        parametros.Add("@unNombre", cliente.Nombre);
+        parametros.Add("@unApellido", cliente.Apellido);
+        parametros.Add("@unEmail", cliente.Email);
+        parametros.Add("@unContrasena", cliente.Contrasena);
+
+        return parametros;
+    }
+
+    private readonly string _queryCliente
+        = "SELECT * FROM Cliente";
+
+    private readonly string _searchCliente
+        = @"CALL BuscarCliente(@Busqueda)";
+    private readonly string _queryClienteCorreoContrasena
+        = @"SELECT * FROM Cliente WHERE Email = @unEmail AND Contrasena = SHA2(@unContrasena, 256)";
+
+
+    public List<Cliente> ObtenerCliente() => _conexion.Query<Cliente>(_queryCliente).ToList();
+
+    public async Task<List<Cliente>> ObtenerClienteAsync()
+    {
+        var cliente = (await _conexion.QueryAsync<Cliente>(_queryCliente)).ToList();
+        return cliente;
+    }
+    public async Task<IEnumerable<Cliente>> BuscarClienteAsync(string Busqueda)
+        => await _conexion.QueryAsync<Cliente>(_searchCliente, new { Busqueda = Busqueda });
+    public Cliente? ObtenerClientePorCorreoContrasña(string Email, string Contrasena) =>
+    _conexion.QueryFirstOrDefault<Cliente>(_queryClienteCorreoContrasena, new { unEmail = Email, unContrasena = Contrasena });
+
+    public async Task<Cliente?> ObtenerClientePorCorreoContrasñaAsync(string Email, string Contrasena)
+    {
+        var cliente = await _conexion.QueryFirstOrDefaultAsync<Cliente>(_queryClienteCorreoContrasena, new { unEmail = Email, unContrasena = Contrasena });
+        return cliente;
+    }
+//
+    public void AltaCliente(Cliente cliente)
+    {
+        //Preparo los parametros del Stored Procedure
+        var parametros = ParametrosAltaCliente(cliente);
+        try
+        {
+            _conexion.Execute("RegistrarCliente", parametros);
+
+            //Obtengo el valor de parametro de tipo salida
+            cliente.Dni = parametros.Get<uint>("@unDni");
+        }
+        catch (MySqlException error)
+        {
+            if (error.ErrorCode == MySqlErrorCode.DuplicateKeyEntry)
+            {
+                // Verificar si el error es por el Email o por el Dni
+                if (error.Message.Contains("Email"))
+                {
+                    throw new ConstraintException("El Email " + cliente.Email + " ya se encuentra en uso.");
+                }
+                else if (error.Message.Contains("PRIMARY"))
+                {
+                    throw new ConstraintException("El Dni " + cliente.Dni + " ya se encuentra registrado.");
+                }
+            }
+            throw;
+        }
+    }
+//
+    public async Task AltaClienteAsync(Cliente cliente)
+    {
+        //Preparo los parametros del Stored Procedure
+        var parametros = ParametrosAltaCliente(cliente);
+        try
+        {
+            await _conexion.ExecuteAsync("RegistrarCliente", parametros);
+
+            //Obtengo el valor de parametro de tipo salida
+            cliente.Dni = parametros.Get<uint>("@unDni");
+        }
+        catch (MySqlException error)
+        {
+            if (error.ErrorCode == MySqlErrorCode.DuplicateKeyEntry)
+            {
+                // Verificar si el error es por el Email o por el Dni
+                if (error.Message.Contains("Email"))
+                {
+                    throw new ConstraintException("El Email " + cliente.Email + " ya se encuentra en uso.");
+                }
+                else if (error.Message.Contains("PRIMARY"))
+                {
+                    throw new ConstraintException("El Dni " + cliente.Dni + " ya se encuentra registrado.");
+                }
+            }
+            throw;
+        }
+    }
+    #endregion
+
     #region 'Cuarto'
 
     private DynamicParameters ParametrosAltaCuarto(Cuarto cuarto)
@@ -370,6 +283,226 @@ public class AdoDapper : IAdo
         }
     }
 
+    #endregion
+
+    #region 'Hotel'
+
+    private DynamicParameters ParametrosAltaHotel(Hotel hotel)
+    {
+        var parametros = new DynamicParameters();
+
+        parametros.Add("@unIdHotel", direction: ParameterDirection.Output);
+        parametros.Add("@unNombre", hotel.Nombre);
+        parametros.Add("@unDomicilio", hotel.Domicilio);
+        parametros.Add("@unEmail", hotel.Email);
+        parametros.Add("@unContrasena", hotel.Contrasena);
+        parametros.Add("@unEstrella", hotel.Estrella);
+
+        return parametros;
+    }
+
+    private readonly string _queryHotel
+        = "SELECT * FROM Hotel";
+    private readonly string _queryHotelPorId
+        = "SELECT * FROM Hotel WHERE IdHotel = @unIdhotel";
+
+    public List<Hotel> ObtenerHotel() => _conexion.Query<Hotel>(_queryHotel).ToList();
+
+    public async Task<List<Hotel>> ObtenerHotelAsync()
+    {
+        var hotel = (await _conexion.QueryAsync<Hotel>(_queryHotel)).ToList();
+        return hotel;
+    }
+
+    public Hotel? ObtenerHotelPorId(ushort IdHotel) =>
+    _conexion.QueryFirstOrDefault<Hotel>(_queryHotelPorId, new { unIdhotel = IdHotel });
+
+    public async Task<Hotel?> ObtenerHotelPorIdAsync(ushort IdHotel)
+    {
+        var hotel = await _conexion.QueryFirstOrDefaultAsync<Hotel>(_queryHotelPorId, new { unIdhotel = IdHotel });
+        return hotel;
+    }
+
+    public void AltaHotel(Hotel hotel)
+    {
+        var parametros = ParametrosAltaHotel(hotel);
+        try
+        {
+            _conexion.Execute("AltaHotel", parametros);
+
+            //Obtengo el valor de parametro de tipo salida
+            hotel.IdHotel = parametros.Get<ushort>("@unIdHotel");
+        }
+        catch (MySqlException error)
+        {
+            if (error.ErrorCode == MySqlErrorCode.DuplicateKeyEntry)
+            {
+                // Verificar si el error es por el Email
+                if (error.Message.Contains("Email"))
+                {
+                    throw new ConstraintException("El Email " + hotel.Email + " ya se encuentra en uso.");
+                }
+            }
+            throw;
+        }
+    }
+
+    public async Task AltaHotelAsync(Hotel hotel)
+    {
+        var parametros = ParametrosAltaHotel(hotel);
+        try
+        {
+            await _conexion.ExecuteAsync("AltaHotel", parametros);
+
+            //Obtengo el valor de parametro de tipo salida
+            hotel.IdHotel = parametros.Get<ushort>("@unIdHotel");
+        }
+        catch (MySqlException error)
+        {
+            if (error.ErrorCode == MySqlErrorCode.DuplicateKeyEntry)
+            {
+                // Verificar si el error es por el Email
+                if (error.Message.Contains("Email"))
+                {
+                    throw new ConstraintException("El Email " + hotel.Email + " ya se encuentra en uso.");
+                }
+            }
+            throw;
+        }
+    }
+    #endregion
+
+    #region 'Reserva'
+    private DynamicParameters ParametrosAltaReserva(Reserva reserva)
+    {
+        var parametros = new DynamicParameters();
+
+        parametros.Add("@unIdReserva", direction: ParameterDirection.Output);
+        parametros.Add("@unIdHotel", reserva.IdHotel);
+        parametros.Add("@unInicio", reserva.Inicio);
+        parametros.Add("@unFin", reserva.Fin);
+        parametros.Add("@unDni", reserva.Dni);
+        parametros.Add("@unIdCuarto", reserva.IdCuarto);
+
+        return parametros;
+    }
+
+    
+    private readonly string _queryReserva
+    = "SELECT * FROM Reserva";
+
+    private readonly string _searchReserva
+    = @"CALL BuscarReserva(@Buesqueda)";
+    private readonly string _queryReservaPorId
+    = @"SELECT * FROM Reserva WHERE IdReserva = @unIdReserva";
+    public List<Reserva> ObtenerReserva() => _conexion.Query<Reserva>(_queryReserva).ToList();
+
+    public async Task<List<Reserva>> ObtenerReservaAsync()
+    {
+        var reserva = (await _conexion.QueryAsync<Reserva>(_queryReserva)).ToList();
+        return reserva;
+    }
+    ///
+    
+    public List<Reserva> ObtenerReserva() => _conexion.Query<Reserva>(_queryReserva).ToList();
+
+    public async Task<List<Reserva>> ObtenerReservaAsync()
+    {
+        var reserva = (await _conexion.QueryAsync<Reserva>(_queryReserva)).ToList();
+        return reserva;
+    }
+
+    public async Task<IEnumerable<Reserva>> BuscarReservaAsync(string Busqueda)
+        => await _conexion.QueryAsync<Reserva>(_searchReserva, new { Busqueda = Busqueda });
+    public Reserva? ObtenerReservaId(ushort IdReserva) =>
+    _conexion.QueryFirstOrDefault<Reserva>(_queryReservaPorId, new { unIdReserva = IdReserva});
+
+    public async Task<Reserva?> ObtenerReservaIdAsync(ushort IdRreserva)
+    {
+        var reserva = await _conexion.QueryFirstOrDefaultAsync<Reserva>(_queryReservaPorId, new{ unIdReserva = IdRreserva });
+        return reserva;
+    }
+
+//
+    public void AltaReserva(Reserva reserva)
+    {
+        var parametros = ParametrosAltaReserva(reserva);
+        try
+        {
+            _conexion.Execute("AltaReserva", parametros);
+        }
+        catch (MySqlException error)
+        {
+            if (error.ErrorCode == MySqlErrorCode.DuplicateKeyEntry)
+            {
+                if (error.Message.Contains("IdHotel"))
+                {
+                    throw new ConstraintException("El IdCuarto " + reserva.IdCuarto + "No existe");
+                }
+            }
+            throw;
+        }
+    }
+
+    public void AltaCliente(Cliente cliente)
+    {
+        //Preparo los parametros del Stored Procedure
+        var parametros = ParametrosAltaCliente(cliente);
+        try
+        {
+            _conexion.Execute("RegistrarCliente", parametros);
+
+            //Obtengo el valor de parametro de tipo salida
+            cliente.Dni = parametros.Get<uint>("@unDni");
+        }
+        catch (MySqlException error)
+        {
+            if (error.ErrorCode == MySqlErrorCode.DuplicateKeyEntry)
+            {
+                // Verificar si el error es por el Email o por el Dni
+                if (error.Message.Contains("Email"))
+                {
+                    throw new ConstraintException("El Email " + cliente.Email + " ya se encuentra en uso.");
+                }
+                else if (error.Message.Contains("PRIMARY"))
+                {
+                    throw new ConstraintException("El Dni " + cliente.Dni + " ya se encuentra registrado.");
+                }
+            }
+            throw;
+        }
+    }
+//
+    public async Task AltaReservaAsync(Reserva reserva)
+    {
+        var parametros = ParametrosAltaReserva(reserva);
+
+        try
+        {
+            await _conexion.ExecuteAsync("AltaReserva", parametros);
+        }
+        catch (MySqlException error)
+        {
+            if (error.ErrorCode == MySqlErrorCode.DuplicateKeyEntry)
+            {
+                if (error.Message.Contains("IdHotel"))
+                {
+                    throw new ConstraintException("El IdCuarto " + reserva.IdCuarto + "No existe");
+                }
+            }
+            throw;
+        }
+    }
+
+    public Task<IEnumerable<Hotel>> BuscarHotelAsync(string Busqueda)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<IEnumerable<Reserva>?> BuscarReservaAsync(string busqueda)
+    {
+        throw new NotImplementedException();
+    }
     #endregion
 
     #region 'Cuarto_Cama'
@@ -532,83 +665,6 @@ public class AdoDapper : IAdo
                     throw new ConstraintException("El IdHotel " + hotel_Cuarto.IdHotel + " y el IdCuarto " + hotel_Cuarto.IdCuarto + " ya se encuentra en uso.");
                 }
             }
-        }
-    }
-    #endregion
-
-    #region 'Reserva'
-    private DynamicParameters ParametrosAltaReserva(Reserva reserva)
-    {
-        var parametros = new DynamicParameters();
-
-        parametros.Add("@unIdReserva", direction: ParameterDirection.Output);
-        parametros.Add("@unIdHotel", reserva.IdHotel);
-        parametros.Add("@unInicio", reserva.Inicio);
-        parametros.Add("@unFin", reserva.Fin);
-        parametros.Add("@unDni", reserva.Dni);
-        parametros.Add("@unIdCuarto", reserva.IdCuarto);
-
-        return parametros;
-    }
-    private readonly string _queryReserva
-    = "SELECT * FROM Reserva";
-    private readonly string _queryReservaPorId
-    = "SELECT * FROM Reserva WHERE IdReserva = @unIdReserva";
-    public List<Reserva> ObtenerReserva() => _conexion.Query<Reserva>(_queryReserva).ToList();
-
-    public async Task<List<Reserva>> ObtenerReservaAsync()
-    {
-        var reserva = (await _conexion.QueryAsync<Reserva>(_queryReserva)).ToList();
-        return reserva;
-    }
-
-    public Reserva? ObtenerReservaId(ushort IdReserva) => _conexion.QueryFirstOrDefault<Reserva>(_queryReservaPorId, new { unIdReserva = IdReserva});
-
-    public async Task<Reserva?> ObtenerReservaIdAsync(ushort IdRreserva)
-    {
-        var reserva = await _conexion.QueryFirstOrDefaultAsync<Reserva>(_queryReservaPorId, new{ unIdReserva = IdRreserva });
-        return reserva;
-    }
-
-    public void AltaReserva(Reserva reserva)
-    {
-        var parametros = ParametrosAltaReserva(reserva);
-
-        try
-        {
-            _conexion.Execute("AltaReserva", parametros);
-        }
-        catch (MySqlException error)
-        {
-            if (error.ErrorCode == MySqlErrorCode.DuplicateKeyEntry)
-            {
-                if (error.Message.Contains("IdHotel"))
-                {
-                    throw new ConstraintException("El IdCuarto " + reserva.IdCuarto + "No existe");
-                }
-            }
-            throw;
-        }
-    }
-
-    public async Task AltaReservaAsync(Reserva reserva)
-    {
-        var parametros = ParametrosAltaReserva(reserva);
-
-        try
-        {
-            await _conexion.ExecuteAsync("AltaReserva", parametros);
-        }
-        catch (MySqlException error)
-        {
-            if (error.ErrorCode == MySqlErrorCode.DuplicateKeyEntry)
-            {
-                if (error.Message.Contains("IdHotel"))
-                {
-                    throw new ConstraintException("El IdCuarto " + reserva.IdCuarto + "No existe");
-                }
-            }
-            throw;
         }
     }
     #endregion

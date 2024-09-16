@@ -4,11 +4,11 @@ public interface IAdo
 {
     List<Hotel> ObtenerHotel();
     Task<List<Hotel>> ObtenerHotelAsync();
-    Task<IEnumerable<Hotel>?> BuscarHotelAsync(string Busqueda);
-    void AltaHotel(Hotel hotel);
-    Task AltaHotelAsync(Hotel hotel);
+    Task<IEnumerable<Hotel>> BuscarHotelAsync(string Busqueda);
     Hotel? ObtenerHotelPorId(ushort IdHotel);
     Task<Hotel?> ObtenerHotelPorIdAsync(ushort IdHotel);
+    void AltaHotel(Hotel hotel);
+    Task AltaHotelAsync(Hotel hotel);
     /////////
 
     List<Cliente> ObtenerCliente();
@@ -34,7 +34,18 @@ public interface IAdo
     Task<Cuarto?> ObtenerCuartoPorIdAsync(byte IdCuarto);
     void AltaCuarto(Cuarto cuarto);
     Task AltaCuartoAsync(Cuarto cuarto);
+    //////////
+
+    List<Reserva> ObtenerReserva();
+    Task<List<Reserva>> ObtenerReservaAsync();
+    Task<IEnumerable<Reserva>?> BuscarReservaAsync(string busqueda);
+    Reserva? ObtenerReservaId(ushort IdReserva);
+    Task<Reserva?> ObtenerReservaIdAsync(ushort IdReserva);
+    void AltaReserva(Reserva reserva);
+    Task AltaReservaAsync(Reserva reserva);
     /////////////////
+    
+    
 
     List<Cuarto_Cama> ObtenerCuarto_Cama();
     Task<List<Cuarto_Cama>> ObtenerCuarto_CamaAsync();
@@ -50,13 +61,4 @@ public interface IAdo
     Task<Hotel_Cuarto?> ObtenerHotel_CuartoPorIdAsync(ushort IdHotel, byte IdCuarto);
     void AltaHotel_Cuarto(Hotel_Cuarto hotel_Cuarto);
     Task AltaHotel_CuartoAsync(Hotel_Cuarto hotel_Cuarto);
-    //////////
-
-    List<Reserva> ObtenerReserva();
-    Task<List<Reserva>> ObtenerReservaAsync();
-    Task<IEnumerable<Reserva>?> BuscarReservaAsync(string busqueda);
-    Reserva? ObtenerReservaId(ushort IdReserva);
-    Task<Reserva?> ObtenerReservaIdAsync(ushort IdReserva);
-    void AltaReserva(Reserva reserva);
-    Task AltaReservaAsync(Reserva reserva);
 }

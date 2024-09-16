@@ -21,7 +21,7 @@ namespace Hotel.Mvc.Controllers
             if (!string.IsNullOrEmpty(busqueda))
             {
                 reserva = await _Reserva.BuscarReservaAsync (busqueda);
-                if (reserva.Count() == 0)
+                if (reserva == null || reserva.Count() == 0)
                     return View("NoEncontrado");
             }
             reserva = reserva ?? new List<Reserva>();
