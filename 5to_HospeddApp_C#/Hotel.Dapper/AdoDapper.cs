@@ -133,7 +133,7 @@ public class AdoDapper : IAdo
         return cliente;
     }
     public async Task<Cliente?> ObtenerClientePorDni(uint Dni)
-        => await _conexion.QueryFirstOrDefaultAsync<Cliente>(_queryClienteDni, new { uDni = Dni });
+        => await _conexion.QueryFirstOrDefaultAsync<Cliente>(_queryClienteDni, new { unDni = Dni });
     public async Task<IEnumerable<Cliente>> BuscarClienteAsync(string Busqueda)
         => await _conexion.QueryAsync<Cliente>(_searchCliente, new { Busqueda = Busqueda });
     public Cliente? ObtenerClientePorCorreoContrasña(string Email, string Contrasena) =>
@@ -251,6 +251,9 @@ public class AdoDapper : IAdo
 
     private readonly string _queryCamaPorId
         = "SELECT * FROM Cama WHERE IdCama = @unIdCama";
+        
+    private readonly string _searchCama
+        = @"CALL BuscarCama(@Busqueda)";
 
     public List<Cama> ObtenerCama() => _conexion.Query<Cama>(_queryCama).ToList();
 
@@ -262,11 +265,15 @@ public class AdoDapper : IAdo
     public Cama? ObtenerCamaPorId(byte IdCama) =>
     _conexion.QueryFirstOrDefault<Cama>(_queryCamaPorId, new { unIdCama = IdCama });
 
-    public async Task<Cama?> ObtenerCamaPorIdAsync(byte IdCama)
+    public async Task<Cama?> ObtenerCamaPorIdAsync(byte? IdCama)
     {
         var cama = await _conexion.QueryFirstOrDefaultAsync<Cama>(_queryCamaPorId, new { unIdCama = IdCama });
         return cama;
     }
+
+
+    public async Task<IEnumerable<Cama>> BuscarCamaAsync(string Busqueda)
+        => await _conexion.QueryAsync<Cama>(_searchCama, new { Busqueda = Busqueda });
 
     public void AltaCama(Cama cama)
     {
@@ -303,6 +310,28 @@ public class AdoDapper : IAdo
 
             //Obtengo el valor de parametro de tipo salida
             cama.IdCama = parametros.Get<byte>("@unIdCama");
+        }
+        catch (MySqlException error)
+        {
+            if (error.ErrorCode == MySqlErrorCode.DuplicateKeyEntry)
+            {
+                // Verificar si el error es por el Nombre
+                if (error.Message.Contains("Nombre"))
+                {
+                    throw new ConstraintException("El nombre " + cama.Nombre + " ya se encuentra en uso.");
+                }
+            }
+            throw;
+        }
+    }
+
+    public async Task ModificarCamaAsync(Cama cama)
+    {
+        var parametros = ParametrosAltaCama(cama);
+
+        try
+        {
+            await _conexion.ExecuteAsync("ModificarCama", parametros);
         }
         catch (MySqlException error)
         {

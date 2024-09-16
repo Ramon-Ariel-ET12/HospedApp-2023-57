@@ -1,0 +1,35 @@
+@using HotelApp.Core;
+@model Cama;
+@{
+    var texto = Model is null ? "Alta Cama" : "Modificar Cama";
+    ViewData["Title"] = texto;
+}
+
+<form asp-controller="Cama" asp-action="Upsert" method="post">
+    <div asp-validation-summary="All"></div>
+    <div><input type="hidden" asp-for="@Model.IdCama" /></div>
+    <div class="row g-3 align-items-center">
+        <div class="col-auto">
+            <label asp-for="Nombre" class="col-form-label">Nombre</label>
+        </div>
+        <div class="col-auto">
+            <input asp-for="Nombre" class="form-control" />
+        </div>
+        <div class="col-auto">
+            <label asp-for="Pueden_dormir" class="col-form-label">Pueden dormir</label>
+        </div>
+        <div class="col-auto">
+            <input asp-for="Pueden_dormir" class="form-control" />
+        </div>
+        <div class="col-auto">
+            @if (Model is null)
+            {
+                <button type="submit" class="btn btn-primary">@texto</button>
+            }
+            else
+            {
+                <button type="submit" class="btn btn-warning">@texto</button>
+            }
+        </div>
+    </div>
+</form>

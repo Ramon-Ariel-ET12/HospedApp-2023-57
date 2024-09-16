@@ -23,8 +23,10 @@ public interface IAdo
     Task<List<Cama>> ObtenerCamaAsync();
     Cama? ObtenerCamaPorId(byte IdCama);
     Task<Cama?> ObtenerCamaPorIdAsync(byte IdCama);
+    Task<IEnumerable<Cama>> BuscarCamaAsync(string Busqueda);
     void AltaCama(Cama cama);
     Task AltaCamaAsync(Cama cama);
+    Task ModificarCamaAsync(Cama cama);
 
     List<Cuarto> ObtenerCuarto();
     Task<List<Cuarto>> ObtenerCuartoAsync();

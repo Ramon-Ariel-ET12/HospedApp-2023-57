@@ -36,7 +36,7 @@ namespace Hotel.Mvc.Controllers
         [HttpPost]
         public async Task<IActionResult> Upsert(Cliente cliente)
         {
-            var existe =_Cliente.ObtenerClientePorDni(cliente.Dni);
+            var existe = await _Cliente.ObtenerClientePorDni(cliente.Dni);
             if (existe is null)
                 await _Cliente.AltaClienteAsync(cliente);
             else
@@ -45,12 +45,5 @@ namespace Hotel.Mvc.Controllers
             }
             return RedirectToAction("Busqueda");
         }
-        /*         {
-                    if (!ModelState.IsValid)
-                        return View("Upsert", cliente);
-                    await _Cliente.AltaClienteAsync(cliente);
-
-                    return RedirectToAction("Busqueda");
-                } */
     }
 }

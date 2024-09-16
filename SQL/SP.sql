@@ -1,4 +1,4 @@
--- Active: 1700068523370@@127.0.0.1@3306@5to_HospedApp2023
+-- Active: 1726521199522@@127.0.0.1@3306@5to_hospedapp2023
 #Realizar los SP para dar de alta todas las entidades menos las tablas Cliente y Reserva.
 DELIMITER $$
 DROP PROCEDURE IF EXISTS AltaHotel $$
@@ -19,6 +19,15 @@ BEGIN
 	SET unIdCama = LAST_INSERT_ID();
 END $$
 
+DELIMITER $$
+DROP PROCEDURE IF EXISTS ModificarCama $$
+CREATE PROCEDURE ModificarCama (OUT unIdCama TINYINT UNSIGNED, unNombre VARCHAR(64), unPueden_dormir TINYINT UNSIGNED)
+BEGIN
+		UPDATE `Cama`
+		SET `Nombre` = unNombre, `Pueden_dormir` = unPueden_dormir
+		WHERE `IdCama` = unIdCama;
+END $$
+
 
 DELIMITER $$
 DROP PROCEDURE IF EXISTS AltaCuarto $$
@@ -37,7 +46,6 @@ BEGIN
 	INSERT INTO Cuarto_Cama (IdCuarto, IdCama, Cantidad_de_cama)
 	VALUES (unIdCuarto, unIdCama, unCantidad_de_cama);
 END $$
-
 
 DELIMITER $$
 DROP PROCEDURE IF EXISTS AltaHotel_Cuarto $$
@@ -122,4 +130,13 @@ BEGIN
     OR Nombre LIKE CONCAT('%', buscar, '%')
     OR Apellido LIKE CONCAT('%', buscar, '%')
     OR LEFT(Email, LOCATE('@', Email) - 1) LIKE CONCAT('%', buscar, '%');
+END $$
+
+DELIMITER $$
+DROP PROCEDURE IF EXISTS BuscarCama $$
+CREATE PROCEDURE BuscarCama (buscar VARCHAR(255))
+BEGIN
+    SELECT * FROM Cama
+    WHERE Nombre LIKE CONCAT('%', buscar, '%')
+    OR Pueden_dormir LIKE CONCAT('%', buscar, '%');
 END $$
