@@ -9,5 +9,5 @@ public class Reserva{
     public byte IdCuarto { get; set; }
     public uint Calificacion_del_cliente { get; set; }
     public uint Calificacion_del_hotel { get; set; }
-    public uint Comentario_del_cliente { get; set; }
+    public string Comentario_del_cliente { get; set; }
 }

@@ -18,7 +18,7 @@ classDiagram
         Nombre: string
         Apellido: string 
         Email: string 
-        Contraseña: string 
+        Contrasena: string 
     }
     class  Cuarto_Cama{
         IdCuarto: List~Cuarto~ PK FK
@@ -36,7 +36,7 @@ classDiagram
         Nombre: string 
         Domicilio: string 
         Email: string 
-        Contraseña: string 
+        Contrasena: string 
         Estrella: int 
     }
     class Reserva{
@@ -48,7 +48,7 @@ classDiagram
         IdCuarto: List~Cuarto~ FK
         Calificacion_del_cliente: int
         Calificacion_del_hotel: int
-        Comentario_del_cliente: int
+        Comentario_del_cliente: string
     }
     class ReservaCancelada{
         IdReserva: int PK FK

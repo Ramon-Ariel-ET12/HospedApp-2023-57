@@ -1,11 +1,11 @@
--- Active: 1688376962977@@127.0.0.1@3306@5to_hospeddapp2023
+-- Active: 1700068523370@@127.0.0.1@3306@5to_HospedApp2023
 #Realizar los SP para dar de alta todas las entidades menos las tablas Cliente y Reserva.
 DELIMITER $$
 DROP PROCEDURE IF EXISTS AltaHotel $$
-CREATE PROCEDURE AltaHotel (OUT unIdHotel SMALLINT UNSIGNED, unNombre VARCHAR(64), unDomicilio VARCHAR(64), unEmail VARCHAR(64), unContraseña CHAR(64), unEstrella TINYINT UNSIGNED)
+CREATE PROCEDURE AltaHotel (OUT unIdHotel SMALLINT UNSIGNED, unNombre VARCHAR(64), unDomicilio VARCHAR(64), unEmail VARCHAR(64), unContrasena CHAR(64), unEstrella TINYINT UNSIGNED)
 BEGIN
-	INSERT INTO Hotel (Nombre, Domicilio, Email, Contraseña, Estrella)
-	VALUES (unNombre, unDomicilio, unEmail, SHA2(unContraseña, 256), unEstrella);
+	INSERT INTO Hotel (Nombre, Domicilio, Email, Contrasena, Estrella)
+	VALUES (unNombre, unDomicilio, unEmail, SHA2(unContrasena, 256), unEstrella);
 	SET unIdHotel = LAST_INSERT_ID();
 END $$
 
@@ -47,23 +47,24 @@ BEGIN
 					VALUES	(unIdHotel, unIdCuarto);
 END $$
 
-#Se pide hacer el SP ‘registrarCliente’ que reciba los datos del cliente. Es importante guardar encriptada la contraseña del cliente usando SHA256.
+#Se pide hacer el SP ‘registrarCliente’ que reciba los datos del cliente. Es importante guardar encriptada la contrasena del cliente usando SHA256.
 DELIMITER $$
 DROP PROCEDURE IF EXISTS RegistrarCliente $$
-CREATE PROCEDURE RegistrarCliente (unDni INT UNSIGNED, unNombre VARCHAR(64), unApellido VARCHAR(64), unEmail VARCHAR(64), unContraseña CHAR(64))
+CREATE PROCEDURE RegistrarCliente (unDni INT UNSIGNED, unNombre VARCHAR(64), unApellido VARCHAR(64), unEmail VARCHAR(64), unContrasena CHAR(64))
 BEGIN
-		INSERT INTO Cliente (Dni, Nombre, Apellido, Email, Contraseña)
-		VALUES (unDni, unNombre, unApellido, unEmail, unContraseña);
+		INSERT INTO Cliente (Dni, Nombre, Apellido, Email, Contrasena)
+		VALUES (unDni, unNombre, unApellido, unEmail, unContrasena);
 END $$
 
 
 #Se pide hacer el SP ‘altaReserva’ que reciba los datos no opcionales y haga el alta de una estadia.
 DELIMITER $$
 DROP PROCEDURE IF EXISTS AltaReserva $$
-CREATE PROCEDURE AltaReserva (unIdHotel SMALLINT UNSIGNED,unInicio DATE, unFin DATE, unDni INT UNSIGNED, unIdCuarto TINYINT UNSIGNED)
+CREATE PROCEDURE AltaReserva (OUT unIdReserva SMALLINT UNSIGNED, unIdHotel SMALLINT UNSIGNED,unInicio DATE, unFin DATE, unDni INT UNSIGNED, unIdCuarto TINYINT UNSIGNED)
 BEGIN
 	INSERT INTO Reserva (IdHotel, Inicio, Fin, Dni, IdCuarto)
 	VALUES (unIdHotel, unInicio, unFin, unDni, unIdCuarto);
+	SET unIdReserva = LAST_INSERT_ID();
 END $$
  #Hacer el SP ‘cerrarEstadiaHotel’ que reciba los parámetros necesarios y una calificación por parte del hotel. 
 
@@ -99,4 +100,15 @@ BEGIN
 	JOIN Cama USING (IdCama)
 	WHERE IdCuarto = unIdCuarto;
 	RETURN suma;
+END $$
+
+DELIMITER $$
+DROP PROCEDURE IF EXISTS BuscarCliente $$
+CREATE PROCEDURE BuscarCliente (buscar VARCHAR(255))
+BEGIN
+    SELECT * FROM Cliente
+    WHERE Dni LIKE CONCAT('%', buscar, '%')
+    OR Nombre LIKE CONCAT('%', buscar, '%')
+    OR Apellido LIKE CONCAT('%', buscar, '%')
+    OR LEFT(Email, LOCATE('@', Email) - 1) LIKE CONCAT('%', buscar, '%');
 END $$

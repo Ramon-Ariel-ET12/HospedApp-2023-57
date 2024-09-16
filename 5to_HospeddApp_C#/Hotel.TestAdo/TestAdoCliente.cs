@@ -11,9 +11,9 @@ public class TestAdoCliente : TestAdo
     }
     [Theory]
     [InlineData("Quemirabobo@gmail.com", "Andapalla")]
-    public void ClientesPorCorreoContraseña(string Email, string Contraseña)
+    public void ClientesPorCorreoContrasena(string Email, string Contrasena)
     {
-        var cliente = Ado.ObtenerClientePorCorreoContrasña(Email, Contraseña);
+        var cliente = Ado.ObtenerClientePorCorreoContrasña(Email, Contrasena);
 
         Assert.NotNull(cliente);
     }
@@ -27,7 +27,7 @@ public class TestAdoCliente : TestAdo
             Nombre = "Kakaroto",
             Apellido = "Gohan",
             Email = "Goku12345678@gmail.com",
-            Contraseña = "Vegueta777",
+            Contrasena = "Vegueta777",
         };
 
         Ado.AltaCliente(nuevocliente);
