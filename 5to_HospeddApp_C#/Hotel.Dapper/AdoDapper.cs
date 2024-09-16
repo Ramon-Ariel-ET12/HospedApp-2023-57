@@ -121,7 +121,6 @@ public class AdoDapper : IAdo
         = @"CALL BuscarCliente(@Busqueda)";
     private readonly string _queryClienteCorreoContrasena
         = @"SELECT * FROM Cliente WHERE Email = @unEmail AND Contrasena = SHA2(@unContrasena, 256)";
-    
     private readonly string _queryClienteDni
         = @"SELECT * FROM Cliente WHERE Dni = @unDni";
 
@@ -185,6 +184,35 @@ public class AdoDapper : IAdo
 
             //Obtengo el valor de parametro de tipo salida
             cliente.Dni = parametros.Get<uint>("@unDni");
+        }
+        catch (MySqlException error)
+        {
+            if (error.ErrorCode == MySqlErrorCode.DuplicateKeyEntry)
+            {
+                // Verificar si el error es por el Email o por el Dni
+                if (error.Message.Contains("Email"))
+                {
+                    throw new ConstraintException("El Email " + cliente.Email + " ya se encuentra en uso.");
+                }
+                else if (error.Message.Contains("PRIMARY"))
+                {
+                    throw new ConstraintException("El Dni " + cliente.Dni + " ya se encuentra registrado.");
+                }
+            }
+            throw;
+        }
+    }
+
+    public async Task ModificarClienteAsync(Cliente cliente)
+    {
+        //Preparo los parametros del Stored Procedure
+        var parametros = ParametrosAltaCliente(cliente);
+        try
+        {
+            await _conexion.ExecuteAsync("ModificarCliente", parametros, commandType: CommandType.StoredProcedure);
+
+            //Obtengo el valor de parametro de tipo salida - NO VA
+            // cliente.Dni = parametros.Get<uint>("@unDni");
         }
         catch (MySqlException error)
         {

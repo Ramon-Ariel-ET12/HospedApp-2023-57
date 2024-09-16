@@ -27,6 +27,15 @@ BEGIN
 	END IF;
 END $$
 
+
+DELIMITER $$
+DROP TRIGGER IF EXISTS befInsCliente $$
+CREATE TRIGGER befUpdCliente BEFORE UPDATE ON Cliente
+FOR EACH ROW
+BEGIN
+    SET NEW.Contrasena = SHA2(NEW.Contrasena, 256);
+END $$
+
 DELIMITER $$
 DROP TRIGGER IF EXISTS befInsHotel_Cuarto $$
  CREATE TRIGGER befInsHotel_Cuarto BEFORE INSERT ON Hotel_Cuarto

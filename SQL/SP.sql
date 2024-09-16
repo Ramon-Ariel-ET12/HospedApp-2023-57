@@ -57,6 +57,17 @@ BEGIN
 END $$
 
 
+DELIMITER $$
+DROP PROCEDURE IF EXISTS ModificarCliente $$
+CREATE PROCEDURE ModificarCliente (unDni INT UNSIGNED, unNombre VARCHAR(64), unApellido VARCHAR(64), unEmail VARCHAR(64), unContrasena CHAR(64))
+BEGIN
+		UPDATE `Cliente`
+		SET `Nombre` = unNombre, `Apellido` = unApellido, `Email` = unEmail, `Contrasena` = unContrasena
+		WHERE `Dni` = unDni;
+
+END $$
+
+
 #Se pide hacer el SP ‘altaReserva’ que reciba los datos no opcionales y haga el alta de una estadia.
 DELIMITER $$
 DROP PROCEDURE IF EXISTS AltaReserva $$

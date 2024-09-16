@@ -17,6 +17,7 @@ public interface IAdo
     Task<Cliente?> ObtenerClientePorCorreoContrasñaAsync(string Email, string Contrasena);
     void AltaCliente(Cliente cliente);
     Task AltaClienteAsync(Cliente cliente);
+    Task ModificarClienteAsync(Cliente cliente);
 
     List<Cama> ObtenerCama();
     Task<List<Cama>> ObtenerCamaAsync();
