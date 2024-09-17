@@ -1,7 +1,7 @@
 using HotelApp.Core;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Hotel.Mvc.Controllers
+namespace HotelApp.Mvc.Controllers
 {
     public class ClienteController : Controller
     {
@@ -29,19 +29,38 @@ namespace Hotel.Mvc.Controllers
             return View("Busqueda", cliente);
         }
         [HttpGet]
-        public IActionResult Alta()
+        public IActionResult Alta() => View("Upsert");
+        
+        [HttpGet]
+        public async Task<IActionResult> Modificar(uint? Dni)
         {
-            return View("Upsert");
+            if (Dni is null || Dni == 0)
+                return NotFound();
+
+            var cliente = await _Cliente.ObtenerClientePorDni(Dni);
+            if (cliente is null)
+                return NotFound();
+
+            return View("Upsert", cliente);
         }
         [HttpPost]
         public async Task<IActionResult> Upsert(Cliente cliente)
         {
-            var existe = await _Cliente.ObtenerClientePorDni(cliente.Dni);
-            if (existe is null)
-                await _Cliente.AltaClienteAsync(cliente);
-            else
+            try
             {
-                await _Cliente.ModificarClienteAsync(cliente);
+                if (cliente.Dni == 0)
+                    await _Cliente.AltaClienteAsync(cliente);
+                else
+                {
+                    var existe = await _Cliente.ObtenerClientePorDni(cliente.Dni);
+                    if (existe is null)
+                        return NotFound();
+                    await _Cliente.ModificarClienteAsync(cliente);
+                }
+            }
+            catch
+            {
+                return NotFound();
             }
             return RedirectToAction("Busqueda");
         }

@@ -1,4 +1,4 @@
-namespace Hotel.Mvc.Models;
+namespace HotelApp.Mvc.Models;
 
 public class ErrorViewModel
 {

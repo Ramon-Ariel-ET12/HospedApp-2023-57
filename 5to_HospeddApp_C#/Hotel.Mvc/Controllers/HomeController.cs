@@ -1,9 +1,9 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using Hotel.Mvc.Models;
+using HotelApp.Mvc.Models;
 using HotelApp.Core;
 
-namespace Hotel.Mvc.Controllers;
+namespace HotelApp.Mvc.Controllers;
 
 public class HomeController : Controller
 {

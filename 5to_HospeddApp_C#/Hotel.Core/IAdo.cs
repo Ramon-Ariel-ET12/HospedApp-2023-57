@@ -6,12 +6,14 @@ public interface IAdo
     Task<List<Hotel>> ObtenerHotelAsync();
     void AltaHotel(Hotel hotel);
     Task AltaHotelAsync(Hotel hotel);
+    Task ModificarHotelAsync(Hotel hotel);
+    Task<IEnumerable<Hotel>> BuscarHotelAsync(string Busqueda);
     Hotel? ObtenerHotelPorId(ushort IdHotel);
-    Task<Hotel?> ObtenerHotelPorIdAsync(ushort IdHotel);
+    Task<Hotel?> ObtenerHotelPorIdAsync(ushort? IdHotel);
 
     List<Cliente> ObtenerCliente();
     Task<List<Cliente>> ObtenerClienteAsync();
-    Task<Cliente?> ObtenerClientePorDni(uint Dni);
+    Task<Cliente?> ObtenerClientePorDni(uint? Dni);
     Task<IEnumerable<Cliente>> BuscarClienteAsync(string Busqueda);
     Cliente? ObtenerClientePorCorreoContrasña(string Email, string Contrasena);
     Task<Cliente?> ObtenerClientePorCorreoContrasñaAsync(string Email, string Contrasena);
@@ -22,7 +24,7 @@ public interface IAdo
     List<Cama> ObtenerCama();
     Task<List<Cama>> ObtenerCamaAsync();
     Cama? ObtenerCamaPorId(byte IdCama);
-    Task<Cama?> ObtenerCamaPorIdAsync(byte IdCama);
+    Task<Cama?> ObtenerCamaPorIdAsync(byte? IdCama);
     Task<IEnumerable<Cama>> BuscarCamaAsync(string Busqueda);
     void AltaCama(Cama cama);
     Task AltaCamaAsync(Cama cama);
@@ -31,9 +33,11 @@ public interface IAdo
     List<Cuarto> ObtenerCuarto();
     Task<List<Cuarto>> ObtenerCuartoAsync();
     Cuarto? ObtenerCuartoPorId(byte IdCuarto);
-    Task<Cuarto?> ObtenerCuartoPorIdAsync(byte IdCuarto);
+    Task<Cuarto?> ObtenerCuartoPorIdAsync(byte? IdCuarto);
     void AltaCuarto(Cuarto cuarto);
     Task AltaCuartoAsync(Cuarto cuarto);
+    Task ModificarCuartoAsync(Cuarto cuarto);
+    Task<IEnumerable<Cuarto>> BuscarCuartoAsync(string Busqueda);
 
     List<Cuarto_Cama> ObtenerCuarto_Cama();
     Task<List<Cuarto_Cama>> ObtenerCuarto_CamaAsync();
@@ -52,7 +56,9 @@ public interface IAdo
     List<Reserva> ObtenerReserva();
     Task<List<Reserva>> ObtenerReservaAsync();
     Reserva? ObtenerReservaId(ushort IdReserva);
-    Task<Reserva?> ObtenerReservaIdAsync(ushort IdReserva);
+    Task<Reserva?> ObtenerReservaPorIdAsync(ushort? IdReserva);
     void AltaReserva(Reserva reserva);
     Task AltaReservaAsync(Reserva reserva);
+    Task ModificarReservaAsync(Reserva reserva);
+    Task<IEnumerable<Reserva>> BuscarReservaAsync(string Busqueda);
 }

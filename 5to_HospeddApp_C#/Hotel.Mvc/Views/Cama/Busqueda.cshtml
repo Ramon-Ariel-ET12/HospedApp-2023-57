@@ -22,23 +22,27 @@
     }
     else
     {
-        <br><br>
-        <table class="table table-striped">
-                <thead>
+    <h3>Camas</h3>
+    <br><br>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col">Pueden dormir</th>
+                <th scope="col" colspan="2">Acciones</th>
+            </tr>
+        </thead>
+        <tbody class="">
+            @foreach (var cama in Model)
+            {
                 <tr>
-                        <th scope="col">Nombre</th>
-                        <th scope="col">Pueden dormir</th>
+                    <th>@cama.Nombre</th>
+                    <th>@cama.Pueden_dormir</th>
+                    <td><a asp-action="Detalle" asp-route-Id="@cama.IdCama">Detalle <i class="bi bi-eyeglasses" style="color: black;"></i></a></td>
+                    <td><a asp-action="Modificar" asp-route-Id="@cama.IdCama">Modificar <i class="bi bi-pencil-fill" style="color: black;"></i></a></td>
                 </tr>
-                </thead>
-                <tbody class="">
-                @foreach (var Cama in Model)
-                {
-                        <tr>
-                        <th scope="row">@Cama.Nombre</th>
-                        <td>@Cama.Pueden_dormir</td>
-                        </tr>
-                }
-                </tbody>
-        </table>
+            }
+        </tbody>
+    </table>
 }
 </div>

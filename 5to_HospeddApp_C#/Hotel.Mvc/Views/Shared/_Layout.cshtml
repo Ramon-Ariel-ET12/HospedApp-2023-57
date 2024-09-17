@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,32 +8,37 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
+
 <body>
 
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">HospedApp</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse">
                     <ul class="navbar-nav">
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarHotelMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">Hotel</a>
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarHotelMenu" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">Hotel</a>
                             <ul class="dropdown-menu" aria-labelledby="navbarHotelMenu">
-                                <li><a class="dropdown-item" asp-controller="Hotel" asp-action="Busqueda"><i class="bi bi-list-nested"></i> Busqueda</a></li>                        
-                                <li><a class="dropdown-item" asp-controller="Hotel" asp-action="Alta"><i class="bi bi-list-nested"></i> Alta</a></li>                        
+                                <li><a class="dropdown-item" asp-controller="Hotel" asp-action="Busqueda"><i
+                                            class="bi bi-list-nested"></i> Busqueda</a></li>
+                                <li><a class="dropdown-item" asp-controller="Hotel" asp-action="Alta"><i
+                                            class="bi bi-list-nested"></i> Alta</a></li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarCuartoMenu" role="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                Cuarto
-                            </a>
+                                data-bs-toggle="dropdown" aria-expanded="false">Cuarto</a>
                             <ul class="dropdown-menu" aria-labelledby="navbarCuartoMenu">
-                                <li><a class="dropdown-item" asp-controller="Cuarto" asp-action="Busqueda"><i class="bi bi-plus-circle"></i> Busqueda</a></li>
+                                <li><a class="dropdown-item" asp-controller="Cuarto" asp-action="Busqueda"><i
+                                            class="bi bi-plus-circle"></i> Busqueda</a></li>
+                                <li><a class="dropdown-item" asp-controller="Cuarto" asp-action="Alta"><i
+                                            class="bi bi-list-nested"></i> Alta</a></li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
@@ -41,8 +47,10 @@
                                 Cama
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarCamaMenu">
-                                <li><a class="dropdown-item" asp-controller="Cama" asp-action="Busqueda"><i class="bi bi-list-nested"></i> Busqueda</a></li>        
-                                <li><a class="dropdown-item" asp-controller="Cama" asp-action="Alta"><i class="bi bi-list-nested"></i> Alta</a></li>                        
+                                <li><a class="dropdown-item" asp-controller="Cama" asp-action="Busqueda"><i
+                                            class="bi bi-list-nested"></i> Busqueda</a></li>
+                                <li><a class="dropdown-item" asp-controller="Cama" asp-action="Alta"><i
+                                            class="bi bi-list-nested"></i> Alta</a></li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
@@ -51,7 +59,10 @@
                                 Reserva
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarCamaMenu">
-                                <li><a class="dropdown-item" asp-controller="Reserva" asp-action="Busqueda"><i class="bi bi-list-nested"></i> Busqueda</a></li>                                
+                                <li><a class="dropdown-item" asp-controller="Reserva" asp-action="Busqueda"><i
+                                            class="bi bi-list-nested"></i> Busqueda</a></li>
+                                <li><a class="dropdown-item" asp-controller="Reserva" asp-action="Alta"><i
+                                            class="bi bi-list-nested"></i> Alta</a></li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
@@ -60,8 +71,10 @@
                                 Cliente
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarCamaMenu">
-                                <li><a class="dropdown-item" asp-controller="Cliente" asp-action="Busqueda"><i class="bi bi-list-nested"></i> Busqueda</a></li>                  
-                                <li><a class="dropdown-item" asp-controller="Cliente" asp-action="Alta"><i class="bi bi-list-nested"></i> Alta</a></li>                  
+                                <li><a class="dropdown-item" asp-controller="Cliente" asp-action="Busqueda"><i
+                                            class="bi bi-list-nested"></i> Busqueda</a></li>
+                                <li><a class="dropdown-item" asp-controller="Cliente" asp-action="Alta"><i
+                                            class="bi bi-list-nested"></i> Alta</a></li>
                             </ul>
                         </li>
                 </div>
@@ -75,17 +88,18 @@
     </div>
 
 
-@*
+    @*
     <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - Hotel.Mvc - <a asp-area="" asp-controller="Home" asp-action="Reservas">Reservas</a>
-        </div>
+    <div class="container">
+    &copy; 2024 - Hotel.Mvc - <a asp-area="" asp-controller="Home" asp-action="Reservas">Reservas</a>
+    </div>
     </footer>
-*@
+    *@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
+
 </html>

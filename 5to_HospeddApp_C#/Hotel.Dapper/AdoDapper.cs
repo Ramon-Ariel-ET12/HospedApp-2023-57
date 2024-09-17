@@ -33,6 +33,34 @@ public class AdoDapper : IAdo
     private readonly string _queryHotelPorId
         = "SELECT * FROM Hotel WHERE IdHotel = @unIdhotel";
 
+    private readonly string _searchHotel
+        = "CALL BuscarHotel(@Busqueda)";
+
+    public async Task ModificarHotelAsync(Hotel hotel)
+    {
+        var parametros = ParametrosAltaHotel(hotel);
+        try
+        {
+            await _conexion.ExecuteAsync("ModificarHotel", parametros);
+        }
+        catch (MySqlException error)
+        {
+            if (error.ErrorCode == MySqlErrorCode.DuplicateKeyEntry)
+            {
+                // Verificar si el error es por el Email
+                if (error.Message.Contains("Email"))
+                {
+                    throw new ConstraintException("El Email " + hotel.Email + " ya se encuentra en uso.");
+                }
+            }
+            throw;
+        }
+    }
+
+    public async Task<IEnumerable<Hotel>> BuscarHotelAsync(string Busqueda)
+    => await _conexion.QueryAsync<Hotel>(_searchHotel, new { Busqueda = Busqueda });
+
+
     public List<Hotel> ObtenerHotel() => _conexion.Query<Hotel>(_queryHotel).ToList();
 
     public async Task<List<Hotel>> ObtenerHotelAsync()
@@ -44,7 +72,7 @@ public class AdoDapper : IAdo
     public Hotel? ObtenerHotelPorId(ushort IdHotel) =>
     _conexion.QueryFirstOrDefault<Hotel>(_queryHotelPorId, new { unIdhotel = IdHotel });
 
-    public async Task<Hotel?> ObtenerHotelPorIdAsync(ushort IdHotel)
+    public async Task<Hotel?> ObtenerHotelPorIdAsync(ushort? IdHotel)
     {
         var hotel = await _conexion.QueryFirstOrDefaultAsync<Hotel>(_queryHotelPorId, new { unIdhotel = IdHotel });
         return hotel;
@@ -132,7 +160,7 @@ public class AdoDapper : IAdo
         var cliente = (await _conexion.QueryAsync<Cliente>(_queryCliente)).ToList();
         return cliente;
     }
-    public async Task<Cliente?> ObtenerClientePorDni(uint Dni)
+    public async Task<Cliente?> ObtenerClientePorDni(uint? Dni)
         => await _conexion.QueryFirstOrDefaultAsync<Cliente>(_queryClienteDni, new { unDni = Dni });
     public async Task<IEnumerable<Cliente>> BuscarClienteAsync(string Busqueda)
         => await _conexion.QueryAsync<Cliente>(_searchCliente, new { Busqueda = Busqueda });
@@ -251,7 +279,7 @@ public class AdoDapper : IAdo
 
     private readonly string _queryCamaPorId
         = "SELECT * FROM Cama WHERE IdCama = @unIdCama";
-        
+
     private readonly string _searchCama
         = @"CALL BuscarCama(@Busqueda)";
 
@@ -331,7 +359,7 @@ public class AdoDapper : IAdo
 
         try
         {
-            await _conexion.ExecuteAsync("ModificarCama", parametros);
+            await _conexion.ExecuteAsync("ModificarCama", parametros, commandType: CommandType.StoredProcedure);
         }
         catch (MySqlException error)
         {
@@ -366,8 +394,34 @@ public class AdoDapper : IAdo
     = "SELECT * FROM Cuarto";
     private readonly string _queryCuartoPorId
     = "SELECT * FROM Cuarto WHERE IdCuarto = @unIdCuarto";
+    private readonly string _searchCuarto
+        = "CALL BuscarCuarto(@Busqueda)";
 
     public List<Cuarto> ObtenerCuarto() => _conexion.Query<Cuarto>(_queryCuarto).ToList();
+
+    public async Task ModificarCuartoAsync(Cuarto cuarto)
+    {
+        var parametros = ParametrosAltaCuarto(cuarto);
+
+        try
+        {
+            await _conexion.ExecuteAsync("ModificarCuarto", parametros);
+        }
+        catch (MySqlException error)
+        {
+            if (error.ErrorCode == MySqlErrorCode.DuplicateKeyEntry)
+            {
+                if (error.Message.Contains("Descripcion"))
+                {
+                    throw new ConstraintException("La Descripcion " + cuarto.Descripcion + " ya se encuentra en uso.");
+                }
+            }
+            throw;
+        }
+    }
+
+    public async Task<IEnumerable<Cuarto>> BuscarCuartoAsync(string Busqueda)
+        => await _conexion.QueryAsync<Cuarto>(_searchCuarto, new { Busqueda = Busqueda });
 
     public async Task<List<Cuarto>> ObtenerCuartoAsync()
     {
@@ -378,7 +432,7 @@ public class AdoDapper : IAdo
     public Cuarto? ObtenerCuartoPorId(byte IdCuarto)
     => _conexion.QueryFirstOrDefault<Cuarto>(_queryCuartoPorId, new { unIdCuarto = IdCuarto });
 
-    public async Task<Cuarto?> ObtenerCuartoPorIdAsync(byte IdCuarto)
+    public async Task<Cuarto?> ObtenerCuartoPorIdAsync(byte? IdCuarto)
     {
         var cuarto = await _conexion.QueryFirstOrDefaultAsync<Cuarto>(_queryCuartoPorId, new { unIdCuarto = IdCuarto });
         return cuarto;
@@ -616,7 +670,8 @@ public class AdoDapper : IAdo
     = "SELECT * FROM Reserva";
     private readonly string _queryReservaPorId
     = "SELECT * FROM Reserva WHERE IdReserva = @unIdReserva";
-    public List<Reserva> ObtenerReserva() => _conexion.Query<Reserva>(_queryReserva).ToList();
+    private readonly string _searchReserva
+        = "CALL BuscarReserva(@Busqueda)";
 
     public async Task<List<Reserva>> ObtenerReservaAsync()
     {
@@ -624,11 +679,11 @@ public class AdoDapper : IAdo
         return reserva;
     }
 
-    public Reserva? ObtenerReservaId(ushort IdReserva) => _conexion.QueryFirstOrDefault<Reserva>(_queryReservaPorId, new { unIdReserva = IdReserva});
+    public Reserva? ObtenerReservaId(ushort IdReserva) => _conexion.QueryFirstOrDefault<Reserva>(_queryReservaPorId, new { unIdReserva = IdReserva });
 
-    public async Task<Reserva?> ObtenerReservaIdAsync(ushort IdRreserva)
+    public async Task<Reserva?> ObtenerReservaPorIdAsync(ushort? IdRreserva)
     {
-        var reserva = await _conexion.QueryFirstOrDefaultAsync<Reserva>(_queryReservaPorId, new{ unIdReserva = IdRreserva });
+        var reserva = await _conexion.QueryFirstOrDefaultAsync<Reserva>(_queryReservaPorId, new { unIdReserva = IdRreserva });
         return reserva;
     }
 
@@ -672,6 +727,36 @@ public class AdoDapper : IAdo
             }
             throw;
         }
+    }
+
+    public async Task ModificarReservaAsync(Reserva reserva)
+    {
+        var parametros = ParametrosAltaReserva(reserva);
+
+        try
+        {
+            await _conexion.ExecuteAsync("ModificarReserva", parametros);
+        }
+        catch (MySqlException error)
+        {
+            if (error.ErrorCode == MySqlErrorCode.DuplicateKeyEntry)
+            {
+                if (error.Message.Contains("IdHotel"))
+                {
+                    throw new ConstraintException("El IdCuarto " + reserva.IdCuarto + "No existe");
+                }
+            }
+            throw;
+        }
+    }
+
+    public async Task<IEnumerable<Reserva>> BuscarReservaAsync(string Busqueda)
+        => await _conexion.QueryAsync<Reserva>(_searchReserva, new { Busqueda = Busqueda });
+
+    public List<Reserva> ObtenerReserva()
+    {
+        var reserva = _conexion.Query<Reserva>(_queryReserva).ToList();
+        return reserva;
     }
     #endregion
 

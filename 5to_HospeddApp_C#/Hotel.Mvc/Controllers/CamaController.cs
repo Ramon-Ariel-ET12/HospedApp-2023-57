@@ -1,7 +1,7 @@
 using HotelApp.Core;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Hotel.Mvc.Controllers
+namespace HotelApp.Mvc.Controllers
 {
     public class CamaController : Controller
     {
@@ -28,45 +28,43 @@ namespace Hotel.Mvc.Controllers
             cama = cama ?? new List<Cama>();
             return View("Busqueda", cama);
         }
-    [HttpGet]
-    public IActionResult Alta() => View("Upsert");
-    [HttpGet]
-    public async Task<IActionResult> Modificar(byte? id)
-    {
-        if (id is null || id == 0)
-            return NotFound();
-
-        var cama = await _Cama.ObtenerCamaPorIdAsync(id);
-        if (cama is null)
-            return NotFound();
-
-        return View("Upsert", cama);
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Upsert(Cama cama)
-    {
-        if (cama.IdCama == 0)
-            await _Cama.RepoCama.AltaAsync(cama);
-        else
+        [HttpGet]
+        public IActionResult Alta() => View("Upsert");
+        [HttpGet]
+        public async Task<IActionResult> Modificar(byte? id)
         {
-            var camaRepo = await _Cama.RepoCama.ObtenerPorIdAsync(cama.Id);
-            if (camaRepo is null)
+            if (id is null || id == 0)
                 return NotFound();
-            camaRepo.Nombre = cama.Nombre;
-            _Cama.RepoCama.Modificar(camaRepo);
+
+            var cama = await _Cama.ObtenerCamaPorIdAsync(id);
+            if (cama is null)
+                return NotFound();
+
+            return View("Upsert", cama);
         }
-        try
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Upsert(Cama cama)
         {
-            await _Cama.GuardarAsync();
+            try
+            {
+                if (cama.IdCama == null || cama.IdCama == 0)
+                    await _Cama.AltaCamaAsync(cama);
+                else
+                {
+                    var existe = await _Cama.ObtenerCamaPorIdAsync(cama.IdCama);
+                    if (existe is null)
+                        return NotFound();
+                    await _Cama.ModificarCamaAsync(cama);
+                }
+            }
+            catch
+            {
+                return NotFound();
+            }
+            return RedirectToAction("Busqueda");
         }
-        catch (EntidadDuplicadaException e)
-        {
-            return NotFound();
-        }
-        return RedirectToAction(nameof(Listado));
-    }
 
     }
 }

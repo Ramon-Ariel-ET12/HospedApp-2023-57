@@ -1,4 +1,4 @@
--- Active: 1726521199522@@127.0.0.1@3306@5to_hospedapp2023
+-- Active: 1726545379907@@127.0.0.1@3306@5to_hospedapp2023
 #Realizar los SP para dar de alta todas las entidades menos las tablas Cliente y Reserva.
 DELIMITER $$
 DROP PROCEDURE IF EXISTS AltaHotel $$
@@ -9,6 +9,14 @@ BEGIN
 	SET unIdHotel = LAST_INSERT_ID();
 END $$
 
+DELIMITER $$
+DROP PROCEDURE IF EXISTS ModificarHotel $$
+CREATE PROCEDURE ModificarHotel (OUT unIdHotel SMALLINT UNSIGNED, unNombre VARCHAR(64), unDomicilio VARCHAR(64), unEmail VARCHAR(64), unContrasena CHAR(64), unEstrella TINYINT UNSIGNED)
+BEGIN
+		UPDATE Hotel
+		SET Nombre = unNombre, Domicilio = unDomicilio, Email = unEmail, Contrasena = SHA2(unContrasena, 256), Estrella = unEstrella
+		WHERE IdHotel = unIdHotel;
+END $$
 
 DELIMITER $$
 DROP PROCEDURE IF EXISTS AltaCama $$
@@ -23,11 +31,10 @@ DELIMITER $$
 DROP PROCEDURE IF EXISTS ModificarCama $$
 CREATE PROCEDURE ModificarCama (OUT unIdCama TINYINT UNSIGNED, unNombre VARCHAR(64), unPueden_dormir TINYINT UNSIGNED)
 BEGIN
-		UPDATE `Cama`
-		SET `Nombre` = unNombre, `Pueden_dormir` = unPueden_dormir
-		WHERE `IdCama` = unIdCama;
+		UPDATE Cama
+		SET Nombre = unNombre, Pueden_dormir = unPueden_dormir
+		WHERE IdCama = unIdCama;
 END $$
-
 
 DELIMITER $$
 DROP PROCEDURE IF EXISTS AltaCuarto $$
@@ -38,6 +45,14 @@ BEGIN
 	SET unIdCuarto = LAST_INSERT_ID();
 END $$
 
+DELIMITER $$
+DROP PROCEDURE IF EXISTS ModificarCuarto $$
+CREATE PROCEDURE ModificarCuarto (OUT unIdCuarto TINYINT UNSIGNED, unCochera BOOL, unNoche DOUBLE, unDescripcion VARCHAR(64))
+BEGIN
+		UPDATE Cuarto
+		SET Cochera = unCochera, Noche = unNoche, Descripcion = unDescripcion
+		WHERE IdCuarto = unIdCuarto;
+END $$
 
 DELIMITER $$
 DROP PROCEDURE IF EXISTS AltaCuarto_Cama $$
@@ -64,17 +79,15 @@ BEGIN
 		VALUES (unDni, unNombre, unApellido, unEmail, unContrasena);
 END $$
 
-
 DELIMITER $$
 DROP PROCEDURE IF EXISTS ModificarCliente $$
 CREATE PROCEDURE ModificarCliente (unDni INT UNSIGNED, unNombre VARCHAR(64), unApellido VARCHAR(64), unEmail VARCHAR(64), unContrasena CHAR(64))
 BEGIN
-		UPDATE `Cliente`
-		SET `Nombre` = unNombre, `Apellido` = unApellido, `Email` = unEmail, `Contrasena` = unContrasena
-		WHERE `Dni` = unDni;
+		UPDATE Cliente
+		SET Nombre = unNombre, Apellido = unApellido, Email = unEmail, Contrasena = unContrasena
+		WHERE Dni = unDni;
 
 END $$
-
 
 #Se pide hacer el SP ‘altaReserva’ que reciba los datos no opcionales y haga el alta de una estadia.
 DELIMITER $$
@@ -85,8 +98,16 @@ BEGIN
 	VALUES (unIdHotel, unInicio, unFin, unDni, unIdCuarto);
 	SET unIdReserva = LAST_INSERT_ID();
 END $$
- #Hacer el SP ‘cerrarEstadiaHotel’ que reciba los parámetros necesarios y una calificación por parte del hotel. 
 
+DELIMITER $$
+DROP PROCEDURE IF EXISTS ModificarReserva $$
+CREATE PROCEDURE ModificarReserva (OUT unIdReserva SMALLINT UNSIGNED, unIdHotel SMALLINT UNSIGNED,unInicio DATE, unFin DATE, unDni INT UNSIGNED, unIdCuarto TINYINT UNSIGNED)
+BEGIN
+		UPDATE Reserva
+		SET IdHotel = unIdHotel, Inicio = unInicio, Fin = unFin, Dni = unDni, IdCuarto = unIdCuarto
+		WHERE IdReserva = unIdReserva;
+END $$
+#Hacer el SP ‘cerrarEstadiaHotel’ que reciba los parámetros necesarios y una calificación por parte del hotel.
 DELIMITER $$
 DROP PROCEDURE IF EXISTS CerrarEstadiaHotel $$
 CREATE PROCEDURE CerrarEstadiaHotel (unIdHotel SMALLINT UNSIGNED, unIdCuarto TINYINT UNSIGNED, unCalificacion_del_hotel TINYINT UNSIGNED)
@@ -107,7 +128,6 @@ BEGIN
 	WHERE Dni = unDni;
 END $$
 #Se pide hacer el SF ‘CantidadPersonas’ que reciba por parámetro un identificador de cuarto, la función tiene que devolver la cantidad de personas que pueden dormir en el cuarto: CANT PERSONAS = SUMATORIA(PERSONAS POR CAMA)
-
 
 DELIMITER $$
 DROP FUNCTION IF EXISTS CantidadPersonas $$
@@ -139,4 +159,42 @@ BEGIN
     SELECT * FROM Cama
     WHERE Nombre LIKE CONCAT('%', buscar, '%')
     OR Pueden_dormir LIKE CONCAT('%', buscar, '%');
+END $$
+
+DELIMITER $$
+DROP PROCEDURE IF EXISTS BuscarCuarto $$
+CREATE PROCEDURE BuscarCuarto (buscar VARCHAR(255))
+BEGIN
+    SELECT * FROM Cuarto
+    WHERE Cochera LIKE CONCAT('%', buscar, '%')
+    OR Noche LIKE CONCAT('%', buscar, '%')
+    OR Descripcion LIKE CONCAT('%', buscar, '%');
+END $$
+
+DELIMITER $$
+DROP PROCEDURE IF EXISTS BuscarHotel $$
+CREATE PROCEDURE BuscarHotel (buscar VARCHAR(255))
+BEGIN
+    SELECT * FROM Hotel
+    WHERE Nombre LIKE CONCAT('%', buscar, '%')
+    OR Domicilio LIKE CONCAT('%', buscar, '%')
+    OR Email LIKE CONCAT('%', buscar, '%')
+    OR Contrasena LIKE CONCAT('%', buscar, '%')
+    OR Estrella LIKE CONCAT('%', buscar, '%');
+END $$
+
+DELIMITER $$
+DROP PROCEDURE IF EXISTS BuscarReserva $$
+CREATE PROCEDURE BuscarReserva (buscar VARCHAR(255))
+BEGIN
+    SELECT * FROM Reserva
+    WHERE IdReserva LIKE CONCAT('%', buscar, '%')
+    OR IdHotel LIKE CONCAT('%', buscar, '%')
+    OR Inicio LIKE CONCAT('%', buscar, '%')
+    OR Fin LIKE CONCAT('%', buscar, '%')
+    OR Dni LIKE CONCAT('%', buscar, '%')
+    OR IdCuarto LIKE CONCAT('%', buscar, '%')
+    OR Calificacion_del_cliente LIKE CONCAT('%', buscar, '%')
+    OR Calificacion_del_hotel LIKE CONCAT('%', buscar, '%')
+    OR Comentario_del_cliente LIKE CONCAT('%', buscar, '%');
 END $$
