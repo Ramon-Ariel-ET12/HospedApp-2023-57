@@ -1,4 +1,4 @@
--- Active: 1726545379907@@127.0.0.1@3306@5to_hospedapp2023
+-- Active: 1726683443090@@127.0.0.1@3306@5to_hospedapp2023
 #Realizar los SP para dar de alta todas las entidades menos las tablas Cliente y Reserva.
 DELIMITER $$
 DROP PROCEDURE IF EXISTS AltaHotel $$
@@ -11,11 +11,17 @@ END $$
 
 DELIMITER $$
 DROP PROCEDURE IF EXISTS ModificarHotel $$
-CREATE PROCEDURE ModificarHotel (OUT unIdHotel SMALLINT UNSIGNED, unNombre VARCHAR(64), unDomicilio VARCHAR(64), unEmail VARCHAR(64), unContrasena CHAR(64), unEstrella TINYINT UNSIGNED)
+CREATE PROCEDURE ModificarHotel (unIdHotel SMALLINT UNSIGNED, unNombre VARCHAR(64), unDomicilio VARCHAR(64), unEmail VARCHAR(64), unContrasena CHAR(64), unEstrella TINYINT UNSIGNED)
 BEGIN
-		UPDATE Hotel
-		SET Nombre = unNombre, Domicilio = unDomicilio, Email = unEmail, Contrasena = SHA2(unContrasena, 256), Estrella = unEstrella
-		WHERE IdHotel = unIdHotel;
+		IF(EXISTS(SELECT * FROM Hotel WHERE Contrasena = SHA2(unContrasena, 256)))THEN
+			UPDATE Hotel
+			SET Nombre = unNombre, Domicilio = unDomicilio, Email = unEmail, Estrella = unEstrella
+			WHERE IdHotel = unIdHotel;
+		ELSE
+			UPDATE Hotel
+			SET Nombre = unNombre, Domicilio = unDomicilio, Email = unEmail, Contrasena = SHA2(unContrasena, 256), Estrella = unEstrella
+			WHERE IdHotel = unIdHotel;
+		END IF $$
 END $$
 
 DELIMITER $$
@@ -29,7 +35,7 @@ END $$
 
 DELIMITER $$
 DROP PROCEDURE IF EXISTS ModificarCama $$
-CREATE PROCEDURE ModificarCama (OUT unIdCama TINYINT UNSIGNED, unNombre VARCHAR(64), unPueden_dormir TINYINT UNSIGNED)
+CREATE PROCEDURE ModificarCama (unIdCama TINYINT UNSIGNED, unNombre VARCHAR(64), unPueden_dormir TINYINT UNSIGNED)
 BEGIN
 		UPDATE Cama
 		SET Nombre = unNombre, Pueden_dormir = unPueden_dormir
@@ -47,7 +53,7 @@ END $$
 
 DELIMITER $$
 DROP PROCEDURE IF EXISTS ModificarCuarto $$
-CREATE PROCEDURE ModificarCuarto (OUT unIdCuarto TINYINT UNSIGNED, unCochera BOOL, unNoche DOUBLE, unDescripcion VARCHAR(64))
+CREATE PROCEDURE ModificarCuarto (unIdCuarto TINYINT UNSIGNED, unCochera BOOL, unNoche DOUBLE, unDescripcion VARCHAR(64))
 BEGIN
 		UPDATE Cuarto
 		SET Cochera = unCochera, Noche = unNoche, Descripcion = unDescripcion
@@ -101,7 +107,7 @@ END $$
 
 DELIMITER $$
 DROP PROCEDURE IF EXISTS ModificarReserva $$
-CREATE PROCEDURE ModificarReserva (OUT unIdReserva SMALLINT UNSIGNED, unIdHotel SMALLINT UNSIGNED,unInicio DATE, unFin DATE, unDni INT UNSIGNED, unIdCuarto TINYINT UNSIGNED)
+CREATE PROCEDURE ModificarReserva (unIdReserva SMALLINT UNSIGNED, unIdHotel SMALLINT UNSIGNED,unInicio DATE, unFin DATE, unDni INT UNSIGNED, unIdCuarto TINYINT UNSIGNED)
 BEGIN
 		UPDATE Reserva
 		SET IdHotel = unIdHotel, Inicio = unInicio, Fin = unFin, Dni = unDni, IdCuarto = unIdCuarto

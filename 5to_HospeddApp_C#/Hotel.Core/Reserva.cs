@@ -1,7 +1,7 @@
 namespace HotelApp.Core;
 
 public class Reserva{
-    public ushort IdReserva { get; set; }
+    public ushort? IdReserva { get; set; }
     public ushort IdHotel { get; set; }
     public string Inicio { get; set; }
     public string Fin { get; set; }

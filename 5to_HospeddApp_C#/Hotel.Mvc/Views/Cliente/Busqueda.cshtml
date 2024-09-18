@@ -8,7 +8,6 @@
     <h1>Buscar</h1>
 </div>
 <div class="text-center">
-
     <form asp-controller="Cliente" asp-action="Buscar" method="get">
         <input type="text" name="busqueda" />
         <input type="submit" value="Buscar" />
@@ -22,6 +21,7 @@
     }
     else
     {
+        <h3>Clientes</h3>
         <br>
 
         <br>
@@ -35,16 +35,18 @@
                     <th scope="col" colspan="2">Acciones</th>
                 </tr>
             </thead>
-            <tbody class="">
+            <tbody>
                 @foreach (var cliente in Model)
                 {
                     <tr>
-                        <th scope="row">@cliente.Dni</th>
+                        <th>@cliente.Dni</th>
                         <td>@cliente.Nombre</td>
                         <td>@cliente.Apellido</td>
                         <td>@cliente.Email</td>
-                        <td><a asp-action="Detalle" asp-route-Id="@cliente.Dni">Detalle <i class="bi bi-eyeglasses" style="color: black;"></i></a></td>
-                        <td><a asp-action="Modificar" asp-route-Id="@cliente.Dni">Modificar <i class="bi bi-pencil-fill" style="color: black;"></i></a></td>
+                        <td><a asp-action="Detalle" asp-route-Id="@cliente.Dni">Detalle <i class="bi bi-eyeglasses"
+                                    style="color: black;"></i></a></td>
+                        <td><a asp-action="Modificar" asp-route-Id="@cliente.Dni">Modificar <i class="bi bi-pencil-fill"
+                                    style="color: black;"></i></a></td>
                     </tr>
                 }
             </tbody>

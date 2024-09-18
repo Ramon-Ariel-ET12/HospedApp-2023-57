@@ -44,7 +44,6 @@ namespace HotelApp.Mvc.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Upsert(Cama cama)
         {
             try
@@ -63,7 +62,7 @@ namespace HotelApp.Mvc.Controllers
             {
                 return NotFound();
             }
-            return RedirectToAction("Busqueda");
+            return RedirectToAction(nameof(Busqueda));
         }
 
     }

@@ -48,7 +48,7 @@ namespace HotelApp.Mvc.Controllers
         {
             try
             {
-                if (cliente.Dni == 0)
+                if (cliente.Dni == 0 || cliente.Dni == null)
                     await _Cliente.AltaClienteAsync(cliente);
                 else
                 {

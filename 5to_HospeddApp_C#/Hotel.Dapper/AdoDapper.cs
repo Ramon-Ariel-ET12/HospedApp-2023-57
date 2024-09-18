@@ -18,7 +18,14 @@ public class AdoDapper : IAdo
     {
         var parametros = new DynamicParameters();
 
-        parametros.Add("@unIdHotel", direction: ParameterDirection.Output);
+        if (hotel.IdHotel == 0 || hotel.IdHotel == null)
+        {
+            parametros.Add("@unIdHotel", direction: ParameterDirection.Output);
+        }
+        else
+        {
+            parametros.Add("@unIdHotel", hotel.IdHotel);
+        }
         parametros.Add("@unNombre", hotel.Nombre);
         parametros.Add("@unDomicilio", hotel.Domicilio);
         parametros.Add("@unEmail", hotel.Email);
@@ -41,7 +48,7 @@ public class AdoDapper : IAdo
         var parametros = ParametrosAltaHotel(hotel);
         try
         {
-            await _conexion.ExecuteAsync("ModificarHotel", parametros);
+            await _conexion.ExecuteAsync("ModificarHotel", parametros, commandType: CommandType.StoredProcedure);
         }
         catch (MySqlException error)
         {
@@ -266,8 +273,14 @@ public class AdoDapper : IAdo
     private DynamicParameters ParametrosAltaCama(Cama cama)
     {
         var parametros = new DynamicParameters();
-
-        parametros.Add("@unIdCama", direction: ParameterDirection.Output);
+        if (cama.IdCama == null || cama.IdCama == 0)
+        {
+            parametros.Add("@unIdCama", direction: ParameterDirection.Output);
+        }
+        else
+        {
+            parametros.Add("@unIdCama", cama.IdCama);
+        }
         parametros.Add("@unNombre", cama.Nombre);
         parametros.Add("@unPueden_dormir", cama.Pueden_dormir);
 
@@ -383,7 +396,14 @@ public class AdoDapper : IAdo
     {
         var parametros = new DynamicParameters();
 
-        parametros.Add("@unIdCuarto", direction: ParameterDirection.Output);
+        if (cuarto.IdCuarto == 0 || cuarto.IdCuarto == null)
+        {
+            parametros.Add("@unIdCuarto", direction: ParameterDirection.Output);
+        }
+        else
+        {
+            parametros.Add("@unIdCuarto", cuarto.IdCuarto);
+        }
         parametros.Add("@unCochera", cuarto.Cochera);
         parametros.Add("@unNoche", cuarto.Noche);
         parametros.Add("@unDescripcion", cuarto.Descripcion);
@@ -405,7 +425,7 @@ public class AdoDapper : IAdo
 
         try
         {
-            await _conexion.ExecuteAsync("ModificarCuarto", parametros);
+            await _conexion.ExecuteAsync("ModificarCuarto", parametros, commandType: CommandType.StoredProcedure);
         }
         catch (MySqlException error)
         {
@@ -657,7 +677,14 @@ public class AdoDapper : IAdo
     {
         var parametros = new DynamicParameters();
 
-        parametros.Add("@unIdReserva", direction: ParameterDirection.Output);
+        if (reserva.IdReserva == 0 || reserva.IdReserva == null)
+        {
+            parametros.Add("@unIdReserva", direction: ParameterDirection.Output);
+        }
+        else
+        {
+            parametros.Add("@unIdReserva", reserva.IdReserva);
+        }
         parametros.Add("@unIdHotel", reserva.IdHotel);
         parametros.Add("@unInicio", reserva.Inicio);
         parametros.Add("@unFin", reserva.Fin);
@@ -735,7 +762,7 @@ public class AdoDapper : IAdo
 
         try
         {
-            await _conexion.ExecuteAsync("ModificarReserva", parametros);
+            await _conexion.ExecuteAsync("ModificarReserva", parametros, commandType: CommandType.StoredProcedure);
         }
         catch (MySqlException error)
         {

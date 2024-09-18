@@ -48,7 +48,6 @@ namespace HotelApp.Mvc.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Upsert(Cuarto cuarto)
         {
             try
@@ -61,7 +60,7 @@ namespace HotelApp.Mvc.Controllers
                     if (existe is null)
                         return NotFound();
 
-                    await _Cuarto.ModificarCuartoAsync(existe);
+                    await _Cuarto.ModificarCuartoAsync(cuarto);
                 }
             }
             catch

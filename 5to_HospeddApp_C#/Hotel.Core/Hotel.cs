@@ -2,7 +2,7 @@
 
 public class Hotel
 {
-    public ushort IdHotel { get; set; }
+    public ushort? IdHotel { get; set; }
     public string Nombre { get; set; }
     public string Domicilio { get; set; }
     public string Email { get; set; }
