@@ -1,0 +1,55 @@
+﻿@using HotelApp.Core;
+@model IEnumerable<Reserva>;
+@{
+    ViewData["Title"] = "Reservas";
+}
+
+<div class="text-center">
+    <h1>Buscar</h1>
+</div>
+<div class="text-center">
+    <form asp-controller="Reserva" asp-action="Buscar" method="get">
+        <input type="text" name="busqueda" />
+        <input type="submit" value="Buscar" />
+    </form>
+</div>
+
+<div class="text-center">
+@if (Model.Count() == 0 && Context.Request.RouteValues.ContainsKey("Busqueda"))
+{
+    <p>No se encontraron Reservas.</p>
+}
+else
+{
+    <h3>Reservas</h3>
+    <br><br>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">IdReserva</th>
+                <th scope="col">IdHotel</th>
+                <th scope="col">Inicio</th>
+                <th scope="col">Fin</th>
+                <th scope="col">Dni</th>
+                <th scope="col">Numero de Cuarto</th>
+                <th scope="col" colspan="2">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var reserva in Model)
+            {
+                <tr>
+                    <th>@reserva.IdReserva</th>
+                    <td>@reserva.IdHotel</td>
+                    <td>@reserva.Inicio</td>
+                    <td>@reserva.Fin</td>
+                    <td>@reserva.Dni</td>
+                    <td>@reserva.IdCuarto</td>
+                    <td><a asp-action="Detalle" asp-route-Id="@reserva.IdReserva">Detalle <i class="bi bi-eyeglasses" style="color: black;"></i></a></td>
+                    <td><a asp-action="Modificar" asp-route-Id="@reserva.IdReserva">Modificar <i class="bi bi-pencil-fill" style="color: black;"></i></a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+</div>

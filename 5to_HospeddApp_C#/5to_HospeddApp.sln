@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hotel.Dapper", "Hotel.Dappe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hotel.TestAdo", "Hotel.TestAdo\Hotel.TestAdo.csproj", "{542EE6F8-0970-43E4-868E-C57AF3C0C261}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hotel.Mvc", "Hotel.Mvc\Hotel.Mvc.csproj", "{DA11C4A2-89D4-4788-BF93-50782F1B2E50}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{542EE6F8-0970-43E4-868E-C57AF3C0C261}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{542EE6F8-0970-43E4-868E-C57AF3C0C261}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{542EE6F8-0970-43E4-868E-C57AF3C0C261}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA11C4A2-89D4-4788-BF93-50782F1B2E50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA11C4A2-89D4-4788-BF93-50782F1B2E50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA11C4A2-89D4-4788-BF93-50782F1B2E50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA11C4A2-89D4-4788-BF93-50782F1B2E50}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

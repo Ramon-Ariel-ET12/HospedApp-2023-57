@@ -1,0 +1,44 @@
+@using HotelApp.Core;
+@model Cliente;
+@{
+    var texto = Model is null ? "Alta Cliente" : "Modificar Cliente";
+    ViewData["Title"] = texto;
+}
+
+<form asp-controller="Cliente" asp-action="Upsert" method="post">
+    <div asp-validation-summary="All"></div>
+    @if (Model != null)
+    {
+        <div><input type="hidden" asp-for="@Model.Dni" /></div>
+    }
+    <div class="mb-3">
+        <label asp-for="Dni" class="form-label">DNI</label>
+        <input asp-for="Dni" class="form-control" type="number" maxlength="8" minlength="8"/>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Nombre" class="form-label">Nombre</label>
+        <input asp-for="Nombre" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Apellido" class="form-label">Apellido</label>
+        <input asp-for="Apellido" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label">Email</label>
+        <input type="email" asp-for="Email" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Contrasena" class="form-label">Contrasena</label>
+        <input asp-for="Contrasena" class="form-control" type="password" />
+    </div>
+    <div class="mb-3">
+        @if (Model is null)
+        {
+            <button type="submit" class="btn btn-primary">@texto</button>
+        }
+        else
+        {
+            <button type="submit" class="btn btn-warning">@texto</button>
+        }
+    </div>
+</form>

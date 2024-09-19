@@ -1,19 +1,30 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
         {
-            "name": ".NET Core Launch (console)",
+            // Use IntelliSense to find out which attributes exist for C# debugging
+            // Use hover for the description of the existing attributes
+            // For further information visit https://github.com/dotnet/vscode-csharp/blob/main/debugger-launchjson.md.
+            "name": ".NET Core Launch (web)",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/5to_HospeddApp_C#/Hotel.TestAdo/bin/Debug/net7.0/Hotel.TestAdo.dll",
+            // If you have changed target frameworks, make sure to update the program path.
+            "program": "${workspaceFolder}/5to_HospeddApp_C#/Hotel.Mvc/bin/Debug/net8.0/Hotel.Mvc.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/5to_HospeddApp_C#/Hotel.TestAdo",
-            "console": "internalConsole",
-            "stopAtEntry": false
+            "cwd": "${workspaceFolder}/5to_HospeddApp_C#/Hotel.Mvc",
+            "stopAtEntry": false,
+            // Enable launching a web browser when ASP.NET Core starts. For more information: https://aka.ms/VSCode-CS-LaunchJson-WebBrowser
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            }
         },
         {
             "name": ".NET Core Attach",
