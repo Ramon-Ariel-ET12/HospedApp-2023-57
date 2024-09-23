@@ -43,9 +43,9 @@
                         <td>@cliente.Nombre</td>
                         <td>@cliente.Apellido</td>
                         <td>@cliente.Email</td>
-                        <td><a asp-action="Detalle" asp-route-Id="@cliente.Dni">Detalle <i class="bi bi-eyeglasses"
+                        <td><a asp-action="Detalle" asp-route-dni="@cliente.Dni">Detalle <i class="bi bi-eyeglasses"
                                     style="color: black;"></i></a></td>
-                        <td><a asp-action="Modificar" asp-route-Id="@cliente.Dni">Modificar <i class="bi bi-pencil-fill"
+                        <td><a asp-action="Modificar" asp-route-dni="@cliente.Dni">Modificar <i class="bi bi-pencil-fill"
                                     style="color: black;"></i></a></td>
                     </tr>
                 }

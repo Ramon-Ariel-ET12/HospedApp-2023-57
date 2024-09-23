@@ -32,12 +32,12 @@ namespace HotelApp.Mvc.Controllers
         public IActionResult Alta() => View("Upsert");
         
         [HttpGet]
-        public async Task<IActionResult> Modificar(uint? Dni)
+        public async Task<IActionResult> Modificar(uint? dni)
         {
-            if (Dni is null || Dni == 0)
+            if (dni is null || dni == 0)
                 return NotFound();
 
-            var cliente = await _Cliente.ObtenerClientePorDni(Dni);
+            var cliente = await _Cliente.ObtenerClientePorDni(dni);
             if (cliente is null)
                 return NotFound();
 

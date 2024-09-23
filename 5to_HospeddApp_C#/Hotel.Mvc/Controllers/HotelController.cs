@@ -66,7 +66,7 @@ namespace HotelApp.Mvc.Controllers
             {
                 return NotFound();
             }
-            return RedirectToAction("Busqueda");
+            return RedirectToAction(nameof(Busqueda));
         }
     }
 }

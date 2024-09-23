@@ -1,4 +1,4 @@
--- Active: 1726683443090@@127.0.0.1@3306@5to_hospedapp2023
+-- Active: 1727119277990@@127.0.0.1@3306@5to_HospedApp2023
 #Realizar los SP para dar de alta todas las entidades menos las tablas Cliente y Reserva.
 DELIMITER $$
 DROP PROCEDURE IF EXISTS AltaHotel $$
@@ -13,15 +13,19 @@ DELIMITER $$
 DROP PROCEDURE IF EXISTS ModificarHotel $$
 CREATE PROCEDURE ModificarHotel (unIdHotel SMALLINT UNSIGNED, unNombre VARCHAR(64), unDomicilio VARCHAR(64), unEmail VARCHAR(64), unContrasena CHAR(64), unEstrella TINYINT UNSIGNED)
 BEGIN
-		IF(EXISTS(SELECT * FROM Hotel WHERE Contrasena = SHA2(unContrasena, 256)))THEN
-			UPDATE Hotel
-			SET Nombre = unNombre, Domicilio = unDomicilio, Email = unEmail, Estrella = unEstrella
-			WHERE IdHotel = unIdHotel;
-		ELSE
-			UPDATE Hotel
-			SET Nombre = unNombre, Domicilio = unDomicilio, Email = unEmail, Contrasena = SHA2(unContrasena, 256), Estrella = unEstrella
-			WHERE IdHotel = unIdHotel;
-		END IF $$
+	IF(EXISTS(SELECT * FROM Hotel WHERE Contrasena = unContrasena))THEN
+		UPDATE Hotel
+		SET Nombre = unNombre, Domicilio = unDomicilio, Email = unEmail, Estrella = unEstrella
+		WHERE IdHotel = unIdHotel;
+	ELSEIF(EXISTS(SELECT * FROM Hotel WHERE Contrasena = SHA2(unContrasena, 256)))THEN
+		UPDATE Hotel
+		SET Nombre = unNombre, Domicilio = unDomicilio, Email = unEmail, Estrella = unEstrella
+		WHERE IdHotel = unIdHotel;
+	ELSE
+		UPDATE Hotel
+		SET Nombre = unNombre, Domicilio = unDomicilio, Email = unEmail, Contrasena = SHA2(unContrasena, 256), Estrella = unEstrella
+		WHERE IdHotel = unIdHotel;
+	END IF $$
 END $$
 
 DELIMITER $$
