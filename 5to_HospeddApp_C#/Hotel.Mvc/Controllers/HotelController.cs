@@ -40,11 +40,11 @@ namespace HotelApp.Mvc.Controllers
             if (id is null || id == 0)
                 return NotFound();
 
-            var hotel = await _hotel.ObtenerHotelPorIdAsync(id);
-            if (hotel is null)
+            var existe = await _hotel.ObtenerHotelPorIdAsync(id);
+            if (existe is null)
                 return NotFound();
 
-            return View("Upsert", hotel);
+            return View("Upsert", existe);
         }
 
         [HttpPost]
@@ -52,7 +52,7 @@ namespace HotelApp.Mvc.Controllers
         {
             try
             {
-                if (hotel.IdHotel == 0)
+                if (hotel.IdHotel == 0 || hotel.IdHotel == null)
                     await _hotel.AltaHotelAsync(hotel);
                 else
                 {

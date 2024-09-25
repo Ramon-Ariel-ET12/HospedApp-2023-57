@@ -52,7 +52,7 @@ namespace HotelApp.Mvc.Controllers
         {
             try
             {
-                if (reserva.IdReserva == 0)
+                if (reserva.IdReserva == 0 || reserva.IdReserva == null)
                     await _reserva.AltaReservaAsync(reserva);
                 else
                 {

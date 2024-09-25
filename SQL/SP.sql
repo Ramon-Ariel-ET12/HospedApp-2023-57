@@ -1,4 +1,4 @@
--- Active: 1726683443090@@127.0.0.1@3306@5to_hospedapp2023
+-- Active: 1727283532136@@127.0.0.1@3306@5to_hospedapp2023
 #Realizar los SP para dar de alta todas las entidades menos las tablas Cliente y Reserva.
 DELIMITER $$
 DROP PROCEDURE IF EXISTS AltaHotel $$
@@ -22,6 +22,15 @@ BEGIN
 			SET Nombre = unNombre, Domicilio = unDomicilio, Email = unEmail, Contrasena = SHA2(unContrasena, 256), Estrella = unEstrella
 			WHERE IdHotel = unIdHotel;
 		END IF $$
+END $$
+
+DELIMITER $$
+DROP PROCEDURE IF EXISTS ModificarHotel_Cuarto $$
+CREATE PROCEDURE ModificarHotel_Cuarto (unIdHotel SMALLINT UNSIGNED, unIdCuarto TINYINT UNSIGNED, Numero TINYINT UNSIGNED)
+BEGIN
+	UPDATE Hotel_Cuarto
+	SET IdHotel = unIdHotel, IdCuarto = unIdCuarto
+	WHERE Numero = unNumero;
 END $$
 
 DELIMITER $$
@@ -187,6 +196,22 @@ BEGIN
     OR Email LIKE CONCAT('%', buscar, '%')
     OR Contrasena LIKE CONCAT('%', buscar, '%')
     OR Estrella LIKE CONCAT('%', buscar, '%');
+END $$
+DELIMITER $$
+DROP PROCEDURE IF EXISTS BuscarHotel_Hotel $$
+CREATE PROCEDURE BuscarHotel_Hotel (buscar VARCHAR(255))
+BEGIN
+    SELECT * FROM Hotel h
+	INNER JOIN Cuarto c ON c.IdHotel = h.IdHotel
+	INNER JOIN Hotel_Cuarto hc ON c.IdCuarto = hc.IdCUarto
+    WHERE h.Nombre LIKE CONCAT('%', buscar, '%')
+    OR h.Domicilio LIKE CONCAT('%', buscar, '%')
+    OR h.Email LIKE CONCAT('%', buscar, '%')
+    OR h.Contrasena LIKE CONCAT('%', buscar, '%')
+    OR h.Estrella LIKE CONCAT('%', buscar, '%')
+    OR hc.Numero LIKE CONCAT('%', buscar, '%')
+    OR c.Noche LIKE CONCAT('%', buscar, '%')
+    OR c.Descripcion LIKE CONCAT('%', buscar, '%');
 END $$
 
 DELIMITER $$

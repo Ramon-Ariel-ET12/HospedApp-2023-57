@@ -52,7 +52,7 @@ namespace HotelApp.Mvc.Controllers
         {
             try
             {
-                if (cuarto.IdCuarto == 0)
+                if (cuarto.IdCuarto == 0 || cuarto.IdCuarto == null)
                     await _Cuarto.AltaCuartoAsync(cuarto);
                 else
                 {

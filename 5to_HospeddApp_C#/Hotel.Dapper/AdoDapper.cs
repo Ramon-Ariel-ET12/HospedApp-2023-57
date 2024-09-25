@@ -604,17 +604,45 @@ public class AdoDapper : IAdo
 
         parametros.Add("@unIdHotel", hotel_Cuarto.IdHotel);
         parametros.Add("@unIdCuarto", hotel_Cuarto.IdCuarto);
-        parametros.Add("@unPrecio", hotel_Cuarto.Numero);
+        parametros.Add("@unNumero", hotel_Cuarto.Numero);
 
         return parametros;
     }
 
     private readonly string _queryHotel_Cuarto
     = "SELECT * FROM Hotel_Cuarto";
+    
+    private readonly string _searchHotel_Cuarto
+    = "CALL BuscarHotel_Hotel(@Busqueda)";
+
     private readonly string _queryHotel_CuartoPorId
     = "SELECT * FROM Hotel_Cuarto WHERE IdHotel = @unIdHotel";
     public List<Hotel_Cuarto> ObtenerHotel_Cuarto() =>
     _conexion.Query<Hotel_Cuarto>(_queryHotel_Cuarto).ToList();
+
+
+    public async Task<IEnumerable<Hotel_Cuarto>> BuscarHotel_CuartoAsync(string Busqueda)
+    => await _conexion.QueryAsync<Hotel_Cuarto>(_searchHotel_Cuarto, new { Busqueda = Busqueda });
+
+    public async Task ModificarHotel_Cuarto(Hotel_Cuarto hotel_Cuarto)
+    {
+        var parametros = ParametrosAltaHotel_Cuarto(hotel_Cuarto);
+
+        try
+        {
+            await _conexion.ExecuteAsync("ModificarHotel_Cuarto", parametros, commandType: CommandType.StoredProcedure);
+        }
+        catch (MySqlException error)
+        {
+            if (error.ErrorCode == MySqlErrorCode.DuplicateKeyEntry)
+            {
+                if (error.Message.Contains("PRIMARY"))
+                {
+                    throw new ConstraintException("El IdHotel " + hotel_Cuarto.IdHotel + " y el IdCuarto " + hotel_Cuarto.IdCuarto + " ya se encuentra en uso.");
+                }
+            }
+        }
+    }
 
     public async Task<List<Hotel_Cuarto>> ObtenerHotel_CuartoAsync()
     {
@@ -625,7 +653,7 @@ public class AdoDapper : IAdo
     public Hotel_Cuarto? ObtenerHotel_CuartoPorId(ushort IdHotel, byte IdCuarto)
     => _conexion.QueryFirstOrDefault<Hotel_Cuarto>(_queryHotel_CuartoPorId, new { unIdHotel = IdHotel, unIdCuarto = IdCuarto });
 
-    public async Task<Hotel_Cuarto?> ObtenerHotel_CuartoPorIdAsync(ushort IdHotel, byte IdCuarto)
+    public async Task<Hotel_Cuarto?> ObtenerHotel_CuartoPorIdAsync(ushort? IdHotel, byte? IdCuarto)
     {
         var hotel_Cuarto = await _conexion.QueryFirstOrDefaultAsync<Hotel_Cuarto>(_queryHotel_CuartoPorId, new { unIdHotel = IdHotel, unIdCuarto = IdCuarto });
         return hotel_Cuarto;
@@ -785,6 +813,7 @@ public class AdoDapper : IAdo
         var reserva = _conexion.Query<Reserva>(_queryReserva).ToList();
         return reserva;
     }
+
     #endregion
 
 }

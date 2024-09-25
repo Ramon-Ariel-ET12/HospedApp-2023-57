@@ -48,11 +48,12 @@ namespace HotelApp.Mvc.Controllers
         {
             try
             {
-                if (cliente.Dni == 0 || cliente.Dni == null)
+                var existe = await _Cliente.ObtenerClientePorDni(cliente.Dni);
+                if (existe is null)
                     await _Cliente.AltaClienteAsync(cliente);
                 else
                 {
-                    var existe = await _Cliente.ObtenerClientePorDni(cliente.Dni);
+                    existe = await _Cliente.ObtenerClientePorDni(cliente.Dni);
                     if (existe is null)
                         return NotFound();
                     await _Cliente.ModificarClienteAsync(cliente);
