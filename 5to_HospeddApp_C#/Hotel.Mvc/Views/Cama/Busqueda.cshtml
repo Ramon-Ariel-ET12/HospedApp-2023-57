@@ -1,7 +1,7 @@
 ﻿@using HotelApp.Core;
 @model IEnumerable<Cama>;
 @{
-        ViewData["Title"] = "Camas";
+    ViewData["Title"] = "Camas";
 }
 
 <div class="text-center">
@@ -16,7 +16,7 @@
 </div>
 
 <div class="text-center">
-@if (Model.Count() == 0 && Context.Request.RouteValues.ContainsKey("Busqueda"))
+    @if (Model.Count() == 0 && Context.Request.RouteValues.ContainsKey("Busqueda"))
     {
         <p>No se encontraron Camas.</p>
     }
@@ -24,26 +24,26 @@
     {
     <h3>Camas</h3>
     <br><br>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th scope="col">IdCama</th>
-                <th scope="col">Nombre</th>
-                <th scope="col">Pueden dormir</th>
-                <th scope="col">Accion</th>
-            </tr>
-        </thead>
-        <tbody class="">
-            @foreach (var cama in Model)
-            {
+        <table class="table table-striped">
+            <thead>
                 <tr>
-                    <th>@cama.IdCama</th>
-                    <th>@cama.Nombre</th>
-                    <th>@cama.Pueden_dormir</th>
-                    <td><a asp-action="Modificar" asp-route-Id="@cama.IdCama">Modificar <i class="bi bi-pencil-fill" style="color: black;"></i></a></td>
+                    <th scope="col">IdCama</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Pueden dormir</th>
+                    <th scope="col">Accion</th>
                 </tr>
-            }
-        </tbody>
-    </table>
-}
+            </thead>
+            <tbody class="">
+                @foreach (var cama in Model)
+                {
+                    <tr>
+                        <th>@cama.IdCama</th>
+                        <th>@cama.Nombre</th>
+                        <th>@cama.Pueden_dormir</th>
+                    <td><a asp-action="Modificar" asp-route-Id="@cama.IdCama">Modificar <i class="bi bi-pencil-fill" style="color: black;"></i></a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
 </div>
