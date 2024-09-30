@@ -610,9 +610,17 @@ public class AdoDapper : IAdo
     }
 
     private readonly string _queryHotel_Cuarto
-    = "SELECT * FROM Hotel_Cuarto";
+    = @"SELECT hc.*, c.*, h.*
+    FROM Hotel_Cuarto hc
+    INNER JOIN Hotel h ON h.IdHotel = hc.IdHotel
+    INNER JOIN Cuarto c ON c.IdCuarto = hc.IdCuarto";
     private readonly string _queryHotel_CuartoPorId
-    = "SELECT * FROM Hotel_Cuarto WHERE IdHotel = @unIdHotel";
+    = @"SELECT hc.*, h.*, c.*
+    FROM Hotel_Cuarto hc
+    INNER JOIN Hotel h ON h.IdHotel = hc.IdHotel
+    INNER JOIN Cuarto c ON c.IdCuarto = hc.IdCuarto
+    WHERE h.IdHotel = @unIdHotel
+    ORDER BY hc.Numero ASC";
     public List<Hotel_Cuarto> ObtenerHotel_Cuarto() =>
     _conexion.Query<Hotel_Cuarto>(_queryHotel_Cuarto).ToList();
 
@@ -625,10 +633,22 @@ public class AdoDapper : IAdo
     public Hotel_Cuarto? ObtenerHotel_CuartoPorId(ushort IdHotel, byte IdCuarto)
     => _conexion.QueryFirstOrDefault<Hotel_Cuarto>(_queryHotel_CuartoPorId, new { unIdHotel = IdHotel, unIdCuarto = IdCuarto });
 
-    public async Task<Hotel_Cuarto?> ObtenerHotel_CuartoPorIdAsync(ushort IdHotel, byte IdCuarto)
+    public async Task<List<Hotel_Cuarto>?> ObtenerHotel_CuartoPorIdAsync(ushort? IdHotel)
     {
-        var hotel_Cuarto = await _conexion.QueryFirstOrDefaultAsync<Hotel_Cuarto>(_queryHotel_CuartoPorId, new { unIdHotel = IdHotel, unIdCuarto = IdCuarto });
-        return hotel_Cuarto;
+
+        var hotel_cuarto = await _conexion.QueryAsync<Hotel_Cuarto, Hotel, Cuarto, Hotel_Cuarto>(
+                _queryHotel_CuartoPorId,
+                (hotel_Cuarto, hotel, cuarto) =>
+                {
+                    hotel_Cuarto.Hotel = hotel;
+                    hotel_Cuarto.Cuarto = cuarto;
+                    return hotel_Cuarto;
+                }
+                , new { unIdHotel = IdHotel},
+                splitOn: "IdHotel,IdCuarto"
+            );
+
+        return hotel_cuarto.ToList();
     }
 
     public void AltaHotel_Cuarto(Hotel_Cuarto hotel_Cuarto)

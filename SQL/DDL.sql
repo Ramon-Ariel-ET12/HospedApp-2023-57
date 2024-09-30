@@ -1,4 +1,4 @@
--- Active: 1700068523370@@127.0.0.1@3306
+-- Active: 1727119277990@@127.0.0.1@3306@5to_HospedApp2023
 DROP DATABASE IF EXISTS 5to_HospedApp2023 ;
 CREATE DATABASE 5to_HospedApp2023 ;
 USE 5to_HospedApp2023 ;
@@ -32,7 +32,6 @@ CREATE TABLE Hotel_Cuarto (
 	IdHotel SMALLINT UNSIGNED,
 	IdCuarto TINYINT UNSIGNED,
 	Numero TINYINT UNSIGNED,
-	CONSTRAINT PK_HotelCuarto PRIMARY KEY (IdHotel, IdCuarto),
 	CONSTRAINT FK_HotelCuarto_Hotel Foreign Key (IdHotel) REFERENCES Hotel (IdHotel),
 	CONSTRAINT FK_HotelCuarto_Cuarto Foreign Key (IdCuarto) REFERENCES Cuarto (IdCuarto)
 );

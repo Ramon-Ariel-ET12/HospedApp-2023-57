@@ -49,7 +49,7 @@ public interface IAdo
     List<Hotel_Cuarto> ObtenerHotel_Cuarto();
     Task<List<Hotel_Cuarto>> ObtenerHotel_CuartoAsync();
     Hotel_Cuarto? ObtenerHotel_CuartoPorId(ushort IdHotel, byte IdCuarto);
-    Task<Hotel_Cuarto?> ObtenerHotel_CuartoPorIdAsync(ushort IdHotel, byte IdCuarto);
+    Task<List<Hotel_Cuarto>?> ObtenerHotel_CuartoPorIdAsync(ushort? IdHotel);
     void AltaHotel_Cuarto(Hotel_Cuarto hotel_Cuarto);
     Task AltaHotel_CuartoAsync(Hotel_Cuarto hotel_Cuarto);
 

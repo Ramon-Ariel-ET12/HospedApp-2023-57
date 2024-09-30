@@ -8,4 +8,6 @@ public class Hotel
     public string Email { get; set; }
     public string Contrasena { get; set; }
     public byte Estrella { get; set; }
+
+    
 }

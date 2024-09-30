@@ -1,4 +1,6 @@
--- Active: 1700068523370@@127.0.0.1@3306
+-- Active: 1727119277990@@127.0.0.1@3306@5to_HospedApp2023
+
+
   -- Se pide desarrollar un trigger para que al momento de ingresar una reserva, si la fecha de inicio se encuentra entre la fecha de inicio y fin de otra reserva para el mismo cuarto con reserva no cancelada, no se debe permitir el INSERT mostrando la leyenda “Fecha Superpuesta”. También se tiene que tener en cuenta que un cliente no puede tener propias sin cancelar de manera superpuestas, es decir, al momento de reservar se tiene que verificar que ese mismo cliente no posea reservas propias no canceladas en otros lados, en ese caso también se tiene que mostrar la leyenda “El cliente ya posee otra reserva para esa fecha”.
 DELIMITER $$
 DROP TRIGGER IF EXISTS BefInsReserva $$

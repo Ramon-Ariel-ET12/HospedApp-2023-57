@@ -15,6 +15,14 @@ namespace HotelApp.Mvc.Controllers
             return View(Busqueda);
         }
 
+
+        [HttpGet]
+        public async Task<IActionResult> Detalle(ushort? id)
+        {
+            var Hotel_Cuarto = await _hotel.ObtenerHotel_CuartoPorIdAsync(id);
+            return View("Detalle", Hotel_Cuarto);
+        }
+
         [HttpGet]
         public async Task<IActionResult> Buscar(string? busqueda)
         {
