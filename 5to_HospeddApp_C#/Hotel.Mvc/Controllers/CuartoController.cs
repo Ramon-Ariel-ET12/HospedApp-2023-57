@@ -52,7 +52,7 @@ namespace HotelApp.Mvc.Controllers
         {
             try
             {
-                if (cuarto.IdCuarto == 0)
+                if (cuarto.IdCuarto == 0 || cuarto.IdCuarto == null)
                     await _Cuarto.AltaCuartoAsync(cuarto);
                 else
                 {
@@ -63,8 +63,9 @@ namespace HotelApp.Mvc.Controllers
                     await _Cuarto.ModificarCuartoAsync(cuarto);
                 }
             }
-            catch
+            catch(Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 return NotFound();
             }
             return RedirectToAction("Busqueda");

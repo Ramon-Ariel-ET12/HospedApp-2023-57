@@ -30,7 +30,7 @@ namespace HotelApp.Mvc.Controllers
         }
         [HttpGet]
         public IActionResult Alta() => View("Upsert");
-        
+
         [HttpGet]
         public async Task<IActionResult> Modificar(uint? dni)
         {
@@ -48,18 +48,15 @@ namespace HotelApp.Mvc.Controllers
         {
             try
             {
-                if (cliente.Dni == 0 || cliente.Dni == null)
+                var existe = await _Cliente.ObtenerClientePorDni(cliente.Dni);
+                if (existe is null)
                     await _Cliente.AltaClienteAsync(cliente);
                 else
-                {
-                    var existe = await _Cliente.ObtenerClientePorDni(cliente.Dni);
-                    if (existe is null)
-                        return NotFound();
                     await _Cliente.ModificarClienteAsync(cliente);
-                }
             }
-            catch
+            catch(Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 return NotFound();
             }
             return RedirectToAction("Busqueda");

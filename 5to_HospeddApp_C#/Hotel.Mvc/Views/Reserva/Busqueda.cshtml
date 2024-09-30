@@ -26,8 +26,8 @@ else
     <table class="table table-striped">
         <thead>
             <tr>
-                <th scope="col">IdReserva</th>
-                <th scope="col">IdHotel</th>
+                <th scope="col">Numero de reserva</th>
+                <th scope="col">Hotel</th>
                 <th scope="col">Inicio</th>
                 <th scope="col">Fin</th>
                 <th scope="col">Dni</th>
@@ -40,12 +40,12 @@ else
             {
                 <tr>
                     <th>@reserva.IdReserva</th>
-                    <td>@reserva.IdHotel</td>
+                    <td>@reserva.Hotel?.Nombre</td>
                     <td>@reserva.Inicio</td>
                     <td>@reserva.Fin</td>
-                    <td>@reserva.Dni</td>
-                    <td>@reserva.IdCuarto</td>
-                    <td><a asp-action="Detalle" asp-route-Id="@reserva.IdReserva">Detalle <i class="bi bi-eyeglasses" style="color: black;"></i></a></td>
+                    <td>@reserva.Cliente?.Dni</td>
+                    <td>@reserva.HotelCuarto?.Numero</td>
+                    <td><a asp-action="Detalle" asp-route-Id="@reserva.IdReserva">Detalle <i class="bi bi-pencil-fill" style="color: black;"></i></a></td>
                     <td><a asp-action="Modificar" asp-route-Id="@reserva.IdReserva">Modificar <i class="bi bi-pencil-fill" style="color: black;"></i></a></td>
                 </tr>
             }

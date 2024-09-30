@@ -11,8 +11,16 @@ namespace HotelApp.Mvc.Controllers
         [HttpGet]
         public async Task<IActionResult> Busqueda()
         {
-            var Busqueda = await _reserva.ObtenerReservaAsync();
-            return View(Busqueda);
+            try
+            {
+                var Busqueda = await _reserva.ObtenerReservaAsync();
+                return View(Busqueda);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return View("NoEncontrado");
+            }
         }
 
         [HttpGet]
@@ -52,20 +60,21 @@ namespace HotelApp.Mvc.Controllers
         {
             try
             {
-                if (reserva.IdReserva == 0)
+                if (reserva.IdReserva == 0 || reserva.IdReserva == null)
                     await _reserva.AltaReservaAsync(reserva);
                 else
                 {
                     var existe = await _reserva.ObtenerReservaPorIdAsync(reserva.IdReserva);
                     if (existe is null)
                         return NotFound();
-                        
+
                     await _reserva.ModificarReservaAsync(reserva);
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                return NotFound();
+                Console.WriteLine(ex.Message);
+                return View("NoEncontrado");
             }
             return RedirectToAction("Busqueda");
         }

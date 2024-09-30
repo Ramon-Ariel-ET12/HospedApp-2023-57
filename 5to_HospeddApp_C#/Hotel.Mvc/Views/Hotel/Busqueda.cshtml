@@ -28,6 +28,7 @@
         <table class="table table-striped">
             <thead>
                 <tr>
+                    <th scope="col">IdHotel</th>
                     <th scope="col">Nombre</th>
                     <th scope="col">Domicilio</th>
                     <th scope="col">Email</th>
@@ -39,6 +40,7 @@
                 @foreach (var hotel in Model)
                 {
                     <tr>
+                        <th>@hotel.IdHotel</th>
                         <th>@hotel.Nombre</th>
                         <th>@hotel.Domicilio</th>
                         <th>@hotel.Email</th>

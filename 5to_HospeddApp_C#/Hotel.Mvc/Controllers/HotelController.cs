@@ -52,7 +52,7 @@ namespace HotelApp.Mvc.Controllers
         {
             try
             {
-                if (hotel.IdHotel == 0)
+                if (hotel.IdHotel == 0 || hotel.IdHotel == null)
                     await _hotel.AltaHotelAsync(hotel);
                 else
                 {
@@ -62,11 +62,12 @@ namespace HotelApp.Mvc.Controllers
                     await _hotel.ModificarHotelAsync(hotel);
                 }
             }
-            catch
+            catch(Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 return NotFound();
             }
-            return RedirectToAction(nameof(Busqueda));
+            return RedirectToAction("Busqueda");
         }
     }
 }

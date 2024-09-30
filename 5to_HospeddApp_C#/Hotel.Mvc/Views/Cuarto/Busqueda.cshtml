@@ -26,11 +26,11 @@ else
     <table class="table table-striped">
         <thead>
             <tr>
-                <th scope="col">Numero de cuarto</th>
+                <th scope="col">IdCuarto</th>
                 <th scope="col">Cochera</th>
                 <th scope="col">Noche</th>
                 <th scope="col">Descripcion</th>
-                <th scope="col" colspan="2">Acciones</th>
+                <th scope="col">Accion</th>
             </tr>
         </thead>
         <tbody>
@@ -41,7 +41,6 @@ else
                     <th>@cuarto.Cochera</th>
                     <th>@cuarto.Noche</th>
                     <th>@cuarto.Descripcion</th>
-                    <td><a asp-action="Detalle" asp-route-Id="@cuarto.IdCuarto">Detalle <i class="bi bi-eyeglasses" style="color: black;"></i></a></td>
                     <td><a asp-action="Modificar" asp-route-Id="@cuarto.IdCuarto">Modificar <i class="bi bi-pencil-fill" style="color: black;"></i></a></td>
                 </tr>
             }

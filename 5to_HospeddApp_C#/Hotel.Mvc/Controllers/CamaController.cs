@@ -58,8 +58,9 @@ namespace HotelApp.Mvc.Controllers
                     await _Cama.ModificarCamaAsync(cama);
                 }
             }
-            catch
+            catch(Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 return NotFound();
             }
             return RedirectToAction(nameof(Busqueda));

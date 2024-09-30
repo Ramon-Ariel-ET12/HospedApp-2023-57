@@ -18,7 +18,7 @@ public class AdoDapper : IAdo
     {
         var parametros = new DynamicParameters();
 
-        if (hotel.IdHotel == 0 || hotel.IdHotel == null)
+        if (hotel.IdHotel == 0 || hotel?.IdHotel == null)
         {
             parametros.Add("@unIdHotel", direction: ParameterDirection.Output);
         }
@@ -26,7 +26,7 @@ public class AdoDapper : IAdo
         {
             parametros.Add("@unIdHotel", hotel.IdHotel);
         }
-        parametros.Add("@unNombre", hotel.Nombre);
+        parametros.Add("@unNombre", hotel!.Nombre);
         parametros.Add("@unDomicilio", hotel.Domicilio);
         parametros.Add("@unEmail", hotel.Email);
         parametros.Add("@unContrasena", hotel.Contrasena);
@@ -694,7 +694,14 @@ public class AdoDapper : IAdo
         return parametros;
     }
     private readonly string _queryReserva
-    = "SELECT * FROM Reserva";
+    = @"
+        SELECT r.*, h.*, c.*, cl.*, hc.*
+        FROM Reserva r
+        INNER JOIN Hotel h ON r.IdHotel = h.IdHotel
+        INNER JOIN Cuarto c ON r.IdCuarto = c.IdCuarto
+        INNER JOIN Cliente cl ON r.Dni = cl.Dni
+        INNER JOIN Hotel_Cuarto hc ON r.IdHotel = hc.IdHotel AND r.IdCuarto = hc.IdCuarto
+        ORDER BY r.IdReserva ASC";
     private readonly string _queryReservaPorId
     = "SELECT * FROM Reserva WHERE IdReserva = @unIdReserva";
     private readonly string _searchReserva
@@ -702,8 +709,21 @@ public class AdoDapper : IAdo
 
     public async Task<List<Reserva>> ObtenerReservaAsync()
     {
-        var reserva = (await _conexion.QueryAsync<Reserva>(_queryReserva)).ToList();
-        return reserva;
+
+        var reservas = await _conexion.QueryAsync<Reserva, Hotel, Cuarto, Cliente, Hotel_Cuarto, Reserva>(
+                _queryReserva,
+                (reserva, hotel, cuarto, cliente, hotelCuarto) =>
+                {
+                    reserva.Hotel = hotel;
+                    reserva.Cuarto = cuarto;
+                    reserva.Cliente = cliente;
+                    reserva.HotelCuarto = hotelCuarto;
+                    return reserva;
+                },
+                splitOn: "IdHotel,IdCuarto,Dni,IdHotel"
+            );
+
+        return reservas.ToList();
     }
 
     public Reserva? ObtenerReservaId(ushort IdReserva) => _conexion.QueryFirstOrDefault<Reserva>(_queryReservaPorId, new { unIdReserva = IdReserva });
@@ -778,7 +798,23 @@ public class AdoDapper : IAdo
     }
 
     public async Task<IEnumerable<Reserva>> BuscarReservaAsync(string Busqueda)
-        => await _conexion.QueryAsync<Reserva>(_searchReserva, new { Busqueda = Busqueda });
+    {
+    var reservas = await _conexion.QueryAsync<Reserva, Hotel, Cuarto, Cliente, Hotel_Cuarto, Reserva>(
+        _searchReserva,
+        (reserva, hotel, cuarto, cliente, hotelCuarto) =>
+        {
+            reserva.Hotel = hotel;
+            reserva.Cuarto = cuarto;
+            reserva.Cliente = cliente;
+            reserva.HotelCuarto = hotelCuarto;
+            return reserva;
+        },
+        new { Busqueda = Busqueda },
+        splitOn: "IdHotel,IdCuarto,Dni,Numero"
+    );
+
+    return reservas;
+    }
 
     public List<Reserva> ObtenerReserva()
     {
