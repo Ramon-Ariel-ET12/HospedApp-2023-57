@@ -7,6 +7,7 @@ public class Reserva{
     public string Fin { get; set; }
     public uint Dni { get; set; }
     public byte IdCuarto { get; set; }
+    public byte Numero { get; set; }
     public uint Calificacion_del_cliente { get; set; }
     public uint Calificacion_del_hotel { get; set; }
     public string Comentario_del_cliente { get; set; }

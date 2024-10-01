@@ -33,7 +33,7 @@
                     <th scope="col">Domicilio</th>
                     <th scope="col">Email</th>
                     <th scope="col">Estrella</th>
-                    <th scope="col" colspan="2">Acciones</th>
+                    <th scope="col" colspan="3">Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -45,10 +45,9 @@
                         <th>@hotel.Domicilio</th>
                         <th>@hotel.Email</th>
                         <th>@hotel.Estrella</th>
-                        <td><a asp-action="Detalle" asp-route-Id="@hotel.IdHotel">Detalle <i class="bi bi-eyeglasses"
-                                    style="color: black;"></i></a></td>
-                        <td><a asp-action="Modificar" asp-route-Id="@hotel.IdHotel">Modificar <i class="bi bi-pencil-fill"
-                                    style="color: black;"></i></a></td>
+                        <td><a asp-action="Detalle" asp-route-Id="@hotel.IdHotel">Detalle <i class="bi bi-eyeglasses" style="color: black;"></i></a></td>
+                        <td><a asp-action="AgregarCuarto" asp-route-Id="@hotel.IdHotel">Agregar cuarto <i class="bi bi-pencil-fill" style="color: black;"></i></a></td>
+                        <td><a asp-action="Modificar" asp-route-Id="@hotel.IdHotel">Modificar <i class="bi bi-pencil-fill" style="color: black;"></i></a></td>
                     </tr>
                 }
             </tbody>

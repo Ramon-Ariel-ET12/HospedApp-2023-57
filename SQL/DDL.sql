@@ -1,4 +1,4 @@
--- Active: 1727119277990@@127.0.0.1@3306@5to_HospedApp2023
+-- Active: 1726545379907@@127.0.0.1@3306@5to_hospedapp2023
 DROP DATABASE IF EXISTS 5to_HospedApp2023 ;
 CREATE DATABASE 5to_HospedApp2023 ;
 USE 5to_HospedApp2023 ;
@@ -60,6 +60,7 @@ Inicio DATE NOT NULL,
 Fin DATE NOT NULL,
 Dni INT UNSIGNED NOT NULL,
 IdCuarto TINYINT UNSIGNED NOT NULL,
+Numero TINYINT UNSIGNED,
 Calificacion_del_cliente TINYINT UNSIGNED,
 Calificacion_del_hotel TINYINT UNSIGNED,
 Comentario_del_cliente VARCHAR(60),

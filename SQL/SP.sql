@@ -1,4 +1,4 @@
--- Active: 1727119277990@@127.0.0.1@3306@5to_HospedApp2023
+-- Active: 1726545379907@@127.0.0.1@3306@5to_hospedapp2023
 #Realizar los SP para dar de alta todas las entidades menos las tablas Cliente y Reserva.
 DELIMITER $$
 DROP PROCEDURE IF EXISTS AltaHotel $$
@@ -105,10 +105,14 @@ END $$
 #Se pide hacer el SP ‘altaReserva’ que reciba los datos no opcionales y haga el alta de una estadia.
 DELIMITER $$
 DROP PROCEDURE IF EXISTS AltaReserva $$
-CREATE PROCEDURE AltaReserva (OUT unIdReserva SMALLINT UNSIGNED, unIdHotel SMALLINT UNSIGNED,unInicio DATE, unFin DATE, unDni INT UNSIGNED, unIdCuarto TINYINT UNSIGNED)
+CREATE PROCEDURE AltaReserva (OUT unIdReserva SMALLINT UNSIGNED, unIdHotel SMALLINT UNSIGNED,unInicio DATE, unFin DATE, unDni INT UNSIGNED, unNumero TINYINT UNSIGNED)
 BEGIN
-	INSERT INTO Reserva (IdHotel, Inicio, Fin, Dni, IdCuarto)
-	VALUES (unIdHotel, unInicio, unFin, unDni, unIdCuarto);
+	DECLARE unIdCuarto TINYINT UNSIGNED;
+	SELECT IdCuarto INTO unIdCuarto
+	FROM Hotel_Cuarto
+	WHERE IdHotel = unIdHotel AND Numero = unNumero;
+	INSERT INTO Reserva (IdHotel, Inicio, Fin, Dni, IdCuarto, Numero)
+	VALUES (unIdHotel, unInicio, unFin, unDni, unIdCuarto, unNumero);
 	SET unIdReserva = LAST_INSERT_ID();
 END $$
 

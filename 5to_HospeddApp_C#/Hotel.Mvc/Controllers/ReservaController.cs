@@ -13,7 +13,7 @@ namespace HotelApp.Mvc.Controllers
         {
             try
             {
-                var Busqueda = await _reserva.ObtenerReservaAsync();
+                List<Reserva> Busqueda = await _reserva.ObtenerReservaAsync();
                 return View(Busqueda);
             }
             catch (Exception ex)

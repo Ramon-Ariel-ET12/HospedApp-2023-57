@@ -40,6 +40,22 @@ namespace HotelApp.Mvc.Controllers
         }
 
         [HttpGet]
+        public IActionResult AgregarCuarto(ushort? Id) 
+        {
+            Hotel_Cuarto hotel_Cuarto =  new();
+            hotel_Cuarto.IdHotel = Id;
+            return View("AgregarCuarto", hotel_Cuarto);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AccionDeAgregarCuarto(Hotel_Cuarto hotel_Cuarto)
+        {
+            await _hotel.AltaHotel_CuartoAsync(hotel_Cuarto);
+            ushort? id = hotel_Cuarto.IdHotel;
+            return RedirectToAction("Detalle", new { id });
+        }
+
+        [HttpGet]
         public IActionResult Alta() => View("Upsert");
 
         [HttpGet]

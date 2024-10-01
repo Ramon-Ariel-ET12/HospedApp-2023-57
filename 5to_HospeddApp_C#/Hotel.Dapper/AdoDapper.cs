@@ -604,7 +604,6 @@ public class AdoDapper : IAdo
 
         parametros.Add("@unIdHotel", hotel_Cuarto.IdHotel);
         parametros.Add("@unIdCuarto", hotel_Cuarto.IdCuarto);
-        parametros.Add("@unPrecio", hotel_Cuarto.Numero);
 
         return parametros;
     }
@@ -709,7 +708,7 @@ public class AdoDapper : IAdo
         parametros.Add("@unInicio", reserva.Inicio);
         parametros.Add("@unFin", reserva.Fin);
         parametros.Add("@unDni", reserva.Dni);
-        parametros.Add("@unIdCuarto", reserva.IdCuarto);
+        parametros.Add("@unNumero", reserva.Numero);
 
         return parametros;
     }
