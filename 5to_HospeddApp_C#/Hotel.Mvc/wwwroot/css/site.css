@@ -1,5 +1,5 @@
 html {
-  font-size: 14px;
+  font-size: 16px;
 }
 
 @media (min-width: 768px) {
@@ -19,4 +19,42 @@ html {
 
 body {
   margin-bottom: 60px;
+}
+
+/* site.css */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #f8f9fa;
+}
+
+h1, h2, h3 {
+    color: #343a40;
+}
+
+.lead {
+    font-size: 1.25rem;
+    font-weight: 300;
+}
+
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+}
+
+.btn-primary {
+    border-radius: 20px;
+}
+
+.content-box {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+.table-responsive {
+    overflow-x: auto;
 }
