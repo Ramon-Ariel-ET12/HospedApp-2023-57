@@ -9,7 +9,6 @@
         <h1 class="display-4">Buscar Cuartos</h1>
     </div>
 
-<<<<<<< HEAD
     <div class="text-center mt-4">
         <form asp-controller="Cuarto" asp-action="Buscar" method="get" class="form-inline justify-content-center">
             <input type="text" name="busqueda" class="form-control mr-2" placeholder="Buscar cuartos..." />
@@ -40,10 +39,10 @@
                         @foreach (var cuarto in Model)
                         {
                             <tr>
-                                <th>@cuarto.IdCuarto</th>
-                                <th>@cuarto.Cochera</th>
-                                <th>@cuarto.Noche</th>
-                                <th>@cuarto.Descripcion</th>
+                                <th>@cuarto.Cuarto.IdCuarto</th>
+                                <th>@cuarto.Cuarto.Cochera</th>
+                                <th>@cuarto.Cuarto.Noche</th>
+                                <th>@cuarto.Cuarto.Descripcion</th>
                                 <td>
                                     <a asp-action="Modificar" asp-route-Id="@cuarto.IdCuarto" class="btn btn-sm btn-outline-secondary">
                                         Modificar <i class="bi bi-pencil-fill"></i>
@@ -57,39 +56,3 @@
         }
     </div>
 </div>
-=======
-<div class="text-center">
-@if (Model.Count() == 0 && Context.Request.RouteValues.ContainsKey("Busqueda"))
-{
-    <p>No se encontraron Cuartos.</p>
-}
-else
-{
-    <h3>Cuartos</h3>
-    <br><br>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th scope="col">IdCuarto</th>
-                <th scope="col">Cochera</th>
-                <th scope="col">Noche</th>
-                <th scope="col">Descripcion</th>
-                <th scope="col">Accion</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var cuarto in Model)
-            {
-                <tr>
-                    <th>@cuarto.Cuarto.IdCuarto</th>
-                    <th>@cuarto.Cuarto.Cochera</th>
-                    <th>@cuarto.Cuarto.Noche</th>
-                    <th>@cuarto.Cuarto.Descripcion</th>
-                    <td><a asp-action="Modificar" asp-route-Id="@cuarto.IdCuarto">Modificar <i class="bi bi-pencil-fill" style="color: black;"></i></a></td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
-</div>
->>>>>>> 06ee373cddf0ec35b583eaf519069fbb10d00b5e

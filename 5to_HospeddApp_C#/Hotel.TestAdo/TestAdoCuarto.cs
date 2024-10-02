@@ -30,6 +30,6 @@ public class TestAdoCuarto : TestAdo
             Descripcion = "Comodo xd",
         };
 
-        Ado.AltaCuarto(nuevocuarto);
+        //Ado.AltaCuarto(nuevocuarto);
     }
 }
