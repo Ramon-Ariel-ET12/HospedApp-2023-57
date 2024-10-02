@@ -392,21 +392,26 @@ public class AdoDapper : IAdo
 
     #region 'Cuarto'
 
-    private DynamicParameters ParametrosAltaCuarto(Cuarto cuarto)
+    private DynamicParameters ParametrosAltaCuarto(Cuarto_Cama cuarto_cama)
     {
         var parametros = new DynamicParameters();
-
-        if (cuarto.IdCuarto == 0 || cuarto.IdCuarto == null)
+        if (cuarto_cama.Cuarto.IdCuarto == 0 || cuarto_cama.Cuarto.IdCuarto == null)
         {
             parametros.Add("@unIdCuarto", direction: ParameterDirection.Output);
         }
         else
         {
-            parametros.Add("@unIdCuarto", cuarto.IdCuarto);
+            parametros.Add("@unIdCuarto", cuarto_cama.Cuarto.IdCuarto);
         }
-        parametros.Add("@unCochera", cuarto.Cochera);
-        parametros.Add("@unNoche", cuarto.Noche);
-        parametros.Add("@unDescripcion", cuarto.Descripcion);
+        parametros.Add("@unCochera", cuarto_cama.Cuarto.Cochera);
+        parametros.Add("@unNoche", cuarto_cama.Cuarto.Noche);
+        parametros.Add("@unDescripcion", cuarto_cama.Cuarto.Descripcion);
+
+        if (cuarto_cama.Cama != null || cuarto_cama.Cama?.IdCama != 0)
+        {
+            parametros.Add("@unIdCama", cuarto_cama.Cama!.IdCama);
+            parametros.Add("@unCantidad_de_cama", cuarto_cama.Cantidad_de_cama);
+        }
 
         return parametros;
     }
@@ -419,9 +424,9 @@ public class AdoDapper : IAdo
 
     public List<Cuarto> ObtenerCuarto() => _conexion.Query<Cuarto>(_queryCuarto).ToList();
 
-    public async Task ModificarCuartoAsync(Cuarto cuarto)
+    public async Task ModificarCuartoAsync(Cuarto_Cama cuarto_cama)
     {
-        var parametros = ParametrosAltaCuarto(cuarto);
+        var parametros = ParametrosAltaCuarto(cuarto_cama);
 
         try
         {
@@ -433,7 +438,7 @@ public class AdoDapper : IAdo
             {
                 if (error.Message.Contains("Descripcion"))
                 {
-                    throw new ConstraintException("La Descripcion " + cuarto.Descripcion + " ya se encuentra en uso.");
+                    throw new ConstraintException("La Descripcion " + cuarto_cama.Cuarto.Descripcion + " ya se encuentra en uso.");
                 }
             }
             throw;
@@ -458,16 +463,16 @@ public class AdoDapper : IAdo
         return cuarto;
     }
 
-    public void AltaCuarto(Cuarto cuarto)
+    public void AltaCuarto(Cuarto_Cama cuarto_cama)
     {
-        var parametros = ParametrosAltaCuarto(cuarto);
+        var parametros = ParametrosAltaCuarto(cuarto_cama);
 
         try
         {
             _conexion.Execute("AltaCuarto", parametros);
 
             //Obtengo el valor de parametro de tipo salida
-            cuarto.IdCuarto = parametros.Get<byte>("@unIdCuarto");
+            cuarto_cama.IdCuarto = parametros.Get<byte>("@unIdCuarto");
         }
         catch (MySqlException error)
         {
@@ -475,23 +480,23 @@ public class AdoDapper : IAdo
             {
                 if (error.Message.Contains("Descripcion"))
                 {
-                    throw new ConstraintException("La Descripcion " + cuarto.Descripcion + " ya se encuentra en uso.");
+                    throw new ConstraintException("La Descripcion " + cuarto_cama.Cuarto.Descripcion + " ya se encuentra en uso.");
                 }
             }
             throw;
         }
     }
 
-    public async Task AltaCuartoAsync(Cuarto cuarto)
+    public async Task AltaCuartoAsync(Cuarto_Cama cuarto_cama)
     {
-        var parametros = ParametrosAltaCuarto(cuarto);
+        var parametros = ParametrosAltaCuarto(cuarto_cama);
 
         try
         {
             await _conexion.ExecuteAsync("AltaCuarto", parametros);
 
             //Obtengo el valor de parametro de tipo salida
-            cuarto.IdCuarto = parametros.Get<byte>("@unIdCuarto");
+            cuarto_cama.IdCuarto = parametros.Get<byte>("@unIdCuarto");
         }
         catch (MySqlException error)
         {
@@ -499,7 +504,7 @@ public class AdoDapper : IAdo
             {
                 if (error.Message.Contains("Descripcion"))
                 {
-                    throw new ConstraintException("La Descripcion " + cuarto.Descripcion + " ya se encuentra en uso.");
+                    throw new ConstraintException("La Descripcion " + cuarto_cama.Cuarto.Descripcion + " ya se encuentra en uso.");
                 }
             }
             throw;
@@ -522,7 +527,10 @@ public class AdoDapper : IAdo
     }
 
     private readonly string _queryCuarto_Cama
-    = "SELECT * FROM Cuarto_Cama";
+    = @"SELECT cc.*, cu.*, ca.* 
+        FROM Cuarto_Cama cc
+        INNER JOIN Cuarto cu ON cu.IdCuarto = cc.IdCuarto
+        INNER JOIN Cama ca ON ca.IdCama = cc.IdCama";
     private readonly string _queryCuarto_CamaPorIdCuarto
     = "SELECT * FROM Cuarto_Cama WHERE IdCuarto = @unIdCuarto";
 
@@ -531,8 +539,19 @@ public class AdoDapper : IAdo
 
     public async Task<List<Cuarto_Cama>> ObtenerCuarto_CamaAsync()
     {
-        var cuarto_Cama = (await _conexion.QueryAsync<Cuarto_Cama>(_queryCuarto_Cama)).ToList();
-        return cuarto_Cama;
+
+        var cuarto_cama = await _conexion.QueryAsync<Cuarto_Cama, Cama, Cuarto, Cuarto_Cama>(
+                _queryCuarto_Cama,
+                (cuarto_cama, cama, cuarto) =>
+                {
+                    cuarto_cama.Cama = cama;
+                    cuarto_cama.Cuarto = cuarto;
+                    return cuarto_cama;
+                },
+                splitOn: "IdCama,IdCuarto"
+            );
+
+        return cuarto_cama.ToList();
     }
 
     public Cuarto_Cama? ObtenerCuarto_CamaPorIdCuarto(byte IdCuarto) =>

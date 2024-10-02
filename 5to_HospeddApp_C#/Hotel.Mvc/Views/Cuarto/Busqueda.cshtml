@@ -1,5 +1,5 @@
 ﻿@using HotelApp.Core;
-@model IEnumerable<Cuarto>;
+@model IEnumerable<Cuarto_Cama>;
 @{
     ViewData["Title"] = "Cuartos";
 }
@@ -37,10 +37,10 @@ else
             @foreach (var cuarto in Model)
             {
                 <tr>
-                    <th>@cuarto.IdCuarto</th>
-                    <th>@cuarto.Cochera</th>
-                    <th>@cuarto.Noche</th>
-                    <th>@cuarto.Descripcion</th>
+                    <th>@cuarto.Cuarto.IdCuarto</th>
+                    <th>@cuarto.Cuarto.Cochera</th>
+                    <th>@cuarto.Cuarto.Noche</th>
+                    <th>@cuarto.Cuarto.Descripcion</th>
                     <td><a asp-action="Modificar" asp-route-Id="@cuarto.IdCuarto">Modificar <i class="bi bi-pencil-fill" style="color: black;"></i></a></td>
                 </tr>
             }

@@ -11,7 +11,7 @@ namespace HotelApp.Mvc.Controllers
         [HttpGet]
         public async Task<IActionResult> Busqueda()
         {
-            var Busqueda = await _Cuarto.ObtenerCuartoAsync();
+            var Busqueda = await _Cuarto.ObtenerCuarto_CamaAsync();
             return View(Busqueda);
         }
 
@@ -48,19 +48,19 @@ namespace HotelApp.Mvc.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Upsert(Cuarto cuarto)
+        public async Task<IActionResult> Upsert(Cuarto_Cama cuarto_cama)
         {
             try
             {
-                if (cuarto.IdCuarto == 0 || cuarto.IdCuarto == null)
-                    await _Cuarto.AltaCuartoAsync(cuarto);
+                if (cuarto_cama.IdCuarto == 0 || cuarto_cama.IdCuarto == null)
+                    await _Cuarto.AltaCuartoAsync(cuarto_cama);
                 else
                 {
-                    var existe = await _Cuarto.ObtenerCuartoPorIdAsync(cuarto.IdCuarto);
+                    var existe = await _Cuarto.ObtenerCuartoPorIdAsync(cuarto_cama.IdCuarto);
                     if (existe is null)
                         return NotFound();
 
-                    await _Cuarto.ModificarCuartoAsync(cuarto);
+                    await _Cuarto.ModificarCuartoAsync(cuarto_cama);
                 }
             }
             catch(Exception ex)

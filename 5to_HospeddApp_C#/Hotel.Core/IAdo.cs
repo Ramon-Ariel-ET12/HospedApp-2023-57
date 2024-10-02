@@ -34,9 +34,9 @@ public interface IAdo
     Task<List<Cuarto>> ObtenerCuartoAsync();
     Cuarto? ObtenerCuartoPorId(byte IdCuarto);
     Task<Cuarto?> ObtenerCuartoPorIdAsync(byte? IdCuarto);
-    void AltaCuarto(Cuarto cuarto);
-    Task AltaCuartoAsync(Cuarto cuarto);
-    Task ModificarCuartoAsync(Cuarto cuarto);
+    void AltaCuarto(Cuarto_Cama cuarto);
+    Task AltaCuartoAsync(Cuarto_Cama cuarto);
+    Task ModificarCuartoAsync(Cuarto_Cama cuarto);
     Task<IEnumerable<Cuarto>> BuscarCuartoAsync(string Busqueda);
 
     List<Cuarto_Cama> ObtenerCuarto_Cama();
