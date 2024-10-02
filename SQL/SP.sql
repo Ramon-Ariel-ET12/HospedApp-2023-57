@@ -1,4 +1,4 @@
--- Active: 1726545379907@@127.0.0.1@3306@5to_hospedapp2023
+-- Active: 1727887732610@@127.0.0.1@3306@5to_hospedapp2023
 #Realizar los SP para dar de alta todas las entidades menos las tablas Cliente y Reserva.
 DELIMITER $$
 DROP PROCEDURE IF EXISTS AltaHotel $$
@@ -45,11 +45,13 @@ END $$
 
 DELIMITER $$
 DROP PROCEDURE IF EXISTS AltaCuarto $$
-CREATE PROCEDURE AltaCuarto (OUT unIdCuarto TINYINT UNSIGNED, unCochera BOOL, unNoche DOUBLE, unDescripcion VARCHAR(64))
+CREATE PROCEDURE AltaCuarto (OUT unIdCuarto TINYINT UNSIGNED, unCochera BOOL, unNoche DOUBLE, unDescripcion VARCHAR(64), unIdCama TINYINT UNSIGNED, unCantidad_de_cama TINYINT UNSIGNED)
 BEGIN
 	INSERT INTO Cuarto (Cochera, Noche, Descripcion)
 	VALUES (unCochera, unNoche, unDescripcion);
 	SET unIdCuarto = LAST_INSERT_ID();
+	
+	CALL AltaCuarto_Cama(unIdCuarto, unIdCama, unCantidad_de_cama);
 END $$
 
 DELIMITER $$
