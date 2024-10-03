@@ -1,61 +1,55 @@
-<!-- Completa abajo cambiando ET12DE1Computacion a tu user|organización y template a tu repo, te recomiendo usar el Find & Replace de tu editor -->
-![main build.NET6](https://github.com/ET12DE1Computacion/simpleTemplateCSharp/workflows/main-build.NET6/badge.svg?branch=main) ![main test.NET6](https://github.com/ET12DE1Computacion/simpleTemplateCSharp/workflows/main-test.NET6/badge.svg?branch=main)
-![dev build.NET6](https://github.com/ET12DE1Computacion/simpleTemplateCSharp/workflows/dev-build.NET6/badge.svg?branch=dev) ![dev test.NET6](https://github.com/ET12DE1Computacion/simpleTemplateCSharp/workflows/dev-test.NET6/badge.svg?branch=dev)
-[![Abrir en Visual Studio Code](https://img.shields.io/static/v1?logo=visualstudiocode&label=&message=Abrir%20en%20Visual%20Studio%20Code&labelColor=2c2c32&color=007acc&logoColor=007acc)](https://open.vscode.dev/ET12DE1Computacion/simpleTemplateCSharp)
-<!-- Borra este comentario y linea después haber cambiado arriba las ocurrencias de tu usuario/repo -->
-
 <h1 align="center">E.T. Nº12 D.E. 1º "Libertador Gral. José de San Martín"</h1>
 <p align="center">
   <img src="https://et12.edu.ar/imgs/et12.svg">
 </p>
 
-## Computación 2023
+## Computación 2024
 
-**Asignatura**: **AGBD**
+**Asignatura**: **Programación Sobre Redes**
 
-**Nombre TP**: **HospedApp-2023-5to 7ma**
+**Nombre TP**: **HospedApp**
 
-**Apellido y nombre Alumno**: **Lugones Ramón, Leiva Jenifer, Franco Salinas**
+**Apellido y nombre Alumno**: **Lugones Ramón, Noelia Almaraz, Josué Alvarado**
 
-**Curso**: **5to 7ma**
+**Curso**: **6to 7ma**
 
-# Título del Proyecto
+# HospedApp
 
-_Acá va un párrafo que describa lo que es el proyecto._
+**HospedApp** es una aplicación diseñada para facilitar la gestión de hoteles, proporcionando herramientas clave para administrar clientes, cuartos y reservas de forma eficiente. Ideal para pequeñas y medianas empresas del sector hotelero, **HospedApp** simplifica el control de la ocupación de habitaciones, la asignación de clientes y el seguimiento de reservas en tiempo real.
+
+## Funcionalidades principales:
+
+- **Gestión de Hoteles**: Registra y administra diferentes hoteles, con sus respectivas configuraciones y características.
+- **Clientes**: Almacena la información de los clientes, permitiendo crear perfiles simples para gestionar su historial de reservas.
+- **Cuartos**: Organiza y clasifica las habitaciones disponibles en cada hotel.
+- **Reservas**: Permite reservar cuartos en un hotel, especificando el período de la estancia (fecha de inicio y fin), asegurando la disponibilidad para el cliente.
 
 ## Comenzando 🚀
 
-Clonar el repositorio github, desde Github Desktop o ejecutar en la terminal o CMD:
-<!-- cambia el link de abajo al de tu repositorio y BORRA ESTE COMENTARIO -->
 ```
-git clone https://github.com/ET12DE1Computacion/simpleTemplateCSharp
+git clone https://github.com/Ramon-Ariel-ET12/HospedApp/tree/HospedApp-Final
 ```
 
 ### Pre-requisitos 📋
 
-- .NET 6.0.5 (SDK .NET 6.0.300) - [Descargar](https://dotnet.microsoft.com/download/dotnet/6.0)
+Antes de comenzar, asegúrate de tener instalados los siguientes componentes en tu máquina:
 
-## Despliegue 📦
-
-_Agrega notas adicionales sobre que cosas se debe instalar, configurar y como hacer deploy_
+1. **[.NET SDK](https://dotnet.microsoft.com/download)** - Necesario para compilar y ejecutar aplicaciones en C#.
+2. **[MySQL](https://www.mysql.com/downloads/)** - Debes tener MySQL instalado y en funcionamiento para gestionar la base de datos.
+5. **[Git](https://git-scm.com/)** - Para clonar el repositorio y gestionar el control de versiones.
 
 ## Construido con 🛠️
 
-_Menciona las herramientas y versiones que utilizaste para crear tu proyecto_
-
-* [Visual Studio Code](https://code.visualstudio.com/#alt-downloads) - Editor de código.
-
-## Versionado 📌
-
-Usamos [SemVer](http://semver.org/) para el versionado. Para todas las versiones disponibles, mira los [tags en este repositorio](https://github.com/ET12DE1Computacion/simpleTemplateCSharp/tags).
+- **[Visual Studio Code](https://code.visualstudio.com/)** - Editor de código ligero utilizado para el desarrollo del proyecto.
+- **[C#](https://learn.microsoft.com/dotnet/csharp/)** - Lenguaje de programación utilizado para la lógica de la aplicación.
+- **[ASP.NET MVC](https://dotnet.microsoft.com/apps/aspnet/mvc)** - Framework para estructurar la aplicación siguiendo el patrón Modelo-Vista-Controlador (MVC).
+- **[MySQL](https://www.mysql.com/)** - Base de datos relacional para almacenar la información.
+- **[Dapper](https://github.com/DapperLib/Dapper)** - Micro ORM utilizado para facilitar el acceso a la base de datos.
+- **[MySqlConnector](https://mysqlconnector.net/)** - Conector asíncrono ADO.NET para interactuar con MySQL desde .NET.
+- **[Bootstrap](https://getbootstrap.com/)** - Framework CSS utilizado para dar estilo y estructura a la interfaz.
 
 ## Autores ✒️
 
-_Menciona a todos aquellos que ayudaron a levantar el proyecto desde sus inicios_
-
-* **Max Power** - *Desarrollo* - [Maxpower](https://github.com/maxpower)
-* **Cosme Fulanito** - *Documentación* - [Cosmefulanito](#Cosmefulanito)
-
-## Licencia 📄
-
-Este proyecto está bajo la Licencia (Tu Licencia) - mira el archivo [LICENSE.md](LICENSE.md) para detalles.
+* **Ramon-Ariel-ET12** - *Desarrollo Full-Stack* - [Ramon-Ariel-ET12](https://github.com/Ramon-Ariel-ET12)
+* **NoeliaAT** - *Desarrollo Back-End* - [NoeliaAT](https://github.com/NoeliaAT)
+* **ElJonsu** - *Diseñador de interfaces* - [ElJonsu](https://github.com/ElJonsu)
